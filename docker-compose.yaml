@@ -18,7 +18,7 @@ services:
 
   api:
     #this tells docker where to look for the Dockerfile to build the image
-    build: .
+    build: ./Dataservice
     #name of your container and also the DNS name (nginx will proxy pass to this container from localhost:8000 when using a browser or Postman)
     container_name: rest-service
     restart: always
