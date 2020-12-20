@@ -12,10 +12,12 @@
   "author": "Christian Lascsak",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mysql": "2.18.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.8",
+    "@types/mysql": "^2.15.16",
     "typescript": "^4.0.5"
   }
 }
