@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS imse_sql_db.User(
+CREATE TABLE IF NOT EXISTS User(
     user_id int NOT NULL AUTO_INCREMENT,
     first_name varchar(32),
     last_name varchar(32),
@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS imse_sql_db.User(
     birthday DATE,
     PRIMARY KEY(user_id)
 );
-CREATE TABLE IF NOT EXISTS imse_sql_db.Studio(
+CREATE TABLE IF NOT EXISTS Studio(
     studio_id int NOT NULL AUTO_INCREMENT,
     price int,
     name varchar(32),
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS imse_sql_db.Studio(
     description varchar(32),
     PRIMARY KEY(studio_id)
 );
-CREATE TABLE IF NOT EXISTS imse_sql_db.Game(
+CREATE TABLE IF NOT EXISTS Game(
     game_id int NOT NULL AUTO_INCREMENT,
     genre varchar(32),
     price int,
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS imse_sql_db.Game(
     PRIMARY KEY(game_id),
     FOREIGN KEY(studio_id) REFERENCES Studio(studio_id)
 );
-CREATE TABLE IF NOT EXISTS imse_sql_db.GameRecommendation(
+CREATE TABLE IF NOT EXISTS GameRecommendation(
     game_recommendation_id int NOT NULL AUTO_INCREMENT,
     game_id int NOT NULL,
     recommended_game_id int,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS imse_sql_db.GameRecommendation(
     FOREIGN KEY(game_id) REFERENCES Game(game_id),
     FOREIGN KEY(recommended_game_id) REFERENCES Game(game_id),
 );
-CREATE TABLE IF NOT EXISTS imse_sql_db.Rent(
+CREATE TABLE IF NOT EXISTS Rent(
     rent_id int NOT NULL AUTO_INCREMENT,
     extended boolean,
     price int,
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS imse_sql_db.Rent(
     FOREIGN KEY (user_id) REFERENCES User(user_id),
     FOREIGN KEY (game_id) REFERENCES Game(game_id),
 );
-CREATE TABLE IF NOT EXISTS imse_sql_db.Subscription(
+CREATE TABLE IF NOT EXISTS Subscription(
     subscription_id int NOT NULL AUTO_INCREMENT,
     start_date DATE,
     end_date DATE,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS imse_sql_db.Subscription(
     FOREIGN KEY (user_id) REFERENCES User(user_id),
     FOREIGN KEY (studio_id) REFERENCES Studio(studio_id),
 );
-CREATE TABLE IF NOT EXISTS imse_sql_db.PlayedGame(
+CREATE TABLE IF NOT EXISTS PlayedGame(
     played_game_id int NOT NULL AUTO_INCREMENT,
     user_id int,
     playtime int,

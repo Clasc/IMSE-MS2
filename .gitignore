@@ -1,3 +1,5 @@
+db/volume
+
 # Logs
 logs
 *.log
