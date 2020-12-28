@@ -12,8 +12,8 @@ services:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=imse_sql_db
     volumes:
-      - ./db/scripts:/docker-entrypoint-initdb.d
       - ./db/volume:/var/lib/mysql
+      - ./db/scripts:/docker-entrypoint-initdb.d/:ro
     ports:
       - 3306
     expose:

@@ -2,9 +2,9 @@ CREATE TABLE IF NOT EXISTS User(
     user_id int NOT NULL AUTO_INCREMENT,
     first_name varchar(32),
     last_name varchar(32),
-    is_admin boolean,
+    is_admin BOOLEAN DEFAULT FALSE,
     birthday DATE,
-    PRIMARY KEY(user_id)
+    PRIMARY KEY (user_id)
 );
 CREATE TABLE IF NOT EXISTS Studio(
     studio_id int NOT NULL AUTO_INCREMENT,
