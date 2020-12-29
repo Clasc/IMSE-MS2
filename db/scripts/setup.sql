@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS GameRecommendation(
     recommended_game_id int,
     PRIMARY KEY(game_recommendation_id),
     FOREIGN KEY(game_id) REFERENCES Game(game_id),
-    FOREIGN KEY(recommended_game_id) REFERENCES Game(game_id),
+    FOREIGN KEY(recommended_game_id) REFERENCES Game(game_id)
 );
 CREATE TABLE IF NOT EXISTS Rent(
     rent_id int NOT NULL AUTO_INCREMENT,
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS Rent(
     game_id int,
     PRIMARY KEY(rent_id),
     FOREIGN KEY (user_id) REFERENCES User(user_id),
-    FOREIGN KEY (game_id) REFERENCES Game(game_id),
+    FOREIGN KEY (game_id) REFERENCES Game(game_id)
 );
 CREATE TABLE IF NOT EXISTS Subscription(
     subscription_id int NOT NULL AUTO_INCREMENT,
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS Subscription(
     studio_id int,
     PRIMARY KEY(subscription_id),
     FOREIGN KEY (user_id) REFERENCES User(user_id),
-    FOREIGN KEY (studio_id) REFERENCES Studio(studio_id),
+    FOREIGN KEY (studio_id) REFERENCES Studio(studio_id)
 );
 CREATE TABLE IF NOT EXISTS PlayedGame(
     played_game_id int NOT NULL AUTO_INCREMENT,
@@ -61,5 +61,5 @@ CREATE TABLE IF NOT EXISTS PlayedGame(
     last_played DATE,
     game_id int,
     PRIMARY KEY(played_game_id, user_id),
-    FOREIGN KEY(game_id) REFERENCES Game(game_id),
+    FOREIGN KEY(game_id) REFERENCES Game(game_id)
 );
