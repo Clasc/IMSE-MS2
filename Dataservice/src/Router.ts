@@ -1,6 +1,6 @@
 
 import { Express } from "express";
-import { getAllUsers, insertUser } from "./Controllers/UserController";
+import { deleteUser, getAllUsers, getUserById, insertUser } from "./Controllers/UserController";
 
 export class Router {
     private readonly app: Express;
@@ -11,8 +11,9 @@ export class Router {
     }
 
     public createRoutes() {
-        this.app.get("/test", (req, res) => { res.send("This is the test subpage"); });
         this.app.get("/users", getAllUsers);
-        this.app.put("/users/:user", insertUser);
+        this.app.get("/users/:userId", getUserById);
+        this.app.put("/users/:userId", insertUser);
+        this.app.delete("/users/:userId", deleteUser);
     }
 }
