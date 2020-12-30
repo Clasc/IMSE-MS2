@@ -15,11 +15,12 @@ export async function insertUser(req: Request, res: Response) {
     console.log(user);
 
     if (!user) {
-        res.status(500).send(`error when inserting a user`);
+        res.status(500).send(`Request body is empty`);
         return
     }
 
     user.user_id = parseInt(userId);
-    let result = await UserRepo.insertUser(user);
-    res.status(200).send(`inserted a user: ${result}`);
+    let success = await UserRepo.insertUser(user);
+    let code = success ? 200 : 500;
+    res.status(200).send(`inserted a user: ${success}`);
 }

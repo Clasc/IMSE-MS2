@@ -12,14 +12,15 @@ export class UserRepo {
         }
     }
 
-    public static async insertUser(user: User): Promise<any> {
+    public static async insertUser(user: User): Promise<boolean> {
         try {
             let result: any = await queryDb(`INSERT INTO User SET ?`, user);
-            console.log(result);
-            return result;
+
+            return true;
         }
         catch (err) {
             console.error(err);
+            return false;
         }
     }
 }
