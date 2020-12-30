@@ -1,8 +1,9 @@
 export class User {
-    id: number = 0;
-    name: string = "";
+    user_id: number = 0;
     username: string = "";
-    password: string = "";
-    is_admin: boolean = false;
-    birthday: any = {};
+    first_name?: string = "";
+    last_name?: string = "";
+    password?: string = "";
+    is_admin?: boolean = false;
+    birthday?: any = {};
 }

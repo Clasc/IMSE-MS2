@@ -2,6 +2,8 @@ CREATE TABLE IF NOT EXISTS User(
     user_id int NOT NULL AUTO_INCREMENT,
     first_name varchar(32),
     last_name varchar(32),
+    username varchar(32) NOT NULL UNIQUE,
+    password varchar(32),
     is_admin BOOLEAN DEFAULT FALSE,
     birthday DATE,
     PRIMARY KEY (user_id)

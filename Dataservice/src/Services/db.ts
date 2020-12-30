@@ -15,11 +15,11 @@ db.connect((err: MysqlError) => {
     console.log("Connected to database!");
 });
 
-export async function queryDb(query: string): Promise<[any]> {
+export async function queryDb(query: string, values?: any): Promise<[any]> {
     return new Promise((resolve, reject) => db.connect(() => {
-        let queryResult = db.query(query, (err, result) => {
+        let queryResult = db.query(query, values, (err, result) => {
             if (err) {
-                reject(new Error("Error executing query on db"));
+                reject(err);
             } else {
                 resolve(result);
             }
