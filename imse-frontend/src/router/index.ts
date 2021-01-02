@@ -31,6 +31,12 @@ const routes: Array<RouteConfig> = [
       import('../views/Login.vue')
   },
   {
+    path: '/game/:id',
+    name: 'GamePage',
+    component: () =>
+      import('../views/GamePage.vue')
+  },
+  {
     path: '/register',
     name: 'Register',
     component: () =>
