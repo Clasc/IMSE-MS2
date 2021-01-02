@@ -5,7 +5,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Home,
   },
   {
     path: "/about",
@@ -15,12 +15,24 @@ const routes: Array<RouteRecordRaw> = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue")
-  }
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () =>
+      import("../views/Login.vue")
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: () =>
+      import("../views/Register.vue")
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
 });
 
 export default router;
