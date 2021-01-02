@@ -2,7 +2,7 @@
   <div class="login">
     <h2>Login</h2>
     <v-container>
-      <v-form method="POST">
+      <v-form v-on:submit.prevent="submitLogin">
         <v-row>
           <v-col cols="12">
             <v-text-field
@@ -26,7 +26,7 @@
             />
           </v-col>
         </v-row>
-        <v-btn sub elevation="2">Login</v-btn>
+        <v-btn elevation="2" type="submit">Login</v-btn>
       </v-form>
     </v-container>
     <p>
@@ -47,6 +47,11 @@ export default Vue.extend({
       usernameRules: [(input: string) => !!input],
       passwordRules: [(input: string) => !!input],
     };
+  },
+  methods: {
+    submitLogin() {
+      alert("submitted login");
+    },
   },
 });
 </script>
