@@ -1,26 +1,34 @@
 <template>
   <div class="login">
     <h2>Login</h2>
-    <form method="POST">
-      <label for="login-username-field">Username*</label>
-      <input
-        name="username"
-        v-model="username"
-        required
-        title="Username"
-        id="login-username-field"
-      />
-      <label for="login-password-field">Password*</label>
-      <input
-        name="password"
-        v-model="password"
-        required
-        title="Password"
-        id="login-password-field"
-      />
-      <v-btn elevation="2" type="submit">Login</v-btn>
-    </form>
-
+    <v-container>
+      <v-form method="POST">
+        <v-row>
+          <v-col cols="12">
+            <v-text-field
+              name="username"
+              v-model="username"
+              :rules="usernameRules"
+              title="Username"
+              label="Username*"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <v-text-field
+              name="password"
+              type="password"
+              v-model="password"
+              :rules="passwordRules"
+              title="Password"
+              label="Password*"
+            />
+          </v-col>
+        </v-row>
+        <v-btn sub elevation="2">Login</v-btn>
+      </v-form>
+    </v-container>
     <p>
       Not registered yet? Sign in here:
       <router-link to="/register">Register</router-link>
@@ -36,6 +44,8 @@ export default Vue.extend({
     return {
       username: "",
       password: "",
+      usernameRules: [(input: string) => !!input],
+      passwordRules: [(input: string) => !!input],
     };
   },
 });
