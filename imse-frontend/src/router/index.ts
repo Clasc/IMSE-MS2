@@ -36,6 +36,7 @@ const routes: Array<RouteConfig> = [
     component: () =>
       import('../views/Register.vue')
   },
+  { path: '*', component: () => import('../views/NotFound.vue') },
 ]
 
 const router = new VueRouter({
