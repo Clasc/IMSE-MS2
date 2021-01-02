@@ -36,12 +36,6 @@ const routes: Array<RouteConfig> = [
     component: () =>
       import('../views/Register.vue')
   },
-  {
-    path: '/helloworld',
-    name: 'HelloWorld',
-    component: () =>
-      import('../views/HelloWorld.vue')
-  }
 ]
 
 const router = new VueRouter({

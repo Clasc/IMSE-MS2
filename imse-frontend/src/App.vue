@@ -8,7 +8,6 @@
           <router-link to="/games">Games</router-link>
           <router-link to="/about">About</router-link>
           <router-link to="/login">Login</router-link>
-          <router-link to="/helloworld">Vuetify</router-link>
         </div>
       </v-navigation>
       <v-main>

@@ -1,6 +1,11 @@
 <template>
   <v-card width="200">
-    <img src="https://picsum.photos/200" />
+    <v-img
+      lazy-src="https://picsum.photos/id/11/10/6"
+      src="https://picsum.photos/200"
+      min-height="200"
+      min-width="200"
+    />
     <span class="game-title">Title</span>
     <span class="game-price">3.44€</span>
   </v-card>
