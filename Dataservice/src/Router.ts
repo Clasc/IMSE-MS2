@@ -5,7 +5,7 @@ export class Router{
 
     constructor(app: Express){
         this.app = app;
-        this.app.get('/', (req, res)=> res.send("Hello World"));
+        this.app.get('/', (req, res)=> res.send("Hello World!!!"));
     }
 
     public createRoutes(){
