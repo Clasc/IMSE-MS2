@@ -18,7 +18,7 @@
         title="Password"
         id="login-password-field"
       />
-      <button type="submit" />
+      <v-btn elevation="2" type="submit">Login</v-btn>
     </form>
 
     <p>
