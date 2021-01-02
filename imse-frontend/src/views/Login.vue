@@ -26,10 +26,11 @@
       <router-link to="/register">Register</router-link>
     </p>
   </div>
-</template> 
+</template>
+
 <script lang="ts">
-import { defineComponent } from "vue";
-export default defineComponent({
+import Vue from "vue";
+export default Vue.extend({
   name: "Login",
   data() {
     return {
