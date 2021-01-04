@@ -40,6 +40,8 @@ services:
       - 8000
     ports:
       - 8000:3000
+    volumes: 
+      - ./Dataservice:/app
 
   frontend:
     build: ./imse-frontend
