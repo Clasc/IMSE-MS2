@@ -42,3 +42,13 @@ services:
       - 8000:3000
     volumes: 
       - ./Dataservice:/app
+
+  frontend:
+    build: ./imse-frontend
+    #name of your container and also the DNS name (nginx will proxy pass to this container from localhost:8000 when using a browser or Postman)
+    container_name: imse-frontend
+    restart: always
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
