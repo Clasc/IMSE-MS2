@@ -1,4 +1,5 @@
 import { createConnection, MysqlError } from "mysql";
+import { User } from "../Dtos/User";
 
 
 let db = createConnection({
@@ -11,7 +12,18 @@ let db = createConnection({
 
 db.connect((err: MysqlError) => {
     if (err) throw err;
-    console.log("Connected!");
+    console.log("Connected to database!");
 });
 
+export async function queryDb(query: string, values?: any): Promise<[any]> {
+    return new Promise((resolve, reject) => db.connect(() => {
+        let queryResult = db.query(query, values, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    }));
+}
 export { db };
