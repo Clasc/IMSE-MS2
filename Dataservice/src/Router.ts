@@ -1,6 +1,6 @@
 
 import { Express } from "express";
-import { deleteUser, getAllUsers, getUserById, insertUser } from "./Controllers/UserController";
+import { deleteUser, getAllUsers, getUserById, insertUser, registerUser } from "./Controllers/UserController";
 
 export class Router {
     private readonly app: Express;
@@ -15,6 +15,7 @@ export class Router {
         this.app.get("/users", getAllUsers);
         this.app.get("/users/:userId", getUserById);
         this.app.put("/users/:userId", insertUser);
+        this.app.post("/register", registerUser);
         this.app.delete("/users/:userId", deleteUser);
     }
 }

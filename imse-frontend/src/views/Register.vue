@@ -31,7 +31,7 @@
             <v-text-field
               name="lastname"
               v-model="lastname"
-              :rules="ameRules"
+              :rules="nameRules"
               title="Last name"
               label="Last name*"
             />
@@ -77,6 +77,10 @@
 
 <script lang="ts">
 import Vue from "vue";
+import axios from "axios";
+import { API_URL } from "../Api_Url";
+import { User } from "../Dtos/User";
+
 export default Vue.extend({
   name: "Login",
   data() {
@@ -94,7 +98,26 @@ export default Vue.extend({
   },
   methods: {
     submitRegistration() {
-      alert("submitted registration");
+      let user = <User>{
+        username: this.username,
+        password: this.password,
+        birthday: this.birthday,
+        first_name: this.firstname,
+        last_name: this.lastname,
+      };
+
+      axios
+        .post(`${API_URL}/register`, JSON.stringify(user), {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then(() => {
+          console.log("registered!");
+        })
+        .catch(() => {
+          console.log("unable to register user!");
+        });
     },
   },
 });
