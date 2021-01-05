@@ -28,6 +28,7 @@ services:
     container_name: rest-service
     restart: always
     environment:
+      - WEBSITE_INTERFACE=http://website-interface:3000
       - MYSQL_HOST_IP=localhost
       - MYSQL_HOST=sql
       - MYSQL_USER=user
@@ -43,6 +44,23 @@ services:
     volumes:
       - ./Dataservice:/app
       - /app/node_modules
+
+  website-interface:
+    # this is an interface between the frontend and the api, so the api is not exposed
+    build: ./website-interface
+    container_name: website-interface
+    restart: always
+    links:
+      - api
+    environment:
+      - WEBSITE_HOST=http://localhost:8080
+      - API=http://api:3000
+    expose:
+      - 8081
+    ports:
+      - 8081:3000
+    volumes:
+      - ./website-interface:/website
 
   frontend:
     build: ./imse-frontend

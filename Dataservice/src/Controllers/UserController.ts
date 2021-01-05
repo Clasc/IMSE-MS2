@@ -31,13 +31,13 @@ export async function insertUser(req: Request, res: Response) {
     let success = await UserRepo.insertUser(user);
     res.status(success ? 200 : 500).send(`inserted a user: ${success}`);
 }
-export async function registerUser(req: Request, res: Response) {
-
+export async function addUser(req: Request, res: Response) {
     let user = new User();
     if (!req.body) {
         res.status(500).send(`Request body is empty`);
         return
     }
+
     console.log(req.body);
     user.username = req.body?.username;
     user.first_name = req.body?.first_name;
@@ -46,7 +46,7 @@ export async function registerUser(req: Request, res: Response) {
     user.birthday = req.body?.birthday
 
     let success = await UserRepo.insertUser(user);
-    res.status(success ? 200 : 500).send(`inserted a user: ${success}`);
+    res.status(success ? 200 : 500).send({ success: success });
 }
 
 export async function deleteUser(req: Request, res: Response) {
