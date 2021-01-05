@@ -1,0 +1,1 @@
+export const RestApi = process.env.API;
