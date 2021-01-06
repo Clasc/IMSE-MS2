@@ -36,7 +36,8 @@ export class Router {
         this.app.put("/gameRecommendations/:gameRecommendationId", insertGameRecommendation);
         this.app.put("/gameRecommendations/", insertGameRecommendation);
 
-        this.app.arguments("/rents", getAllRents);
+
+        this.app.get("/rents", getAllRents);
         this.app.put("/rents/:rentId", insertRent);
         this.app.put("/rents/", insertRent);
 
