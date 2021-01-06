@@ -3,7 +3,7 @@ export class User {
     username: string = "";
     first_name?: string = "";
     last_name?: string = "";
-    password?: string = "";
+    password: string = "";
     is_admin?: boolean = false;
     birthday?: any = {};
 }

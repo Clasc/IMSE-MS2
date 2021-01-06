@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { User } from "../Dtos/User";
 import { UserRepo } from "../Repos/UserRepo";
-import { db } from "../Services/db";
 
 export async function getAllUsers(req: Request, res: Response) {
     let users: [User] = await UserRepo.getAllUsers();
@@ -19,7 +18,7 @@ export async function getUserById(req: Request, res: Response) {
 }
 
 export async function insertUser(req: Request, res: Response) {
-    let userId = req.params.user;
+    let userId = req.params.userId;
     let user = req.body as User | undefined | null;
 
     if (!user) {
@@ -27,7 +26,10 @@ export async function insertUser(req: Request, res: Response) {
         return
     }
 
-    user.user_id = parseInt(userId);
+    if (userId) {
+        user.user_id = parseInt(userId);
+    }
+    
     let success = await UserRepo.insertUser(user);
     res.status(success ? 200 : 500).send(`inserted a user: ${success}`);
 }
