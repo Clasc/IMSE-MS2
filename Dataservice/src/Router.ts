@@ -1,5 +1,6 @@
 
 import { Express } from "express";
+
 import { deleteUser, getAllUsers, getUserById, insertUser } from "./Controllers/UserController";
 import { insertStudio, getAllStudios } from "./Controllers/StudioController";
 import { insertGame, getAllGames } from "./Controllers/GameController";
@@ -14,7 +15,6 @@ export class Router {
     constructor(app: Express) {
         this.app = app;
         this.app.get('/', (req, res) => res.send("Hello World"));
-
     }
 
     public createRoutes() {

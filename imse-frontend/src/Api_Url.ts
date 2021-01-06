@@ -1,0 +1,1 @@
+export const API_URL = "http://website-interface:3000";
