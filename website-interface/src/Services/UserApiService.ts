@@ -3,10 +3,11 @@ import { User } from "../Dtos/User";
 import { RestApi } from "../RestApi";
 
 export class UserApiService {
-    public static async addUser(user: User): Promise<boolean> {
+    public static async insertUser(user: User): Promise<boolean> {
+        console.log(user);
         try {
             await axios
-                .post(`${RestApi}/add/user`, JSON.stringify(user), {
+                .put(`${RestApi}/users/`, JSON.stringify(user), {
                     headers: {
                         "Content-Type": "application/json",
                     },
