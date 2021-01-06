@@ -5,7 +5,7 @@
       You need to register for renting Games or subscribing to a game Studio
     </p>
     <v-container>
-      <v-form v-on:submit.prevent="submitRegistration">
+      <v-form v-on:submit.prevent="submitRegistration" ref="form">
         <v-row>
           <v-col cols="12">
             <v-text-field
@@ -78,6 +78,7 @@ import Vue from "vue";
 import axios from "axios";
 import { API_URL } from "../Api_Url";
 import { User } from "../Dtos/User";
+import Vuetify from "vuetify";
 
 export default Vue.extend({
   name: "Login",
@@ -97,6 +98,12 @@ export default Vue.extend({
   },
   methods: {
     submitRegistration() {
+      let isValid = (this.$refs.form as any).validate();
+
+      if (!isValid) {
+        return;
+      }
+
       let user = <User>{
         username: this.username,
         password: this.password,
@@ -115,7 +122,7 @@ export default Vue.extend({
           if (value.data.success) {
             console.log("registered!");
           }
-          this.errorMessage  = value.data.error;
+          this.errorMessage = value.data.error;
         })
         .catch(() => {
           this.errorMessage =
