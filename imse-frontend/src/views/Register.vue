@@ -49,7 +49,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="6">
+          <v-col cols="12">
             <v-text-field
               name="password"
               type="password"
@@ -59,19 +59,13 @@
               label="Password*"
             />
           </v-col>
-          <v-col cols="6">
-            <v-text-field
-              name="repeat"
-              type="password"
-              v-model="passwordRepeat"
-              :rules="passwordRules"
-              label="Repeat Password*"
-            />
-          </v-col>
         </v-row>
         <v-btn elevation="2" type="submit">Create Account</v-btn>
       </v-form>
     </v-container>
+    <div class="error-message-container" v-if="errorMessage">
+      {{ errorMessage }}
+    </div>
   </div>
 </template>
 
@@ -94,6 +88,7 @@ export default Vue.extend({
       passwordRules: [(pw: string) => !!pw],
       nameRules: [(name: string) => !!name],
       birthdayRules: [(bday: string) => !!bday],
+      errorMessage: "",
     };
   },
   methods: {
@@ -112,7 +107,8 @@ export default Vue.extend({
             "Content-Type": "application/json",
           },
         })
-        .then(() => {
+        .then((value) => {
+          this.errorMessage = value.data.error;
           console.log("registered!");
         })
         .catch(() => {

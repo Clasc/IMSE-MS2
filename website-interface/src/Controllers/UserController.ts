@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { User } from "../Dtos/User";
+
 import { UserApiService } from "../Services/UserApiService";
 
 
@@ -15,6 +16,32 @@ export async function registerUser(req: Request, res: Response) {
     user.last_name = req.body?.last_name;
     user.password = req.body?.password;
     user.birthday = req.body?.birthday;
+
+    let errorMessage = validateUserData(user);
+
+    if (errorMessage) {
+        res.status(200).send({ success: false, error: errorMessage });
+        return;
+    }
+
     let success = await UserApiService.insertUser(user);
-    res.status(success ? 200 : 500).send({ success: success });
+    res.status(success ? 200 : 500).send({ success: success, error: success ? null : "There was an internal server Error. Please try again later" });
 }
+
+function validateUserData(user: User): string | null {
+    let errorMessage = user.username ? null : "Username is a required field";
+    errorMessage = user.first_name ? null : "first_name is a required field";
+    errorMessage = user.last_name ? null : "last_name is a required field";
+    errorMessage = user.password ? null : "password is a required field";
+    errorMessage = user.birthday ? null : "birthday is a required field";
+
+    let currentYear = new Date().getFullYear();
+    let birthDate = new Date(user.birthday);
+    let age = currentYear - birthDate.getFullYear();
+
+    if (age < 18) {
+        errorMessage = "You are not old enough to register";
+    }
+    return errorMessage;
+}
+
