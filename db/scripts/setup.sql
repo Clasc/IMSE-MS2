@@ -2,8 +2,8 @@ CREATE TABLE IF NOT EXISTS User(
     user_id int NOT NULL AUTO_INCREMENT,
     first_name varchar(32),
     last_name varchar(32),
-    username varchar(32) NOT NULL UNIQUE,
-    password varchar(32),
+    username varchar(32) NOT NULL,
+    password varchar(32) NOT NULL,
     is_admin BOOLEAN DEFAULT FALSE,
     birthday DATE,
     PRIMARY KEY (user_id)
@@ -36,7 +36,6 @@ CREATE TABLE IF NOT EXISTS GameRecommendation(
 CREATE TABLE IF NOT EXISTS Rent(
     rent_id int NOT NULL AUTO_INCREMENT,
     extended boolean,
-    price int,
     start_date DATE,
     expiration_date DATE,
     user_id int,
