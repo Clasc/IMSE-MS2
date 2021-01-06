@@ -25,7 +25,7 @@ export async function registerUser(req: Request, res: Response) {
     }
 
     let success = await UserApiService.insertUser(user);
-    res.status(success ? 200 : 500).send({ success: success, error: success ? null : "There was an internal server Error. Please try again later" });
+    res.status(success ? 200 : 500).send({ success: success });
 }
 
 function validateUserData(user: User): string | null {

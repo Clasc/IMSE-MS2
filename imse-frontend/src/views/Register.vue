@@ -60,12 +60,16 @@
             />
           </v-col>
         </v-row>
+        <v-row>
+          <v-col>
+            <div class="error-message-container" v-if="errorMessage">
+              {{ errorMessage }}
+            </div>
+          </v-col>
+        </v-row>
         <v-btn elevation="2" type="submit">Create Account</v-btn>
       </v-form>
     </v-container>
-    <div class="error-message-container" v-if="errorMessage">
-      {{ errorMessage }}
-    </div>
   </div>
 </template>
 
@@ -108,11 +112,15 @@ export default Vue.extend({
           },
         })
         .then((value) => {
-          this.errorMessage = value.data.error;
-          console.log("registered!");
+          if (value.data.success) {
+            console.log("registered!");
+          }
+          this.errorMessage  = value.data.error;
         })
         .catch(() => {
-          console.log("unable to register user!");
+          this.errorMessage =
+            "There was an internal server Error. Please try again later";
+          console.error("error in backend when registering user!");
         });
     },
   },
