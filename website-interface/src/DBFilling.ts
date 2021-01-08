@@ -479,10 +479,9 @@ export async function fillDB(req: Request, res: Response) {
             "start_date": start,
             "expiration_date": randomDate(start, "2021-12-31"),
             "user_id": i,
-            "game_id": randomNumber(17)
+            "game_id": 11
         });
         start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
-        let game = randomNumber(17);
         RentApiService.insertRent({
             "extended": randomBoolean(),
             "start_date": start,
@@ -503,28 +502,28 @@ export async function fillDB(req: Request, res: Response) {
             "start_date": start,
             "expiration_date": randomDate(start, "2021-12-31"),
             "user_id": i,
-            "game_id": 17
+            "game_id": 14
         });
         PlayedGameApiService.insertPlayedGame({
             "user_id": i,
             "playtime": randomNumber(200),
             "progress": randomNumber(100),
             "last_played": randomDate(start, new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')),
-            "game_id": 17
+            "game_id": 14
         });
         start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
         SubscriptionApiService.insertSubscription({
             "start_date": start,
             "end_date": randomDate(start, "2021-12-31"),
             "user_id": i,
-            "studio_id": 2
+            "studio_id": 5
         });
         PlayedGameApiService.insertPlayedGame({
             "user_id": i,
             "playtime": randomNumber(200),
             "progress": randomNumber(100),
             "last_played": randomDate(start, new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')),
-            "game_id": 1
+            "game_id": 16
         });
     }
 
