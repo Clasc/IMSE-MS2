@@ -8,11 +8,15 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     token: "",
+    username: "",
   },
   mutations: {
     setToken(state, token: string) {
       state.token = token;
-    }
+    },
+    setUsername(state, username: string) {
+      state.username = username;
+    },
   },
   actions: {
   },
@@ -20,7 +24,12 @@ export default new Vuex.Store({
   },
   getters: {
     async isLoggedIn(state) {
-      return (await axios.post(`${API_URL}/logged_in`, JSON.stringify({ token: state.token }))).data.loggedIn;
+      try {
+        return (await axios.post(`${API_URL}/logged_in`, { username: state.username, token: state.token })).data.loggedIn;
+      }
+      catch (err) {
+        return false;
+      }
     }
   }
 })

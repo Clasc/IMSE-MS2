@@ -1,7 +1,9 @@
 <template>
   <div class="login">
     <h2>Login</h2>
-    <v-container>
+    <div v-if="loggedIn">You Are already logged in!!</div>
+    <v-btn type="button" v-on:click="logout">Log out</v-btn>
+    <v-container v-if="!loggedIn">
       <v-form v-on:submit.prevent="submitLogin" ref="form">
         <v-row>
           <v-col cols="12">
@@ -53,7 +55,17 @@ export default Vue.extend({
       passwordRules: [(input: string) => !!input],
     };
   },
+  computed: {
+    async loggedIn() {
+      return await this.$store.getters.isLoggedIn;
+    },
+  },
   methods: {
+    logout() {
+      store.commit("setToken", "");
+      store.commit("setUsername", "");
+    },
+
     submitLogin() {
       let isValid = (this.$refs.form as any).validate();
 
@@ -78,6 +90,7 @@ export default Vue.extend({
             if (value.data.success) {
               alert("logged in as!" + this.username);
               store.commit("setToken", value.data.token);
+              store.commit("setUsername", this.username);
             }
             this.errorMessage = value.data.error;
           }

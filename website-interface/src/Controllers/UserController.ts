@@ -65,15 +65,20 @@ export async function login(req: Request, res: Response) {
 
 export async function loggedIn(req: Request, res: Response) {
     console.log(req.body);
-    if (!req.body?.token) {
-        res.status(400).send(`Request body is empty`);
+    if (!req.body?.token || !req.body?.username) {
+        res.status(200).send({ loggedIn: false });
         return
     }
 
+    let users = await UserApiService.getUserByUsername(req.body.username);
+    if (!users || users.length === 0) {
+        res.status(500).send({ loggedIn: false });
+        return;
+    }
 
     let loginToken: string = req.body.token;
-
-    res.status(success ? 200 : 500).send({ success: success, token: token });
+    let loggedIn = users[0].login_token === loginToken;
+    res.status(200).send({ loggedIn: loggedIn });
 }
 
 async function validateUserData(user: User): Promise<string | null> {
