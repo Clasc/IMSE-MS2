@@ -14,11 +14,11 @@ export class UserApiService {
                 })
         }
         catch {
-            console.log("unable to register user!");
+            console.log("unable to isnert user!");
             return false;
         };
 
-        console.log("registered!");
+        console.log("inserted user!");
         return true;
     }
 
