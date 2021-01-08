@@ -40,7 +40,7 @@ export class UserApiService {
 
         try {
             await axios
-                .put(`${RestApi}/logins`, JSON.stringify({ user_id: login.user_id, token: login.token }), {
+                .post(`${RestApi}/users/login`, JSON.stringify({ user_id: login.user_id, token: login.token }), {
                     headers: {
                         "Content-Type": "application/json",
                     },

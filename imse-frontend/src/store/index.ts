@@ -1,3 +1,5 @@
+import { API_URL } from '@/Api_Url';
+import axios from 'axios';
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -8,12 +10,17 @@ export default new Vuex.Store({
     token: "",
   },
   mutations: {
-    setToken(state: { token: string; }, token: string) {
+    setToken(state, token: string) {
       state.token = token;
     }
   },
   actions: {
   },
   modules: {
+  },
+  getters: {
+    async isLoggedIn(state) {
+      return (await axios.post(`${API_URL}/logged_in`, JSON.stringify({ token: state.token }))).data.loggedIn;
+    }
   }
 })

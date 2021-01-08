@@ -47,6 +47,20 @@ export class UserRepo {
         }
     }
 
+    public static async updateUserToken(user_id: string, token: string): Promise<boolean> {
+        try {
+            let result: any = await queryDb(`UPDATE User
+            SET login_token = '${token}'
+            WHERE user_id ='${user_id}';`);
+            return true;
+        }
+
+        catch (err) {
+            console.error(err);
+            return false;
+        }
+    }
+
     public static async deleteUser(userId: number): Promise<boolean> {
         try {
             let result: any = await queryDb(`DELETE FROM User WHERE user_id = ${userId}`);

@@ -14,5 +14,6 @@ export class Router {
     public createRoutes() {
         this.app.post("/register", registerUser);
         this.app.post("/login", login);
+        this.app.post("/logged_in", login);
     }
 }

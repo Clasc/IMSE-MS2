@@ -45,14 +45,34 @@ export async function login(req: Request, res: Response) {
 
     let user = users[0];
 
+    if (!user.user_id) {
+        res.status(500);
+        return
+    }
+
     let hash = createHash("md5");
     if (user.password !== hash.update(req.body.password).digest('hex')) {
         res.status(401).send({ success: false, error: "Wrong password" });
     };
 
     let token = randomBytes(32).toString("hex");
+    hash = createHash("md5");
+    token = hash.update(token + user.user_id).digest('hex');
     let login: Login = { user_id: user.user_id, token: token };
     let success = await UserApiService.loginUser(login);
+    res.status(success ? 200 : 500).send({ success: success, token: token });
+}
+
+export async function loggedIn(req: Request, res: Response) {
+    console.log(req.body);
+    if (!req.body?.token) {
+        res.status(400).send(`Request body is empty`);
+        return
+    }
+
+
+    let loginToken: string = req.body.token;
+
     res.status(success ? 200 : 500).send({ success: success, token: token });
 }
 

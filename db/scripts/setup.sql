@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS User(
     first_name varchar(32),
     last_name varchar(32),
     username varchar(32) NOT NULL,
+    login_token VARCHAR(64),
     password varchar(32) NOT NULL,
     is_admin BOOLEAN DEFAULT FALSE,
     birthday DATE,
@@ -63,11 +64,4 @@ CREATE TABLE IF NOT EXISTS PlayedGame(
     game_id int,
     PRIMARY KEY(played_game_id, user_id),
     FOREIGN KEY(game_id) REFERENCES Game(game_id)
-);
-Create TABLE IF NOT EXISTS Logins(
-    login_id int NOT NULL AUTO_INCREMENT,
-    user_id int NOT NULL,
-    token VARCHAR(64) NOT NULL,
-    PRIMARY KEY(login_id),
-    FOREIGN KEY(user_id) REFERENCES User(user_id)
 );

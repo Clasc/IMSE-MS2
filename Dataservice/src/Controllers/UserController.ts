@@ -71,3 +71,14 @@ export async function deleteUser(req: Request, res: Response) {
     let success = await UserRepo.deleteUser(userId);
     res.status(success ? 200 : 500).send(`deleted a user: ${success}`);
 }
+
+export async function login(req: Request, res: Response) {
+
+    if (!req.body.token || !req.body.user_id) {
+        res.status(400).send(`Request is invalid. Token is missing`);
+        return
+    }
+
+    let success = await UserRepo.updateUserToken(req.body.user_id, req.body.token);
+    res.status(success ? 200 : 500).send({ success: success });
+}
