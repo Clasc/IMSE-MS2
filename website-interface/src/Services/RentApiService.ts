@@ -1,24 +1,24 @@
 import axios from "axios";
-import { User } from "../Dtos/User";
+import { Rent } from "../Dtos/Rent";
 import { RestApi } from "../RestApi";
 
-export class UserApiService {
-    public static async insertUser(user: User): Promise<boolean> {
-        console.log(user);
+export class RentApiService {
+    public static async insertRent(rent: Rent): Promise<boolean> {
+        console.log(rent);
         try {
             await axios
-                .put(`${RestApi}/users/`, JSON.stringify(user), {
+                .put(`${RestApi}/rents/`, JSON.stringify(rent), {
                     headers: {
                         "Content-Type": "application/json",
                     },
                 })
         }
         catch {
-            console.log("unable to insert user!");
+            console.log("unable to insert rent!");
             return false;
         };
 
-        console.log("inserted user!");
+        console.log("inserted rent!");
         return true;
     }
 
