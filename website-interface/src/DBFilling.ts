@@ -11,22 +11,23 @@ import { PlayedGameApiService } from "./Services/PlayedGameApiService";
 export async function fillDB(req: Request, res: Response) {
     let hash = createHash("md5");
 
-    UserApiService.insertUser({
+    await UserApiService.insertUser({
         "user_id": 1,
         "first_name": "Simon",
         "last_name": "Winter",
         "username": "gameover",
-        "password": "asdf",
+        "password": hash.update("asdf").digest('hex'),
         "is_admin": true,
         "birthday": "1992-7-31"
     });
 
-    UserApiService.insertUser({
+    hash = createHash("md5");
+    await UserApiService.insertUser({
         "user_id": 2,
         "first_name": "Hans",
         "last_name": "Wurst",
         "username": "huhu",
-        "password": "asdf",
+        "password": hash.update("asdf").digest('hex'),
         "is_admin": true,
         "birthday": "1989-5-24"
     });
@@ -39,47 +40,47 @@ export async function fillDB(req: Request, res: Response) {
                                 "Walker", "Young"]
 
     for (let i = 3; i < 23; i++) {
-        UserApiService.insertUser({
+        hash = createHash("md5");
+        await UserApiService.insertUser({
             "user_id": i,
             "first_name": firstnames[Math.floor(Math.random() * firstnames.length)],
             "last_name": lastnames[Math.floor(Math.random() * lastnames.length)],
             "username": randomString(6),
-            //"password": hash.update("asdf").digest('hex'),
-            "password": "asdf",
+            "password": hash.update("asdf").digest('hex'),
             "is_admin": false,
             "birthday": randomDate("1950-1-1", "2002-1-1")
         }); 
     }
 
-    StudioApiService.insertStudio({
+    await StudioApiService.insertStudio({
         "studio_id": 1,
         "price": randomNumber(5),
         "name": "Bethesda",
         "location": "USA",
         "description": "Designing RPGs since 1999!"
     });
-    StudioApiService.insertStudio({
+    await StudioApiService.insertStudio({
         "studio_id": 2,
         "price": randomNumber(5),
         "name": "FromSoftware",
         "location": "Japan",
         "description": "You died!"
     });
-    StudioApiService.insertStudio({
+    await StudioApiService.insertStudio({
         "studio_id": 3,
         "price": randomNumber(5),
         "name": "CD Projekt Red",
         "location": "Poland",
         "description": "Home of the Witcher..."
     });
-    StudioApiService.insertStudio({
+    await StudioApiService.insertStudio({
         "studio_id": 4,
         "price": randomNumber(5),
         "name": "Ubisoft",
         "location": "France",
         "description": "Animus"
     });
-    StudioApiService.insertStudio({
+    await StudioApiService.insertStudio({
         "studio_id": 5,
         "price": randomNumber(5),
         "name": "Moon Studios",
@@ -87,119 +88,119 @@ export async function fillDB(req: Request, res: Response) {
         "description": "Just beautiful."
     });
 
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 1,
         "genre": "RPG",
         "price": randomNumber(2),
         "title": "Bloodborne",
         "studio_id": 2
     });
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 2,
         "genre": "RPG",
         "price": randomNumber(2),
         "title": "Dark Souls",
         "studio_id": 2
     });
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 3,
         "genre": "RPG",
         "price": randomNumber(2),
         "title": "Sekiro",
         "studio_id": 2
     });
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 4,
         "genre": "RPG",
         "price": randomNumber(2),
         "title": "Dark Souls 3",
         "studio_id": 2
     });
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 5,
         "genre": "RPG",
         "price": randomNumber(2),
         "title": "The Witcher: Wild Hunt",
         "studio_id": 3
     });
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 6,
         "genre": "RPG",
         "price": randomNumber(2),
         "title": "Cyberpunk: 2077",
         "studio_id": 3
     });
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 7,
         "genre": "RPG",
         "price": randomNumber(2),
         "title": "The Witcher",
         "studio_id": 3
     });
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 8,
         "genre": "RPG",
         "price": randomNumber(2),
         "title": "Fallout 3",
         "studio_id": 1
     });
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 9,
         "genre": "RPG",
         "price": randomNumber(2),
         "title": "Fallout 4",
         "studio_id": 1
     });
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 10,
         "genre": "RPG",
         "price": randomNumber(2),
         "title": "Fallout: New Vegas",
         "studio_id": 1
     });
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 11,
         "genre": "RPG",
         "price": randomNumber(2),
         "title": "The Elder Scrolls",
         "studio_id": 1
     });
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 12,
         "genre": "Adventure",
         "price": randomNumber(2),
         "title": "Assassin's Creed",
         "studio_id": 4
     });
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 13,
         "genre": "Adventure",
         "price": randomNumber(2),
         "title": "Assassin's Creed 3",
         "studio_id": 4
     });
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 14,
         "genre": "RPG",
         "price": randomNumber(2),
         "title": "Assassin's Creed: Valhalla",
         "studio_id": 4
     });
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 15,
         "genre": "RPG",
         "price": randomNumber(2),
         "title": "Watch Dog's",
         "studio_id": 4
     });
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 16,
         "genre": "Adventure",
         "price": randomNumber(2),
         "title": "Ori and the Will of the Wisps",
         "studio_id": 5
     });
-    GameApiService.insertGame({
+    await GameApiService.insertGame({
         "game_id": 17,
         "genre": "Adventure",
         "price": randomNumber(2),
