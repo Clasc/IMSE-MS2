@@ -1,6 +1,6 @@
 
 import { Express } from "express";
-import { registerUser } from "./Controllers/UserController";
+import { login, registerUser } from "./Controllers/UserController";
 
 export class Router {
     private readonly app: Express;
@@ -13,5 +13,6 @@ export class Router {
 
     public createRoutes() {
         this.app.post("/register", registerUser);
+        this.app.post("/login", login);
     }
 }

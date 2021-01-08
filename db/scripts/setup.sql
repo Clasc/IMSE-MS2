@@ -64,3 +64,9 @@ CREATE TABLE IF NOT EXISTS PlayedGame(
     PRIMARY KEY(played_game_id, user_id),
     FOREIGN KEY(game_id) REFERENCES Game(game_id)
 );
+Create TABLE IF NOT EXISTS Logins(
+    login_id int NOT NULL AUTO_INCREMENT,
+    user_id int NOT NULL,
+    token VARCHAR(32) NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES User(user_id)
+)

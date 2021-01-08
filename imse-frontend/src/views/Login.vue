@@ -2,7 +2,7 @@
   <div class="login">
     <h2>Login</h2>
     <v-container>
-      <v-form v-on:submit.prevent="submitLogin">
+      <v-form v-on:submit.prevent="submitLogin" ref="form">
         <v-row>
           <v-col cols="12">
             <v-text-field
@@ -26,6 +26,7 @@
             />
           </v-col>
         </v-row>
+        <div class="error-message">{{ errorMessage }}</div>
         <v-btn elevation="2" type="submit">Login</v-btn>
       </v-form>
     </v-container>
@@ -37,6 +38,8 @@
 </template>
 
 <script lang="ts">
+import { API_URL } from "@/Api_Url";
+import axios from "axios";
 import Vue from "vue";
 export default Vue.extend({
   name: "Login",
@@ -44,13 +47,40 @@ export default Vue.extend({
     return {
       username: "",
       password: "",
+      errorMessage: "",
       usernameRules: [(input: string) => !!input],
       passwordRules: [(input: string) => !!input],
     };
   },
   methods: {
     submitLogin() {
-      alert("submitted login");
+      let isValid = (this.$refs.form as any).validate();
+
+      if (!isValid) {
+        return;
+      }
+
+      axios
+        .post(
+          `${API_URL}/login`,
+          JSON.stringify({ username: this.username, password: this.password }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((value: { data: { success: boolean; error: string } }) => {
+          if (value.data.success) {
+            alert("logged in as!" + this.username);
+          }
+          this.errorMessage = value.data.error;
+        })
+        .catch(() => {
+          this.errorMessage =
+            "There was an internal server Error. Please try again later";
+          console.error("error in backend when registering user!");
+        });
     },
   },
 });
