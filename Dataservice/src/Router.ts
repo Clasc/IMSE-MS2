@@ -1,7 +1,7 @@
 
 import { Express } from "express";
 
-import { deleteUser, getAllUsers, getUserById, insertUser } from "./Controllers/UserController";
+import { deleteUser, getAllUsers, getUserById, getUserByUsername, insertUser } from "./Controllers/UserController";
 import { insertStudio, getAllStudios } from "./Controllers/StudioController";
 import { insertGame, getAllGames } from "./Controllers/GameController";
 import { insertGameRecommendation, getAllGameRecommendations } from "./Controllers/GameRecommendationController";
@@ -20,6 +20,7 @@ export class Router {
     public createRoutes() {
         this.app.get("/users", getAllUsers);
         this.app.get("/users/:userId", getUserById);
+        this.app.get("/users/name/:username", getUserByUsername);
         this.app.put("/users/:userId", insertUser);
         this.app.put("/users/", insertUser);
         this.app.delete("/users/:userId", deleteUser);

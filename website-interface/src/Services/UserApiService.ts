@@ -22,4 +22,17 @@ export class UserApiService {
         return true;
     }
 
+    public static async getUserByUsername(username: string): Promise<[User] | null> {
+        let users: [User] = [new User()];
+        try {
+            users = (await axios.get(`${RestApi}/users/name/${username}`)).data;
+        }
+        catch {
+            console.log("unable to register user!");
+            return null;
+        };
+
+        return users;
+    }
+
 }

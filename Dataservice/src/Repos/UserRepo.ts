@@ -24,6 +24,17 @@ export class UserRepo {
         }
     }
 
+    public static async getUserByUsername(username: string): Promise<[User] | null> {
+        try {
+            let queryResult: [User] = await queryDb(`SELECT * FROM User WHERE username = "${username}"`);
+            return queryResult;
+        }
+        catch (err) {
+            console.error(err);
+            return null;
+        }
+    }
+
     public static async insertUser(user: User): Promise<boolean> {
         try {
             let result: any = await queryDb(`INSERT INTO User SET ?`, user);

@@ -17,6 +17,16 @@ export async function getUserById(req: Request, res: Response) {
     res.status(user === null ? 404 : 200).send(JSON.stringify(user));
 }
 
+export async function getUserByUsername(req: Request, res: Response) {
+    if (!req.params.username) {
+        res.status(400).send(`Username param is empty`);
+        return
+    }
+
+    let users = await UserRepo.getUserByUsername(req.params.username);
+    res.status(users === null ? 500 : 200).send(JSON.stringify(users));
+}
+
 export async function insertUser(req: Request, res: Response) {
     let userId = req.params.userId;
     let user = req.body as User | undefined | null;
@@ -29,7 +39,7 @@ export async function insertUser(req: Request, res: Response) {
     if (userId) {
         user.user_id = parseInt(userId);
     }
-    
+
     let success = await UserRepo.insertUser(user);
     res.status(success ? 200 : 500).send(`inserted a user: ${success}`);
 }
