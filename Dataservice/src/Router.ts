@@ -8,6 +8,7 @@ import { insertGameRecommendation, getAllGameRecommendations } from "./Controlle
 import { insertRent, getAllRents } from "./Controllers/RentController";
 import { insertSubscription, getAllSubscriptions } from "./Controllers/SubscriptionController";
 import { insertPlayedGame, getAllPlayedGames } from "./Controllers/PlayedGameController";
+import { getAllLogins, insertLogin } from "./Controllers/LoginController";
 
 export class Router {
     private readonly app: Express;
@@ -24,6 +25,9 @@ export class Router {
         this.app.put("/users/:userId", insertUser);
         this.app.put("/users/", insertUser);
         this.app.delete("/users/:userId", deleteUser);
+
+        this.app.get("/logins", getAllLogins);
+        this.app.put("/logins", insertLogin);
 
         this.app.get("/studios", getAllStudios);
         this.app.put("/studios/:studioId", insertStudio);

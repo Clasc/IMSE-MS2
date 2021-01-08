@@ -43,6 +43,7 @@ export async function insertUser(req: Request, res: Response) {
     let success = await UserRepo.insertUser(user);
     res.status(success ? 200 : 500).send(`inserted a user: ${success}`);
 }
+
 export async function addUser(req: Request, res: Response) {
     let user = new User();
     if (!req.body) {

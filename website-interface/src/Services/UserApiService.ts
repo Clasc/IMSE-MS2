@@ -23,14 +23,14 @@ export class UserApiService {
         return true;
     }
 
-    public static async getUserByUsername(username: string): Promise<[User] | null> {
+    public static async getUserByUsername(username: string): Promise<[User] | []> {
         let users: [User] = [new User()];
         try {
             users = (await axios.get(`${RestApi}/users/name/${username}`)).data;
         }
         catch {
-            console.log("unable to register user!");
-            return null;
+            console.log("unable to get user!");
+            return [];
         };
 
         return users;
@@ -40,14 +40,14 @@ export class UserApiService {
 
         try {
             await axios
-                .put(`${RestApi}/logins/${login.login_id}`, JSON.stringify({ userid: login.user_id, token: login.token }), {
+                .put(`${RestApi}/logins`, JSON.stringify({ user_id: login.user_id, token: login.token }), {
                     headers: {
                         "Content-Type": "application/json",
                     },
                 })
         }
         catch {
-            console.log("unable to register user!");
+            console.log("unable to login with user!" + login.user_id);
             return false;
         };
 

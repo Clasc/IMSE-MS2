@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import { Login } from "../Dtos/Login";
 import { User } from "../Dtos/User";
 import { UserApiService } from "../Services/UserApiService";
-let hash = createHash("md5");
 
 export async function registerUser(req: Request, res: Response) {
     let user = new User();
@@ -22,6 +21,7 @@ export async function registerUser(req: Request, res: Response) {
     user.username = req.body?.username;
     user.first_name = req.body?.first_name;
     user.last_name = req.body?.last_name;
+    let hash = createHash("md5");
     user.password = hash.update(req.body.password).digest('hex');
     user.birthday = req.body?.birthday;
 
@@ -30,20 +30,22 @@ export async function registerUser(req: Request, res: Response) {
 }
 
 export async function login(req: Request, res: Response) {
-
+    console.log(req.body);
     if (!req.body?.password || !req.body?.username) {
         res.status(400).send(`Request body is empty`);
         return
     }
 
     const users = await UserApiService.getUserByUsername(req.body.username);
-
-    if (users?.length <= 0) {
-        res.status(401).send({ success: false, error: "This user does not exist" });
+    console.log(users);
+    if (!users || users.length === 0) {
+        res.status(200).send({ success: false, error: "This user does not exist" });
+        return;
     }
 
     let user = users[0];
 
+    let hash = createHash("md5");
     if (user.password !== hash.update(req.body.password).digest('hex')) {
         res.status(401).send({ success: false, error: "Wrong password" });
     };
