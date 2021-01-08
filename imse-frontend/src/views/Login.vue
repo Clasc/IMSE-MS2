@@ -39,6 +39,7 @@
 
 <script lang="ts">
 import { API_URL } from "@/Api_Url";
+import store from "@/store";
 import axios from "axios";
 import Vue from "vue";
 export default Vue.extend({
@@ -70,12 +71,17 @@ export default Vue.extend({
             },
           }
         )
-        .then((value: { data: { success: boolean; error: string } }) => {
-          if (value.data.success) {
-            alert("logged in as!" + this.username);
+        .then(
+          (value: {
+            data: { success: boolean; error: string; token: string };
+          }) => {
+            if (value.data.success) {
+              alert("logged in as!" + this.username);
+              store.commit("setToken", value.data.token);
+            }
+            this.errorMessage = value.data.error;
           }
-          this.errorMessage = value.data.error;
-        })
+        )
         .catch(() => {
           this.errorMessage =
             "There was an internal server Error. Please try again later";
