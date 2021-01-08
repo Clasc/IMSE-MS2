@@ -1,5 +1,5 @@
 FROM node:14.9.0-slim
-WORKDIR /website
+WORKDIR /web-api
 COPY package*.json ./
 
 RUN npm install
