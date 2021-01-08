@@ -16,7 +16,7 @@ export async function fillDB(req: Request, res: Response) {
         "first_name": "Simon",
         "last_name": "Winter",
         "username": "gameover",
-        "password": hash.update("asdf").digest('hex'),
+        "password": "asdf",
         "is_admin": true,
         "birthday": "1992-7-31"
     });
@@ -26,7 +26,7 @@ export async function fillDB(req: Request, res: Response) {
         "first_name": "Hans",
         "last_name": "Wurst",
         "username": "huhu",
-        "password": hash.update("asdf").digest('hex'),
+        "password": "asdf",
         "is_admin": true,
         "birthday": "1989-5-24"
     });
@@ -38,12 +38,14 @@ export async function fillDB(req: Request, res: Response) {
                                 "Wilson", "Martin", "Lee", "Taylor", "Jackson", "Moore", "Harris",
                                 "Walker", "Young"]
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 3; i < 23; i++) {
         UserApiService.insertUser({
+            "user_id": i,
             "first_name": firstnames[Math.floor(Math.random() * firstnames.length)],
             "last_name": lastnames[Math.floor(Math.random() * lastnames.length)],
             "username": randomString(6),
-            "password": hash.update("asdf").digest('hex'),
+            //"password": hash.update("asdf").digest('hex'),
+            "password": "asdf",
             "is_admin": false,
             "birthday": randomDate("1950-1-1", "2002-1-1")
         }); 
@@ -535,7 +537,7 @@ function randomBoolean() {
 }
 
 function randomNumber(max: number) {
-    return Math.floor(Math.random() * Math.floor(max));
+    return Math.floor(Math.random() * Math.floor(max)) + 1;
 }
 
 function randomString(len: number) {
