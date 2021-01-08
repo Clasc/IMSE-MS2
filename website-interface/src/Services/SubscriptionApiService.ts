@@ -14,7 +14,7 @@ export class SubscriptionApiService {
                 })
         }
         catch {
-            console.log("unable to isnert subscription!");
+            console.log("unable to insert subscription!");
             return false;
         };
 

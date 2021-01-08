@@ -14,7 +14,7 @@ export class UserApiService {
                 })
         }
         catch {
-            console.log("unable to isnert user!");
+            console.log("unable to insert user!");
             return false;
         };
 

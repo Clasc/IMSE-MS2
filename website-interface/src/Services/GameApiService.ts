@@ -14,7 +14,7 @@ export class GameApiService {
                 })
         }
         catch {
-            console.log("unable to isnert game!");
+            console.log("unable to insert game!");
             return false;
         };
 

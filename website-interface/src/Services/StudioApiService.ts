@@ -14,7 +14,7 @@ export class StudioApiService {
                 })
         }
         catch {
-            console.log("unable to isnert studio!");
+            console.log("unable to insert studio!");
             return false;
         };
 

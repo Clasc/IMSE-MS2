@@ -14,7 +14,7 @@ export class RentApiService {
                 })
         }
         catch {
-            console.log("unable to isnert rent!");
+            console.log("unable to insert rent!");
             return false;
         };
 

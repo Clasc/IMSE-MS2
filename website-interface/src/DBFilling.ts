@@ -1,17 +1,35 @@
+import { createHash } from "crypto";
 import { Request, Response } from "express";
-import { User } from "./Dtos/User";
 import { UserApiService } from "./Services/UserApiService";
-
+import { StudioApiService } from "./Services/StudioApiService";
+import { GameApiService } from "./Services/GameApiService";
+import { GameRecommendationApiService } from "./Services/GameRecommendationApiService";
+import { RentApiService } from "./Services/RentApiService";
+import { SubscriptionApiService } from "./Services/SubscriptionApiService";
+import { PlayedGameApiService } from "./Services/PlayedGameApiService";
 
 export async function fillDB(req: Request, res: Response) {
+    let hash = createHash("md5");
+
     UserApiService.insertUser({
+        "user_id": 1,
         "first_name": "Simon",
         "last_name": "Winter",
         "username": "gameover",
-        "password": "asdf",
+        "password": hash.update("asdf").digest('hex'),
         "is_admin": true,
         "birthday": "1992-7-31"
-    }); 
+    });
+
+    UserApiService.insertUser({
+        "user_id": 2,
+        "first_name": "Hans",
+        "last_name": "Wurst",
+        "username": "huhu",
+        "password": hash.update("asdf").digest('hex'),
+        "is_admin": true,
+        "birthday": "1989-5-24"
+    });
 
     let firstnames: string[] = ["James", "Mary", "John", "Jennifer", "Robert", "Lisa", "Michael",
                                 "Margaret", "Richard", "Sandra", "Paul", "Emily", "Thomas", "Emma",
@@ -20,17 +38,505 @@ export async function fillDB(req: Request, res: Response) {
                                 "Wilson", "Martin", "Lee", "Taylor", "Jackson", "Moore", "Harris",
                                 "Walker", "Young"]
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 20; i++) {
         UserApiService.insertUser({
             "first_name": firstnames[Math.floor(Math.random() * firstnames.length)],
             "last_name": lastnames[Math.floor(Math.random() * lastnames.length)],
             "username": randomString(6),
-            "password": "asdf",
+            "password": hash.update("asdf").digest('hex'),
             "is_admin": false,
             "birthday": randomDate("1950-1-1", "2002-1-1")
         }); 
     }
+
+    StudioApiService.insertStudio({
+        "studio_id": 1,
+        "price": randomNumber(5),
+        "name": "Bethesda",
+        "location": "USA",
+        "description": "Designing RPGs since 1999!"
+    });
+    StudioApiService.insertStudio({
+        "studio_id": 2,
+        "price": randomNumber(5),
+        "name": "FromSoftware",
+        "location": "Japan",
+        "description": "You died!"
+    });
+    StudioApiService.insertStudio({
+        "studio_id": 3,
+        "price": randomNumber(5),
+        "name": "CD Projekt Red",
+        "location": "Poland",
+        "description": "Home of the Witcher..."
+    });
+    StudioApiService.insertStudio({
+        "studio_id": 4,
+        "price": randomNumber(5),
+        "name": "Ubisoft",
+        "location": "France",
+        "description": "Animus"
+    });
+    StudioApiService.insertStudio({
+        "studio_id": 5,
+        "price": randomNumber(5),
+        "name": "Moon Studios",
+        "location": "Austria",
+        "description": "Just beautiful."
+    });
+
+    GameApiService.insertGame({
+        "game_id": 1,
+        "genre": "RPG",
+        "price": randomNumber(2),
+        "title": "Bloodborne",
+        "studio_id": 2
+    });
+    GameApiService.insertGame({
+        "game_id": 2,
+        "genre": "RPG",
+        "price": randomNumber(2),
+        "title": "Dark Souls",
+        "studio_id": 2
+    });
+    GameApiService.insertGame({
+        "game_id": 3,
+        "genre": "RPG",
+        "price": randomNumber(2),
+        "title": "Sekiro",
+        "studio_id": 2
+    });
+    GameApiService.insertGame({
+        "game_id": 4,
+        "genre": "RPG",
+        "price": randomNumber(2),
+        "title": "Dark Souls 3",
+        "studio_id": 2
+    });
+    GameApiService.insertGame({
+        "game_id": 5,
+        "genre": "RPG",
+        "price": randomNumber(2),
+        "title": "The Witcher: Wild Hunt",
+        "studio_id": 3
+    });
+    GameApiService.insertGame({
+        "game_id": 6,
+        "genre": "RPG",
+        "price": randomNumber(2),
+        "title": "Cyberpunk: 2077",
+        "studio_id": 3
+    });
+    GameApiService.insertGame({
+        "game_id": 7,
+        "genre": "RPG",
+        "price": randomNumber(2),
+        "title": "The Witcher",
+        "studio_id": 3
+    });
+    GameApiService.insertGame({
+        "game_id": 8,
+        "genre": "RPG",
+        "price": randomNumber(2),
+        "title": "Fallout 3",
+        "studio_id": 1
+    });
+    GameApiService.insertGame({
+        "game_id": 9,
+        "genre": "RPG",
+        "price": randomNumber(2),
+        "title": "Fallout 4",
+        "studio_id": 1
+    });
+    GameApiService.insertGame({
+        "game_id": 10,
+        "genre": "RPG",
+        "price": randomNumber(2),
+        "title": "Fallout: New Vegas",
+        "studio_id": 1
+    });
+    GameApiService.insertGame({
+        "game_id": 11,
+        "genre": "RPG",
+        "price": randomNumber(2),
+        "title": "The Elder Scrolls",
+        "studio_id": 1
+    });
+    GameApiService.insertGame({
+        "game_id": 12,
+        "genre": "Adventure",
+        "price": randomNumber(2),
+        "title": "Assassin's Creed",
+        "studio_id": 4
+    });
+    GameApiService.insertGame({
+        "game_id": 13,
+        "genre": "Adventure",
+        "price": randomNumber(2),
+        "title": "Assassin's Creed 3",
+        "studio_id": 4
+    });
+    GameApiService.insertGame({
+        "game_id": 14,
+        "genre": "RPG",
+        "price": randomNumber(2),
+        "title": "Assassin's Creed: Valhalla",
+        "studio_id": 4
+    });
+    GameApiService.insertGame({
+        "game_id": 15,
+        "genre": "RPG",
+        "price": randomNumber(2),
+        "title": "Watch Dog's",
+        "studio_id": 4
+    });
+    GameApiService.insertGame({
+        "game_id": 16,
+        "genre": "Adventure",
+        "price": randomNumber(2),
+        "title": "Ori and the Will of the Wisps",
+        "studio_id": 5
+    });
+    GameApiService.insertGame({
+        "game_id": 17,
+        "genre": "Adventure",
+        "price": randomNumber(2),
+        "title": "Ori and the Blind Forest",
+        "studio_id": 5
+    });
+
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 16,
+        "recommended_game_id": 17
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 15,
+        "recommended_game_id": 6
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 17,
+        "recommended_game_id": 2
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 17,
+        "recommended_game_id": 1
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 16,
+        "recommended_game_id": 2
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 16,
+        "recommended_game_id": 1
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 15,
+        "recommended_game_id": 14
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 14,
+        "recommended_game_id": 15
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 14,
+        "recommended_game_id": 13
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 14,
+        "recommended_game_id": 12
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 13,
+        "recommended_game_id": 14
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 13,
+        "recommended_game_id": 15
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 13,
+        "recommended_game_id": 12
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 12,
+        "recommended_game_id": 13
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 12,
+        "recommended_game_id": 14
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 12,
+        "recommended_game_id": 15
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 11,
+        "recommended_game_id": 8
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 11,
+        "recommended_game_id": 10
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id":8,
+        "recommended_game_id": 10
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 8,
+        "recommended_game_id": 11
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 10,
+        "recommended_game_id": 8
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 10,
+        "recommended_game_id": 11
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 9,
+        "recommended_game_id": 8
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 9,
+        "recommended_game_id": 10
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 7,
+        "recommended_game_id": 5
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 5,
+        "recommended_game_id": 7
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 6,
+        "recommended_game_id": 5
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 5,
+        "recommended_game_id": 6
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 6,
+        "recommended_game_id": 15
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 4,
+        "recommended_game_id": 3
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 4,
+        "recommended_game_id": 2
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 4,
+        "recommended_game_id": 1
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 3,
+        "recommended_game_id": 4
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 3,
+        "recommended_game_id": 2
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 3,
+        "recommended_game_id": 1
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 2,
+        "recommended_game_id": 1
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 2,
+        "recommended_game_id": 4
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 1,
+        "recommended_game_id": 2
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 1,
+        "recommended_game_id": 3
+    });
+    GameRecommendationApiService.insertGameRecommendation({
+        "game_id": 1,
+        "recommended_game_id": 4
+    });
+
+    let start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+    RentApiService.insertRent({
+        "extended": randomBoolean(),
+        "start_date": start,
+        "expiration_date": randomDate(start, "2021-12-31"),
+        "user_id": 1,
+        "game_id": 8
+    });
+    start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+    RentApiService.insertRent({
+        "extended": randomBoolean(),
+        "start_date": start,
+        "expiration_date": randomDate(start, "2021-12-31"),
+        "user_id": 1,
+        "game_id": 5
+    });
+    PlayedGameApiService.insertPlayedGame({
+        "user_id": 1,
+        "playtime": randomNumber(200),
+        "progress": randomNumber(100),
+        "last_played": randomDate(start, new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')),
+        "game_id": 5
+    });
+    start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+    RentApiService.insertRent({
+        "extended": randomBoolean(),
+        "start_date": start,
+        "expiration_date": randomDate(start, "2021-12-31"),
+        "user_id": 1,
+        "game_id": 17
+    });
+    PlayedGameApiService.insertPlayedGame({
+        "user_id": 1,
+        "playtime": randomNumber(200),
+        "progress": randomNumber(100),
+        "last_played": randomDate(start, new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')),
+        "game_id": 17
+    });
+    start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+    SubscriptionApiService.insertSubscription({
+        "start_date": start,
+        "end_date": randomDate(start, "2021-12-31"),
+        "user_id": 1,
+        "studio_id": 2
+    });
+    PlayedGameApiService.insertPlayedGame({
+        "user_id": 1,
+        "playtime": randomNumber(200),
+        "progress": randomNumber(100),
+        "last_played": randomDate(start, new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')),
+        "game_id": 1
+    });
+    
+    start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+    RentApiService.insertRent({
+        "extended": randomBoolean(),
+        "start_date": start,
+        "expiration_date": randomDate(start, "2021-12-31"),
+        "user_id": 2,
+        "game_id": 3
+    });
+    start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+    RentApiService.insertRent({
+        "extended": randomBoolean(),
+        "start_date": start,
+        "expiration_date": randomDate(start, "2021-12-31"),
+        "user_id": 2,
+        "game_id": 2
+    });
+    PlayedGameApiService.insertPlayedGame({
+        "user_id": 2,
+        "playtime": randomNumber(200),
+        "progress": randomNumber(100),
+        "last_played": randomDate(start, new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')),
+        "game_id": 2
+    });
+    start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+    RentApiService.insertRent({
+        "extended": randomBoolean(),
+        "start_date": start,
+        "expiration_date": randomDate(start, "2021-12-31"),
+        "user_id": 2,
+        "game_id": 6
+    });
+    PlayedGameApiService.insertPlayedGame({
+        "user_id": 2,
+        "playtime": randomNumber(200),
+        "progress": randomNumber(100),
+        "last_played": randomDate(start, new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')),
+        "game_id": 6
+    });
+    start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+    SubscriptionApiService.insertSubscription({
+        "start_date": start,
+        "end_date": randomDate(start, "2021-12-31"),
+        "user_id": 2,
+        "studio_id": 1
+    });
+    PlayedGameApiService.insertPlayedGame({
+        "user_id": 2,
+        "playtime": randomNumber(200),
+        "progress": randomNumber(100),
+        "last_played": randomDate(start, new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')),
+        "game_id": 9
+    });
+
+    for (let i = 3; i < 22; i++) {
+        let start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+        RentApiService.insertRent({
+            "extended": randomBoolean(),
+            "start_date": start,
+            "expiration_date": randomDate(start, "2021-12-31"),
+            "user_id": i,
+            "game_id": randomNumber(17)
+        });
+        start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+        let game = randomNumber(17);
+        RentApiService.insertRent({
+            "extended": randomBoolean(),
+            "start_date": start,
+            "expiration_date": randomDate(start, "2021-12-31"),
+            "user_id": i,
+            "game_id": 5
+        });
+        PlayedGameApiService.insertPlayedGame({
+            "user_id": i,
+            "playtime": randomNumber(200),
+            "progress": randomNumber(100),
+            "last_played": randomDate(start, new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')),
+            "game_id": 5
+        });
+        start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+        RentApiService.insertRent({
+            "extended": randomBoolean(),
+            "start_date": start,
+            "expiration_date": randomDate(start, "2021-12-31"),
+            "user_id": i,
+            "game_id": 17
+        });
+        PlayedGameApiService.insertPlayedGame({
+            "user_id": i,
+            "playtime": randomNumber(200),
+            "progress": randomNumber(100),
+            "last_played": randomDate(start, new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')),
+            "game_id": 17
+        });
+        start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
+        SubscriptionApiService.insertSubscription({
+            "start_date": start,
+            "end_date": randomDate(start, "2021-12-31"),
+            "user_id": i,
+            "studio_id": 2
+        });
+        PlayedGameApiService.insertPlayedGame({
+            "user_id": i,
+            "playtime": randomNumber(200),
+            "progress": randomNumber(100),
+            "last_played": randomDate(start, new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')),
+            "game_id": 1
+        });
+    }
+
     res.status(200).send("finished!");
+}
+
+function randomBoolean() {
+    return Math.random() < 0.5;
+}
+
+function randomNumber(max: number) {
+    return Math.floor(Math.random() * Math.floor(max));
 }
 
 function randomString(len: number) {
@@ -47,71 +553,3 @@ function randomDate(start: string, end: string) {
     let randomTimespan = Math.round(Math.random() * timespan);
     return new Date(randomTimespan + new Date(start).getTime()).toISOString().replace(/T/, ' ').replace(/\..+/, '');
 }
-
-/*function addBodyAndInsertStudio(req: Request, res: Response,
-    price: number, name: string, location: string, description: string) {
-    req.body = {
-        "price": price,
-        "name": name,
-        "location": location,
-        "description": description
-    }
-    insertStudio(req, res);
-}
-
-function addBodyAndInsertGame(req: Request, res: Response,
-    genre: string, price: number, title: string, studio_id: number) {
-    req.body = {
-        "genre": genre,
-        "price": price,
-        "title": title,
-        "studio_id": studio_id
-    }
-    insertGame(req, res);
-}
-
-function addBodyAndInsertGameRecommendation(req: Request, res: Response,
-    game_id: number, recommended_game_id: number) {
-    req.body = {
-        "game_id": game_id,
-        "recommended_game_id": recommended_game_id
-    }
-    insertGameRecommendation(req, res);
-}
-
-function addBodyAndInsertRent(req: Request, res: Response,
-    extended: boolean, start_date: string, expiration_date: string, user_id: number,
-    game_id: number) {
-    req.body = {
-        "extended": extended,
-        "start_date": start_date,
-        "expiration_date": expiration_date,
-        "user_id": user_id,
-        "game_id": game_id
-    }
-    insertRent(req, res);
-}
-
-function addBodyAndInsertSubscription(req: Request, res: Response,
-    start_date: string, end_date: string, user_id: number, studio_id: number) {
-    req.body = {
-        "start_date": start_date,
-        "end_date": end_date,
-        "user_id": user_id,
-        "studio_id": studio_id
-    }
-    insertSubscription(req, res);
-}
-
-function addBodyAndInsertPlayedGame(req: Request, res: Response,
-    user_id: number, playtime: number, progress: number, last_played: string,
-    game_id: number) {
-    req.body = {
-        "user_id": user_id,
-        "playtime": playtime,
-        "progress": progress,
-        "last_played": last_played,
-        "game_id": game_id
-    }
-    insertPlayedGame(req, res);
-}*/

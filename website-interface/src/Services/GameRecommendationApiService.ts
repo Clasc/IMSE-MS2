@@ -14,7 +14,7 @@ export class GameRecommendationApiService {
                 })
         }
         catch {
-            console.log("unable to isnert gameRecommendation!");
+            console.log("unable to insert gameRecommendation!");
             return false;
         };
 

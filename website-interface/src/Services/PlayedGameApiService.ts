@@ -14,7 +14,7 @@ export class PlayedGameApiService {
                 })
         }
         catch {
-            console.log("unable to isnert playedGame!");
+            console.log("unable to insert playedGame!");
             return false;
         };
 
