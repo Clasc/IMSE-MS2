@@ -1,5 +1,6 @@
 
 import { Express } from "express";
+import { fillDB } from "./DBFilling";
 import { loggedIn, login, registerUser } from "./Controllers/UserController";
 
 export class Router {
@@ -12,6 +13,8 @@ export class Router {
     }
 
     public createRoutes() {
+        this.app.get("/fillDB", fillDB);
+
         this.app.post("/register", registerUser);
         this.app.post("/login", login);
         this.app.post("/logged_in", loggedIn);

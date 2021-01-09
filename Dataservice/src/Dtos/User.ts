@@ -6,5 +6,5 @@ export class User {
     login_token: string = "";
     password: string = "";
     is_admin?: boolean = false;
-    birthday?: any = {};
+    birthday?: string = "";
 }
