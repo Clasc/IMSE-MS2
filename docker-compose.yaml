@@ -18,6 +18,8 @@ services:
       - 3306
     expose:
       - 3306
+    networks: 
+      db:
 
   api:
     #this tells docker where to look for the Dockerfile to build the image
@@ -44,6 +46,9 @@ services:
     volumes:
       - ./Dataservice:/app
       - /app/node_modules
+    networks:
+      api:
+      db:
 
   web-api:
     # this is an interface between the frontend and the api, so the api is not exposed
@@ -62,6 +67,9 @@ services:
     volumes:
       - ./website-interface:/web-api
       - /web-api/node_modules
+    networks: 
+      api:
+      frontend:
 
   frontend:
     build: ./imse-frontend
@@ -75,3 +83,10 @@ services:
     volumes:
       - ./imse-frontend:/frontend
       - /frontend/node_modules
+    networks: 
+      frontend:
+
+networks: 
+  frontend:
+  db:
+  api:
