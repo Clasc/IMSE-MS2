@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Login } from "../Dtos/Login";
 import { User } from "../Dtos/User";
 import { RestApi } from "../RestApi";
 
@@ -19,6 +20,38 @@ export class UserApiService {
         };
 
         console.log("inserted user!");
+        return true;
+    }
+
+    public static async getUserByUsername(username: string): Promise<[User] | []> {
+        let users: [User] = [new User()];
+        try {
+            users = (await axios.get(`${RestApi}/users/name/${username}`)).data;
+        }
+        catch {
+            console.log("unable to get user!");
+            return [];
+        };
+
+        return users;
+    }
+
+    public static async loginUser(login: Login): Promise<boolean> {
+
+        try {
+            await axios
+                .post(`${RestApi}/users/login`, JSON.stringify({ user_id: login.user_id, token: login.token }), {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+        }
+        catch {
+            console.log("unable to login with user!" + login.user_id);
+            return false;
+        };
+
+        console.log("registered!");
         return true;
     }
 

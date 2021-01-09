@@ -5,7 +5,7 @@
       You need to register for renting Games or subscribing to a game Studio
     </p>
     <v-container>
-      <v-form v-on:submit.prevent="submitRegistration">
+      <v-form v-on:submit.prevent="submitRegistration" ref="form">
         <v-row>
           <v-col cols="12">
             <v-text-field
@@ -49,7 +49,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="6">
+          <v-col cols="12">
             <v-text-field
               name="password"
               type="password"
@@ -59,14 +59,12 @@
               label="Password*"
             />
           </v-col>
-          <v-col cols="6">
-            <v-text-field
-              name="repeat"
-              type="password"
-              v-model="passwordRepeat"
-              :rules="passwordRules"
-              label="Repeat Password*"
-            />
+        </v-row>
+        <v-row>
+          <v-col>
+            <div class="error-message-container" v-if="errorMessage">
+              {{ errorMessage }}
+            </div>
           </v-col>
         </v-row>
         <v-btn elevation="2" type="submit">Create Account</v-btn>
@@ -80,6 +78,7 @@ import Vue from "vue";
 import axios from "axios";
 import { API_URL } from "../Api_Url";
 import { User } from "../Dtos/User";
+import Vuetify from "vuetify";
 
 export default Vue.extend({
   name: "Login",
@@ -94,10 +93,17 @@ export default Vue.extend({
       passwordRules: [(pw: string) => !!pw],
       nameRules: [(name: string) => !!name],
       birthdayRules: [(bday: string) => !!bday],
+      errorMessage: "",
     };
   },
   methods: {
     submitRegistration() {
+      let isValid = (this.$refs.form as any).validate();
+
+      if (!isValid) {
+        return;
+      }
+
       let user = <User>{
         username: this.username,
         password: this.password,
@@ -112,11 +118,16 @@ export default Vue.extend({
             "Content-Type": "application/json",
           },
         })
-        .then(() => {
-          console.log("registered!");
+        .then((value) => {
+          if (value.data.success) {
+            console.log("registered!");
+          }
+          this.errorMessage = value.data.error;
         })
         .catch(() => {
-          console.log("unable to register user!");
+          this.errorMessage =
+            "There was an internal server Error. Please try again later";
+          console.error("error in backend when registering user!");
         });
     },
   },

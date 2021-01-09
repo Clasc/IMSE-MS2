@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS User(
     first_name varchar(32),
     last_name varchar(32),
     username varchar(32) NOT NULL,
+    login_token VARCHAR(64),
     password varchar(32) NOT NULL,
     is_admin BOOLEAN DEFAULT FALSE,
     birthday DATE,
