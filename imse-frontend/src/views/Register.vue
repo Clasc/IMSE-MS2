@@ -62,9 +62,15 @@
         </v-row>
         <v-row>
           <v-col>
-            <div class="error-message-container" v-if="errorMessage">
-              {{ errorMessage }}
-            </div>
+            <ul class="error-list">
+              <li
+                class="error-message-container"
+                v-for="(error, idx) in errors"
+                :key="idx"
+              >
+                {{ error }}
+              </li>
+            </ul>
           </v-col>
         </v-row>
         <v-btn elevation="2" type="submit">Create Account</v-btn>
@@ -93,7 +99,7 @@ export default Vue.extend({
       passwordRules: [(pw: string) => !!pw],
       nameRules: [(name: string) => !!name],
       birthdayRules: [(bday: string) => !!bday],
-      errorMessage: "",
+      errors: new Array<string>(),
     };
   },
   methods: {
@@ -122,14 +128,22 @@ export default Vue.extend({
           if (value.data.success) {
             console.log("registered!");
           }
-          this.errorMessage = value.data.error;
+          this.errors = value.data.errors;
         })
         .catch(() => {
-          this.errorMessage =
-            "There was an internal server Error. Please try again later";
+          this.errors.push(
+            "There was an internal server Error. Please try again later"
+          );
           console.error("error in backend when registering user!");
         });
     },
   },
 });
 </script>
+
+<style lang="css" scoped>
+.error-list li {
+  color: red;
+  list-style-type: none;
+}
+</style>

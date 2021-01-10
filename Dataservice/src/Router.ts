@@ -8,7 +8,7 @@ import { insertGameRecommendation, getAllGameRecommendations } from "./Controlle
 import { insertRent, getAllRents } from "./Controllers/RentController";
 import { insertSubscription, getAllSubscriptions } from "./Controllers/SubscriptionController";
 import { insertPlayedGame, getAllPlayedGames } from "./Controllers/PlayedGameController";
-import { getAllLogins, insertLogin } from "./Controllers/LoginController";
+
 
 export class Router {
     private readonly app: Express;

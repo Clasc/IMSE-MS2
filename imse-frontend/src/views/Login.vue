@@ -1,8 +1,10 @@
 <template>
   <div class="login">
     <h2>Login</h2>
-    <div v-if="loggedIn">You Are already logged in!!</div>
-    <v-btn type="button" v-on:click="logout">Log out</v-btn>
+    <v-container v-if="loggedIn">
+      You Are already logged in!!
+      <v-btn type="button" v-on:click="logout">Log out</v-btn>
+    </v-container>
     <v-container v-if="!loggedIn">
       <v-form v-on:submit.prevent="submitLogin" ref="form">
         <v-row>
@@ -31,18 +33,18 @@
         <div class="error-message">{{ errorMessage }}</div>
         <v-btn elevation="2" type="submit">Login</v-btn>
       </v-form>
+      <p>
+        Not registered yet? Sign in here:
+        <router-link to="/register">Register</router-link>
+      </p>
     </v-container>
-    <p>
-      Not registered yet? Sign in here:
-      <router-link to="/register">Register</router-link>
-    </p>
   </div>
 </template>
 
 <script lang="ts">
 import { API_URL } from "@/Api_Url";
 import store from "@/store";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Vue from "vue";
 export default Vue.extend({
   name: "Login",
@@ -56,14 +58,13 @@ export default Vue.extend({
     };
   },
   computed: {
-    async loggedIn() {
-      return await this.$store.getters.isLoggedIn;
+    loggedIn() {
+      return this.$store.getters.isLoggedIn;
     },
   },
   methods: {
     logout() {
-      store.commit("setToken", "");
-      store.commit("setUsername", "");
+      store.commit("logout");
     },
 
     submitLogin() {
@@ -95,9 +96,8 @@ export default Vue.extend({
             this.errorMessage = value.data.error;
           }
         )
-        .catch(() => {
-          this.errorMessage =
-            "There was an internal server Error. Please try again later";
+        .catch((err: AxiosError) => {
+          this.errorMessage = err.response?.data.error;
           console.error("error in backend when registering user!");
         });
     },

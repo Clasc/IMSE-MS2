@@ -16,7 +16,7 @@ services:
       - ./db/scripts:/docker-entrypoint-initdb.d/:ro
     expose:
       - 3306
-    networks: 
+    networks:
       db:
 
   api:
@@ -29,6 +29,8 @@ services:
     restart: always
     environment:
       - WEBSITE_INTERFACE=https://web-api:8881
+      - DB_CONNECT_TIMEOUT=500
+      - DB_CONNECT_RETRY=20
       - MYSQL_HOST_IP=localhost
       - MYSQL_HOST=sql
       - MYSQL_USER=user
@@ -61,7 +63,7 @@ services:
     volumes:
       - ./website-interface:/web-api
       - /web-api/node_modules
-    networks: 
+    networks:
       api:
       frontend:
 
@@ -75,7 +77,7 @@ services:
     volumes:
       - ./imse-frontend:/frontend
       - /frontend/node_modules
-    networks: 
+    networks:
       frontend:
 
   nginx:
@@ -90,7 +92,7 @@ services:
     networks:
       frontend:
 
-networks: 
+networks:
   frontend:
   db:  
   api:
