@@ -54,7 +54,7 @@ services:
     links:
       - api
     environment:
-      - WEBSITE_HOST=http://localhost:8001
+      - WEBSITE_HOST=https://localhost
       - API=http://api:8000
     expose:
       - 8081
@@ -84,7 +84,8 @@ services:
     restart: always
     ports: 
       - 8081:8081
-      - 8001:8001
+      - 80:80
+      - 443:443
     networks:
       frontend:
 
