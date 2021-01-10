@@ -18,7 +18,7 @@ services:
       - 3306
     expose:
       - 3306
-    networks: 
+    networks:
       db:
 
   api:
@@ -30,6 +30,8 @@ services:
     container_name: rest-service
     restart: always
     environment:
+      - DB_CONNECT_TIMEOUT=500
+      - DB_CONNECT_RETRY=20
       - WEBSITE_INTERFACE=http://web-api:3000
       - MYSQL_HOST_IP=localhost
       - MYSQL_HOST=sql
@@ -67,7 +69,7 @@ services:
     volumes:
       - ./website-interface:/web-api
       - /web-api/node_modules
-    networks: 
+    networks:
       api:
       frontend:
 
@@ -83,10 +85,10 @@ services:
     volumes:
       - ./imse-frontend:/frontend
       - /frontend/node_modules
-    networks: 
+    networks:
       frontend:
 
-networks: 
+networks:
   frontend:
   db:
   api:
