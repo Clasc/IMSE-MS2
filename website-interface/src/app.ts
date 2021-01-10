@@ -3,7 +3,7 @@ import { Router } from "./Router"
 import * as bodyParser from "body-parser";
 
 const app = express();
-const port = 3000;
+const port = 8081;
 app.use(bodyParser.json());
 console.log("website address:", process.env.WEBSITE_HOST);
 app.use(function (req, res, next) {

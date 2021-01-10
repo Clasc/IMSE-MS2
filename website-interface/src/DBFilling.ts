@@ -475,7 +475,7 @@ export async function fillDB(req: Request, res: Response) {
         "game_id": 9
     });
 
-    for (let i = 3; i < 22; i++) {
+    for (let i = 3; i < 23; i++) {
         let start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
         RentApiService.insertRent({
             "extended": randomBoolean(),

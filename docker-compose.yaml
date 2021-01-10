@@ -14,8 +14,6 @@ services:
     volumes:
       - ./db/volume:/var/lib/mysql
       - ./db/scripts:/docker-entrypoint-initdb.d/:ro
-    ports:
-      - 3306
     expose:
       - 3306
     networks:
@@ -30,9 +28,9 @@ services:
     container_name: rest-service
     restart: always
     environment:
+      - WEBSITE_INTERFACE=https://web-api:8881
       - DB_CONNECT_TIMEOUT=500
       - DB_CONNECT_RETRY=20
-      - WEBSITE_INTERFACE=http://web-api:3000
       - MYSQL_HOST_IP=localhost
       - MYSQL_HOST=sql
       - MYSQL_USER=user
@@ -43,8 +41,6 @@ services:
     #EXPOSE defines the ports reachable from INSIDE your docker network
     expose:
       - 8000
-    ports:
-      - 8000:3000
     volumes:
       - ./Dataservice:/app
       - /app/node_modules
@@ -60,12 +56,10 @@ services:
     links:
       - api
     environment:
-      - WEBSITE_HOST=http://localhost:8080
-      - API=http://api:3000
+      - WEBSITE_HOST=https://localhost
+      - API=http://api:8000
     expose:
       - 8081
-    ports:
-      - 8081:3000
     volumes:
       - ./website-interface:/web-api
       - /web-api/node_modules
@@ -79,16 +73,26 @@ services:
     container_name: imse-frontend
     restart: always
     expose:
-      - 8080
-    ports:
-      - 8080:8080
+      - 80
     volumes:
       - ./imse-frontend:/frontend
       - /frontend/node_modules
     networks:
       frontend:
 
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    restart: always
+    ports: 
+      - 8081:8081
+      - 80:80
+      - 443:443
+      - 8881:8881
+    networks:
+      frontend:
+
 networks:
   frontend:
-  db:
+  db:  
   api:
