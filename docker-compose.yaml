@@ -28,7 +28,7 @@ services:
     container_name: rest-service
     restart: always
     environment:
-      - WEBSITE_INTERFACE=http://web-api:8081
+      - WEBSITE_INTERFACE=https://web-api:8881
       - MYSQL_HOST_IP=localhost
       - MYSQL_HOST=sql
       - MYSQL_USER=user
@@ -86,6 +86,7 @@ services:
       - 8081:8081
       - 80:80
       - 443:443
+      - 8881:8881
     networks:
       frontend:
 
