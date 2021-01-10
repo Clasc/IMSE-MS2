@@ -47,11 +47,10 @@ export class UserApiService {
                 })
         }
         catch {
-            console.log("unable to login with user!" + login.user_id);
+            console.log("unable to login with user! " + login.user_id);
             return false;
         };
 
-        console.log("registered!");
         return true;
     }
 

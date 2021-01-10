@@ -53,6 +53,7 @@ export async function login(req: Request, res: Response) {
     let hash = createHash("md5");
     if (user.password !== hash.update(req.body.password).digest('hex')) {
         res.status(401).send({ success: false, error: "Wrong password" });
+        return;
     };
 
     let token = randomBytes(32).toString("hex");

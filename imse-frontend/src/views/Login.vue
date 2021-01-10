@@ -44,7 +44,7 @@
 <script lang="ts">
 import { API_URL } from "@/Api_Url";
 import store from "@/store";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Vue from "vue";
 export default Vue.extend({
   name: "Login",
@@ -96,9 +96,8 @@ export default Vue.extend({
             this.errorMessage = value.data.error;
           }
         )
-        .catch(() => {
-          this.errorMessage =
-            "There was an internal server Error. Please try again later";
+        .catch((err: AxiosError) => {
+          this.errorMessage = err.response?.data.error;
           console.error("error in backend when registering user!");
         });
     },
