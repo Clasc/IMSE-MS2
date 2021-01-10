@@ -14,12 +14,10 @@ services:
     volumes:
       - ./db/volume:/var/lib/mysql
       - ./db/scripts:/docker-entrypoint-initdb.d/:ro
-    ports:
-      - 3306
     expose:
       - 3306
-    networks: 
-      db:
+    #networks: 
+    #  db:
 
   api:
     #this tells docker where to look for the Dockerfile to build the image
@@ -30,7 +28,7 @@ services:
     container_name: rest-service
     restart: always
     environment:
-      - WEBSITE_INTERFACE=http://web-api:3000
+      - WEBSITE_INTERFACE=http://web-api:8081
       - MYSQL_HOST_IP=localhost
       - MYSQL_HOST=sql
       - MYSQL_USER=user
@@ -41,14 +39,12 @@ services:
     #EXPOSE defines the ports reachable from INSIDE your docker network
     expose:
       - 8000
-    ports:
-      - 8000:3000
     volumes:
       - ./Dataservice:/app
       - /app/node_modules
-    networks:
-      api:
-      db:
+    #networks:
+    #  api:
+    #  db:
 
   web-api:
     # this is an interface between the frontend and the api, so the api is not exposed
@@ -59,17 +55,15 @@ services:
       - api
     environment:
       - WEBSITE_HOST=http://localhost:8080
-      - API=http://api:3000
+      - API=http://api:8000
     expose:
       - 8081
-    ports:
-      - 8081:3000
     volumes:
       - ./website-interface:/web-api
       - /web-api/node_modules
-    networks: 
-      api:
-      frontend:
+    #networks: 
+    #  api:
+    #  frontend:
 
   frontend:
     build: ./imse-frontend
@@ -78,15 +72,21 @@ services:
     restart: always
     expose:
       - 8080
-    ports:
-      - 8080:8080
     volumes:
       - ./imse-frontend:/frontend
       - /frontend/node_modules
-    networks: 
-      frontend:
+    #networks: 
+    #  frontend:
 
-networks: 
-  frontend:
-  db:
-  api:
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    restart: always
+    ports: 
+      - 8081:8081
+      - 8080:8080
+
+#networks: 
+#  frontend:
+#  db:  
+#  api:
