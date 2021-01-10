@@ -11,10 +11,10 @@ export async function registerUser(req: Request, res: Response) {
         return
     }
 
-    let errorMessage = await validateUserData(req.body as User);
+    let errors = await validateUserData(req.body as User);
 
-    if (errorMessage) {
-        res.status(200).send({ success: false, error: errorMessage });
+    if (errors.length > 0) {
+        res.status(200).send({ success: false, errors: errors });
         return;
     }
 
@@ -82,25 +82,31 @@ export async function loggedIn(req: Request, res: Response) {
     res.status(200).send({ loggedIn: loggedIn });
 }
 
-async function validateUserData(user: User): Promise<string | null> {
-    let errorMessage = user.username ? null : "Username is a required field";
-    errorMessage = user.first_name ? null : "first_name is a required field";
-    errorMessage = user.last_name ? null : "last_name is a required field";
-    errorMessage = user.password ? null : "password is a required field";
-    errorMessage = user.birthday ? null : "birthday is a required field";
+async function validateUserData(user: User): Promise<string[]> {
+    let errors: string[] = [];
+    if (!user.username) errors.push("Username is a required field");
+    if (!user.first_name) errors.push("first_name is a required field");
+    if (!user.last_name) errors.push("last_name is a required field");
+    if (!user.password) errors.push("password is a required field");
+    if (!user.birthday) errors.push("birthday is a required field");
 
     let users = await UserApiService.getUserByUsername(user.username);
     if (users && users.length > 0) {
-        return "This username already exists";
+        errors.push("This username already exists");
     }
 
     let currentYear = new Date().getFullYear();
-    let birthDate = new Date(user.birthday);
-    let age = currentYear - birthDate.getFullYear();
 
-    if (age < 18) {
-        errorMessage = "You are not old enough to register";
+    if (user.birthday) {
+        let birthDate = new Date(user.birthday);
+        let age = currentYear - birthDate.getFullYear();
+
+        if (age < 18) {
+            errors.push("You are not old enough to register");
+        }
+
     }
-    return errorMessage;
+
+    return errors;
 }
 
