@@ -21,6 +21,6 @@ export class Router {
         this.app.post("/logged_in", loggedIn);
 
         this.app.get("/games", getAllGames);
-        this.app.get("/games/:id", getGameById);
+        this.app.get("/games/:gameId", getGameById);
     }
 }

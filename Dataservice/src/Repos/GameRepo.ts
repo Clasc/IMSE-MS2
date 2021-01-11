@@ -15,7 +15,6 @@ export class GameRepo {
 
     public static async getGameById(id: string): Promise<Game | null> {
         try {
-            console.log("repo dataservice"+id);
             let queryResult: [Game] = await queryDb(`SELECT * FROM Game WHERE game_id = ${id}`);
             return queryResult[0];
         }

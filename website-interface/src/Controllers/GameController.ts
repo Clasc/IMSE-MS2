@@ -9,7 +9,6 @@ export async function getAllGames(req: Request, res: Response) {
 }
 
 export async function getGameById(req: Request, res: Response) {
-    console.log("GameController"+req.params.gameId);
     const game = await GameApiService.getGameById(req.params.gameId);
     console.log(game);
 

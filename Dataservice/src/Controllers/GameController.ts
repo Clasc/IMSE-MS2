@@ -12,7 +12,7 @@ export async function getGameById(req: Request, res: Response) {
         res.status(500).send(`GameId param is empty`);
         return
     }
-    console.log("controller in dataservice"+req.params.gameId)
+
     let game = await GameRepo.getGameById(req.params.gameId);
     res.status(game === null ? 404 : 200).send(JSON.stringify(game));
 }

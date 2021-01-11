@@ -6,7 +6,6 @@ export class GameApiService {
     public static async getGameById(id: string): Promise<Game | null> {
         let game = new Game();
         try {
-            console.log("GameAPiservice"+id)
             game = (await axios.get(`${RestApi}/games/${id}`)).data;
         }
         catch {

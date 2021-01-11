@@ -13,7 +13,7 @@ import Vue from "vue";
 export default Vue.extend({
   name: "Game",
   data () {
-    return {game: null}
+    return {game: {title: ""}}
   },
   mounted () {
     axios
