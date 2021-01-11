@@ -76,6 +76,17 @@
         <v-btn elevation="2" type="submit">Create Account</v-btn>
       </v-form>
     </v-container>
+    <v-snackbar
+      :value="snackbar"
+      absolute
+      centered
+      color="success"
+      outlined
+      elevation="24"
+    >
+      <p>You are successfully registered!</p>
+      <p>You will be redirected to the homepage.</p>
+    </v-snackbar>
   </div>
 </template>
 
@@ -90,6 +101,7 @@ export default Vue.extend({
   name: "Login",
   data() {
     return {
+      snackbar: false,
       username: "",
       password: "",
       birthday: "",
@@ -127,6 +139,8 @@ export default Vue.extend({
         .then((value) => {
           if (value.data.success) {
             console.log("registered!");
+            this.snackbar = true;
+            setTimeout(() => this.$router.push("/"), 2000);
           }
           this.errors = value.data.errors;
         })
