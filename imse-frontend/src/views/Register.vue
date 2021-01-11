@@ -19,33 +19,52 @@
         </v-row>
         <v-row>
           <v-col cols="6">
-            <v-text-field
-              name="firstname"
-              v-model="firstname"
-              :rules="nameRules"
-              title="First name"
-              label="First name*"
-            />
+            <v-col cols="12">
+              <v-text-field
+                name="firstname"
+                v-model="firstname"
+                :rules="nameRules"
+                title="First name"
+                label="First name*"
+              />
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                name="lastname"
+                v-model="lastname"
+                :rules="nameRules"
+                title="Last name"
+                label="Last name*"
+              />
+            </v-col>
           </v-col>
           <v-col cols="6">
-            <v-text-field
-              name="lastname"
-              v-model="lastname"
-              :rules="nameRules"
-              title="Last name"
-              label="Last name*"
-            />
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12">
-            <v-date-picker
-              name="birthday"
-              v-model="birthday"
-              :rules="birthdayRules"
-              title="Birthday"
-              label="Birthday*"
-            />
+            <v-menu
+              ref="menu"
+              v-model="menu"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="birthday"
+                  label="Birthday date"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                ref="picker"
+                v-model="birthday"
+                :max="new Date().toISOString().substr(0, 10)"
+                min="1920-01-01"
+                @change="save"
+              ></v-date-picker>
+            </v-menu>
           </v-col>
         </v-row>
         <v-row>
@@ -101,6 +120,7 @@ export default Vue.extend({
   name: "Login",
   data() {
     return {
+      menu: false,
       snackbar: false,
       username: "",
       password: "",
@@ -110,11 +130,19 @@ export default Vue.extend({
       usernameRules: [(uname: string) => !!uname],
       passwordRules: [(pw: string) => !!pw],
       nameRules: [(name: string) => !!name],
-      birthdayRules: [(bday: string) => !!bday],
       errors: new Array<string>(),
     };
   },
+  watch: {
+    menu(val) {
+      val &&
+        setTimeout(() => ((this.$refs.picker as any).activePicker = "YEAR"));
+    },
+  },
   methods: {
+    save(date: string) {
+      (this.$refs.menu as any).save(date);
+    },
     submitRegistration() {
       let isValid = (this.$refs.form as any).validate();
 
