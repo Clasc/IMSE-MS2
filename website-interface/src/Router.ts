@@ -2,6 +2,7 @@
 import { Express } from "express";
 import { fillDB } from "./DBFilling";
 import { loggedIn, login, registerUser } from "./Controllers/UserController";
+import { getAllGames, getGameById } from "./Controllers/GameController";
 
 export class Router {
     private readonly app: Express;
@@ -18,5 +19,8 @@ export class Router {
         this.app.post("/register", registerUser);
         this.app.post("/login", login);
         this.app.post("/logged_in", loggedIn);
+
+        this.app.get("/games", getAllGames);
+        this.app.get("/games/:id", getGameById);
     }
 }

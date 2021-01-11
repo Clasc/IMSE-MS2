@@ -3,7 +3,7 @@ import { Express } from "express";
 
 import { deleteUser, getAllUsers, getUserById, getUserByUsername, insertUser, login } from "./Controllers/UserController";
 import { insertStudio, getAllStudios } from "./Controllers/StudioController";
-import { insertGame, getAllGames } from "./Controllers/GameController";
+import { insertGame, getGameById, getAllGames } from "./Controllers/GameController";
 import { insertGameRecommendation, getAllGameRecommendations } from "./Controllers/GameRecommendationController";
 import { insertRent, getAllRents } from "./Controllers/RentController";
 import { insertSubscription, getAllSubscriptions } from "./Controllers/SubscriptionController";
@@ -33,6 +33,7 @@ export class Router {
         this.app.put("/studios/", insertStudio);
 
         this.app.get("/games", getAllGames);
+        this.app.get("/games/:gameId", getGameById);
         this.app.put("/games/:gameId", insertGame);
         this.app.put("/games/", insertGame);
 
