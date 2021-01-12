@@ -3,9 +3,9 @@ import { Express } from "express";
 
 import { deleteUser, getAllUsers, getUserById, getUserByUsername, insertUser, login } from "./Controllers/UserController";
 import { insertStudio, getAllStudios } from "./Controllers/StudioController";
-import { insertGame, getAllGames } from "./Controllers/GameController";
+import { insertGame, getGameById, getAllGames } from "./Controllers/GameController";
 import { insertGameRecommendation, getAllGameRecommendations } from "./Controllers/GameRecommendationController";
-import { insertRent, getAllRents } from "./Controllers/RentController";
+import { insertRent, getAllRents, ableToRent, ableToExtend, getExpirationDate, extendRent } from "./Controllers/RentController";
 import { insertSubscription, getAllSubscriptions } from "./Controllers/SubscriptionController";
 import { insertPlayedGame, getAllPlayedGames } from "./Controllers/PlayedGameController";
 
@@ -33,6 +33,7 @@ export class Router {
         this.app.put("/studios/", insertStudio);
 
         this.app.get("/games", getAllGames);
+        this.app.get("/games/:gameId", getGameById);
         this.app.put("/games/:gameId", insertGame);
         this.app.put("/games/", insertGame);
 
@@ -42,6 +43,7 @@ export class Router {
 
         this.app.get("/rents", getAllRents);
         this.app.put("/rents/:rentId", insertRent);
+        this.app.post("/extendRent", extendRent);
         this.app.put("/rents/", insertRent);
 
         this.app.get("/subscriptions", getAllSubscriptions);
@@ -52,5 +54,8 @@ export class Router {
         this.app.put("/playedGames/_playedGameId", insertPlayedGame);
         this.app.put("/playedGames/", insertPlayedGame);
 
+        this.app.post("/ableToRent", ableToRent);
+        this.app.post("/ableToExtend", ableToExtend);
+        this.app.post("/getExpirationDate", getExpirationDate);
     }
 }

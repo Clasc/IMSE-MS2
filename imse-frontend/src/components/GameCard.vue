@@ -1,19 +1,28 @@
 <template>
-  <v-card width="200">
+  <v-card width="200" v-on:click="openGamePage">
     <v-img
       lazy-src="https://picsum.photos/id/11/10/6"
       src="https://picsum.photos/200"
       min-height="200"
       min-width="200"
     />
-    <span class="game-title">Title</span>
-    <span class="game-price">3.44€</span>
+    <span class="game-title">{{game.title}}</span>
+    <span class="game-price">{{game.price}}€</span>
   </v-card>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-export default Vue.extend({});
+export default Vue.extend({
+  props: {
+    game: Object as () => {game_id:number, price:number, title:string}
+  },
+  methods: {
+    openGamePage() {
+      this.$router.push("/game/" + this.game.game_id);
+    }
+  }
+});
 </script>
 
 <style scoped>

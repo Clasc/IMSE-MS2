@@ -24,4 +24,30 @@ export class RentRepo {
             return false;
         }
     }
+
+    public static async extendRent(rentId: number, date: string): Promise<boolean> {
+        try {
+            let result: any = await queryDb(`UPDATE Rent
+            SET expiration_date = '${date}', extended = true
+            WHERE rent_id = '${rentId}';`);
+            return true;
+        }
+
+        catch (err) {
+            console.error(err);
+            return false;
+        }
+    }
+
+    public static async getRentsByUserId(user_id: string): Promise<[Rent] | null> {
+        try {
+            let rents: [Rent] = await queryDb(`SELECT * FROM Rent WHERE user_id = ${user_id}`);
+            return rents;
+        }
+        catch (err) {
+            console.error(err);
+            return null;
+        }
+    }
+
 }
