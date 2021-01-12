@@ -3,6 +3,9 @@ import { Request, Response } from "express";
 import { Login } from "../Dtos/Login";
 import { User } from "../Dtos/User";
 import { UserApiService } from "../Services/UserApiService";
+import { LoginService } from "../Services/LoginService";
+import { LoginData } from "../Interfaces";
+import { validateUserData } from "../Services/ValidationService";
 
 export async function registerUser(req: Request, res: Response) {
     let user = new User();
@@ -71,42 +74,36 @@ export async function loggedIn(req: Request, res: Response) {
         return
     }
 
-    let users = await UserApiService.getUserByUsername(req.body.username);
-    if (!users || users.length === 0) {
-        res.status(500).send({ loggedIn: false });
-        return;
-    }
-
-    let loginToken: string = req.body.token;
-    let loggedIn = users[0].login_token === loginToken;
+    let data = req.body as LoginData;
+    let loggedIn = await LoginService.userIsLoggedIn(data);
     res.status(200).send({ loggedIn: loggedIn });
 }
 
-async function validateUserData(user: User): Promise<string[]> {
-    let errors: string[] = [];
-    if (!user.username) errors.push("Username is a required field");
-    if (!user.first_name) errors.push("first_name is a required field");
-    if (!user.last_name) errors.push("last_name is a required field");
-    if (!user.password) errors.push("password is a required field");
-    if (!user.birthday) errors.push("birthday is a required field");
-
-    let users = await UserApiService.getUserByUsername(user.username);
-    if (users && users.length > 0) {
-        errors.push("This username already exists");
+export async function isAdmin(req: Request, res: Response) {
+    console.log(req.body);
+    if (!req.body?.token || !req.body?.username) {
+        res.status(200).send({ loggedIn: false });
+        return
     }
 
-    let currentYear = new Date().getFullYear();
+    let data = req.body as LoginData;
+    let isAdmin = await LoginService.userIsAdmin(data);
+    res.status(200).send({ isAdmin: isAdmin });
+}
 
-    if (user.birthday) {
-        let birthDate = new Date(user.birthday);
-        let age = currentYear - birthDate.getFullYear();
-
-        if (age < 18) {
-            errors.push("You are not old enough to register");
-        }
-
+export async function createRentReport(req: Request, res: Response) {
+    console.log(req.body);
+    let data = req.body as LoginData;
+    if (!data.token || !data.username) {
+        res.status(400).send({ success: false });
+        return
     }
 
-    return errors;
+    if (! await LoginService.userIsAdmin(data)) {
+        res.status(401).send({ success: false });
+        return
+    }
+
+    res.status(200).send({ success: true });
 }
 

@@ -1,3 +1,4 @@
+import store from '@/store'
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
@@ -37,6 +38,12 @@ const routes: Array<RouteConfig> = [
       import('../views/GamePage.vue')
   },
   {
+    path: '/reports',
+    name: 'Reports',
+    component: () =>
+      import('../views/Reports.vue')
+  },
+  {
     path: '/register',
     name: 'Register',
     component: () =>
@@ -48,6 +55,11 @@ const routes: Array<RouteConfig> = [
 const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  store.dispatch("isAdmin");
+  next();
 })
 
 export default router

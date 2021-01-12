@@ -1,3 +1,5 @@
+import { API_URL } from '@/Api_Url';
+import axios from 'axios';
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -7,6 +9,7 @@ export default new Vuex.Store({
   state: {
     token: "",
     username: "",
+    isAdmin: false,
   },
   mutations: {
     setToken(state, token: string) {
@@ -23,6 +26,11 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    async isAdmin(context) {
+      await axios.post(`${API_URL}/user/is_admin`, { username: context.state.username, token: context.state.token }).then((value) => {
+        context.state.isAdmin = value.data.isAdmin;
+      }).catch(() => { context.state.isAdmin = false });
+    }
   },
   modules: {
   },
