@@ -5,7 +5,7 @@ import { deleteUser, getAllUsers, getUserById, getUserByUsername, insertUser, lo
 import { insertStudio, getAllStudios } from "./Controllers/StudioController";
 import { insertGame, getGameById, getAllGames } from "./Controllers/GameController";
 import { insertGameRecommendation, getAllGameRecommendations } from "./Controllers/GameRecommendationController";
-import { insertRent, getAllRents } from "./Controllers/RentController";
+import { insertRent, getAllRents, ableToRent, ableToExtend } from "./Controllers/RentController";
 import { insertSubscription, getAllSubscriptions } from "./Controllers/SubscriptionController";
 import { insertPlayedGame, getAllPlayedGames } from "./Controllers/PlayedGameController";
 
@@ -53,5 +53,7 @@ export class Router {
         this.app.put("/playedGames/_playedGameId", insertPlayedGame);
         this.app.put("/playedGames/", insertPlayedGame);
 
+        this.app.post("/ableToRent", ableToRent);
+        this.app.post("/ableToExtend", ableToExtend);
     }
 }

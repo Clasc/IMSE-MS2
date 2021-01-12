@@ -3,6 +3,6 @@ export class Rent {
     extended?: boolean = false;
     start_date?: string = "";
     expiration_date?: string = "";
-    user_id?: number = 0;
+    username?: string = "";
     game_id?: number = 0;
 }

@@ -3,6 +3,7 @@ import { Express } from "express";
 import { fillDB } from "./DBFilling";
 import { loggedIn, login, registerUser } from "./Controllers/UserController";
 import { getAllGames, getGameById } from "./Controllers/GameController";
+import { ableToRent, rentGame } from "./Controllers/RentController";
 
 export class Router {
     private readonly app: Express;
@@ -22,5 +23,8 @@ export class Router {
 
         this.app.get("/games", getAllGames);
         this.app.get("/games/:gameId", getGameById);
+
+        this.app.post("/ableToRent", ableToRent);
+        this.app.post("/rentGame", rentGame);
     }
 }

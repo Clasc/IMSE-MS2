@@ -24,4 +24,16 @@ export class RentRepo {
             return false;
         }
     }
+
+    public static async getRentsByUserId(user_id: string): Promise<[Rent] | null> {
+        try {
+            let rents: [Rent] = await queryDb(`SELECT * FROM Rent WHERE user_id = ${user_id}`);
+            return rents;
+        }
+        catch (err) {
+            console.error(err);
+            return null;
+        }
+    }
+
 }
