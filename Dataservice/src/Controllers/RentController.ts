@@ -75,7 +75,7 @@ export async function extendRent(req: Request, res: Response) {
                 res.status(400).send("No expiration date for Rent!");
                 return;
             }
-            if (new Date(rents[i].expiration_date!) > new Date()) {
+            if (new Date(rents[i].expiration_date!) >= new Date(new Date().toISOString().slice(0,10))) {
                 rentId = rents[i].rent_id!;
             }
         }
@@ -113,7 +113,7 @@ export async function ableToRent(req: Request, res: Response) {
                 res.status(400).send("No expiration date for Rent!");
                 return;
             }
-            if (new Date(rents[i].expiration_date!) > new Date()) {
+            if (new Date(rents[i].expiration_date!) >= new Date(new Date().toISOString().slice(0,10))) {
                 ableToRent = false;
             }
         }
@@ -151,7 +151,7 @@ export async function ableToExtend(req: Request, res: Response) {
                 res.status(400).send("No expiration date for Rent!");
                 return;
             }
-            if (new Date(rents[i].expiration_date!) > new Date()) {
+            if (new Date(rents[i].expiration_date!) >= new Date(new Date().toISOString().slice(0,10))) {
                 ableToExtend = true;
             }
         }
@@ -189,7 +189,7 @@ export async function getExpirationDate(req: Request, res: Response) {
                 res.status(400).send("No expiration date for Rent!");
                 return;
             }
-            if (new Date(rents[i].expiration_date!) > new Date()) {
+            if (new Date(rents[i].expiration_date!) >= new Date(new Date().toISOString().slice(0,10))) {
                 date = new Date(rents[i].expiration_date!).toISOString().slice(0,10);
             }
         }
