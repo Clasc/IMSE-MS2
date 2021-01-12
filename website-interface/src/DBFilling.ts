@@ -380,6 +380,13 @@ export async function fillDB(req: Request, res: Response) {
         "user_id": 1,
         "game_id": 8
     });
+    PlayedGameApiService.insertPlayedGame({
+        "user_id": 1,
+        "playtime": randomNumber(200),
+        "progress": randomNumber(100),
+        "last_played": randomDate(start, new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')),
+        "game_id": 8
+    });
     start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
     RentApiService.insertRent({
         "extended": randomBoolean(),
@@ -431,6 +438,13 @@ export async function fillDB(req: Request, res: Response) {
         "start_date": start,
         "expiration_date": randomDate(start, "2021-12-31"),
         "user_id": 2,
+        "game_id": 3
+    });
+    PlayedGameApiService.insertPlayedGame({
+        "user_id": 2,
+        "playtime": randomNumber(200),
+        "progress": randomNumber(100),
+        "last_played": randomDate(start, new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')),
         "game_id": 3
     });
     start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
@@ -485,6 +499,13 @@ export async function fillDB(req: Request, res: Response) {
             "start_date": start,
             "expiration_date": randomDate(start, "2021-12-31"),
             "user_id": i,
+            "game_id": 11
+        });
+        PlayedGameApiService.insertPlayedGame({
+            "user_id": i,
+            "playtime": randomNumber(200),
+            "progress": randomNumber(100),
+            "last_played": randomDate(start, new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')),
             "game_id": 11
         });
         start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));

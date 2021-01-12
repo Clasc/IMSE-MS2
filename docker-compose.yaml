@@ -29,8 +29,8 @@ services:
     restart: always
     environment:
       - WEBSITE_INTERFACE=https://web-api:8881
-      - DB_CONNECT_TIMEOUT=500
-      - DB_CONNECT_RETRY=20
+      - DB_CONNECT_TIMEOUT=1000
+      - DB_CONNECT_RETRY=60
       - MYSQL_HOST_IP=localhost
       - MYSQL_HOST=sql
       - MYSQL_USER=user

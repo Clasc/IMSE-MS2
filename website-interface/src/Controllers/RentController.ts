@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Rent } from "../Dtos/Rent";
 import { User } from "../Dtos/User";
+import { PlayedGameApiService } from "../Services/PlayedGameApiService";
 import { RentApiService } from "../Services/RentApiService";
 import { UserApiService } from "../Services/UserApiService";
 
@@ -51,7 +52,19 @@ export async function rentGame(req: Request, res: Response) {
     rent.game_id = req.body?.game_id;
     rent.username = req.body?.username;
 
-    let success = await RentApiService.insertRent(rent);
+    let success = await RentApiService.extendRent(rent);
+    if (success) {
+        let user_id = await UserApiService.getUserByUsername(rent.username!);
+
+        await PlayedGameApiService.insertPlayedGame({
+            "user_id": user_id[0]?.user_id,
+            "playtime": 0,
+            "progress": 0,
+            "last_played": "",
+            "game_id": rent.game_id
+        });
+    }
+
     res.status(success ? 200 : 500).send({ success: success });
 }
 
