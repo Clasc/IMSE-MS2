@@ -1,7 +1,7 @@
 
 import { Express } from "express";
 import { fillDB } from "./DBFilling";
-import { loggedIn, login, registerUser } from "./Controllers/UserController";
+import { isAdmin, loggedIn, login, registerUser } from "./Controllers/UserController";
 import { getAllGames, getGameById } from "./Controllers/GameController";
 import { ableToRent, rentGame, getExpirationDate, extendRent } from "./Controllers/RentController";
 
@@ -28,5 +28,7 @@ export class Router {
         this.app.post("/rentGame", rentGame);
         this.app.post("/getExpirationDate", getExpirationDate);
         this.app.post("/extendRent", extendRent);
+        this.app.post("/user/is_admin", isAdmin);
+        this.app.post("/report/rent", isAdmin);
     }
 }

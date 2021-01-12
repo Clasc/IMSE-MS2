@@ -92,6 +92,7 @@ export default Vue.extend({
               alert("logged in as!" + this.username);
               store.commit("setToken", value.data.token);
               store.commit("setUsername", this.username);
+              setTimeout(() => this.$router.push("/"), 200);
             }
             this.errorMessage = value.data.error;
           }

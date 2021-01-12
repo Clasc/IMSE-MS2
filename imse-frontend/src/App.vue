@@ -8,6 +8,7 @@
           <router-link to="/games">Games</router-link>
           <router-link to="/about">About</router-link>
           <router-link to="/login">Login</router-link>
+          <router-link v-if="isAdmin" to="/reports">Reports</router-link>
         </div>
       </v-navigation>
       <v-main>
@@ -21,6 +22,16 @@
   </div>
 </template>
 
+<script lang="ts">
+import Vue from "vue";
+export default Vue.extend({
+  computed: {
+    isAdmin() {
+      return this.$store.state.isAdmin;
+    },
+  },
+});
+</script>
 <style>
 .imse-app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
