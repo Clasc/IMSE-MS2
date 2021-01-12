@@ -60,5 +60,6 @@ export class Router {
         this.app.post("/getExpirationDate", getExpirationDate);
 
         this.app.post("/reports/rent", getRentReport);
+        this.app.post("/reports/subscription", getRentReport);
     }
 }

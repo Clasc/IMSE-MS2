@@ -1,5 +1,6 @@
 import { RentReportTableData } from "../Dtos/RentReportTableData";
 import { ReportRequest } from "../Dtos/ReportRequest";
+import { SubsReportTableData } from "../Dtos/SubsReportTableData";
 import { queryDb } from "../Services/db";
 
 export async function createRentReport(reportData: ReportRequest): Promise<[RentReportTableData] | []> {
@@ -15,6 +16,25 @@ export async function createRentReport(reportData: ReportRequest): Promise<[Rent
     WHERE Rent.start_date >= '${reportData.start_date}' AND Rent.start_date < '${reportData.end_date}';`);
     } catch (err) {
         console.error("Error querying rent report data", err);
+    }
+
+    return result;
+}
+
+export async function createSubsReport(reportData: ReportRequest): Promise<[SubsReportTableData] | []> {
+
+    let result: [SubsReportTableData] | [] = [];
+    try {
+        result = await queryDb(
+            `SELECT User.user_id, User.username, SUM(Game.price) AS games_prices, Count(Game.game_id) AS number_of_games, Studio.studio_id, Studio.name, Studio.price FROM 
+            User 
+            INNER JOIN Rent on User.user_id = Rent.user_id
+            INNER JOIN Game on Rent.game_id = Game.game_id
+            INNER JOIN Studio on Game.studio_id = Studio.studio_id
+            GROUP BY User.user_id, User.username, Studio.studio_id, Studio.name, Studio.price 
+            WHERE Rent.start_date >= '${reportData.start_date}' AND Rent.start_date < '${reportData.end_date}';`);
+    } catch (err) {
+        console.error("Error querying subscription report data", err);
     }
 
     return result;
