@@ -5,10 +5,10 @@
       IMSE Stands for "<span class="leading">I</span>nternet
       <span class="leading">M</span>ultimedia
       <span class="leading">S</span>treaming of
-      <span class="leading">E</span>ntertaining things".
+      <span class="leading">E</span>ntertaining Things".
     </h3>
     <p>
-      This basically means, that this is a Game Renting service. If you want to
+      This basically means, that this is a game renting service. If you want to
       get started renting games you have to be signed in!
     </p>
   </div>

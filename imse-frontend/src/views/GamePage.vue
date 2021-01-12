@@ -46,6 +46,28 @@
             <v-btn elevation="2" type="submit">Extend Rent</v-btn>
           </v-form>
         </v-container>
+        <v-snackbar
+          :value="snackbarRent"
+          absolute
+          color="success"
+          outlined
+          elevation="24"
+        >
+          <p>Your rent was successful!</p>
+          <p>You will be charged {{price}}€.</p>
+          <p>You will be redirected to the games page!</p>
+        </v-snackbar>
+        <v-snackbar
+          :value="snackbarExtension"
+          absolute
+          color="success"
+          outlined
+          elevation="24"
+        >
+          <p>Your extension was successful!</p>
+          <p>You will be charged {{price}}€.</p>
+          <p>You will be redirected to the games page!</p>
+        </v-snackbar>
       </v-col>
     </v-row>
   </div>
@@ -66,6 +88,9 @@ export default Vue.extend({
       game: {title: "", game_id: -1, price: 0},
       ableToRent: false,
       ableToExtend: false,
+      snackbarRent: false,
+      snackbarExtension: false,
+      price: 0,
       nowDate: new Date().toISOString().slice(0,10),
       startDate: new Date().toISOString().slice(0,10),
 
@@ -108,15 +133,19 @@ export default Vue.extend({
             if (value.data.success) {
               console.log("rented!");
               let now = new Date();
+              now.setDate(now.getDate() - 1);
               let end = new Date(rent.expiration_date);
               let daysToRent = (end.getTime() - now.getTime()) / (1000 * 3600 * 24);
-              alert("rented game for " + Math.ceil(daysToRent * this.game.price) + "€!");
+              this.price = Math.ceil(daysToRent) * this.game.price;
               this.ableToExtend = true;
               this.ableToRent = false;
 
               let newStartDate = new Date(rent.expiration_date);
               newStartDate.setDate(newStartDate.getDate() + 1);
               this.startDate = newStartDate.toISOString().slice(0,10);
+
+              this.snackbarRent = true;
+              setTimeout(() => this.$router.push("/games"), 4000);
             }
             this.error = value.data.error;
           }
@@ -158,14 +187,18 @@ export default Vue.extend({
             if (value.data.success) {
               console.log("extended!");
               let now = new Date(this.startDate);
+              now.setDate(now.getDate() - 1);
               let end = new Date(rent.expiration_date);
               let daysToRent = (end.getTime() - now.getTime()) / (1000 * 3600 * 24);
-              alert("extended game for " + Math.ceil((daysToRent+1) * this.game.price) + "€!");
+              this.price = Math.ceil(daysToRent) * this.game.price;
 
               let newStartDate = new Date(rent.expiration_date);
               newStartDate.setDate(newStartDate.getDate() + 1);
               this.startDate = newStartDate.toISOString().slice(0,10);
               this.end_date_ex = "";
+
+              this.snackbarExtension = true;
+              setTimeout(() => this.$router.push("/games"), 4000);
             }
             this.error = value.data.error;
           }
@@ -182,10 +215,6 @@ export default Vue.extend({
     }
   },
   mounted () {
-    let date = new Date();
-    date.setDate(date.getDate() + 1);
-    this.nowDate = date.toISOString().slice(0,10);
-
     axios
       .post(
         `${API_URL}/getExpirationDate`,

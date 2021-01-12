@@ -104,7 +104,7 @@
       elevation="24"
     >
       <p>You are successfully registered!</p>
-      <p>You will be redirected to the homepage.</p>
+      <p>You will be redirected to the login page.</p>
     </v-snackbar>
   </div>
 </template>
@@ -168,7 +168,7 @@ export default Vue.extend({
           if (value.data.success) {
             console.log("registered!");
             this.snackbar = true;
-            setTimeout(() => this.$router.push("/"), 2000);
+            setTimeout(() => this.$router.push("/login"), 3000);
           }
           this.errors = value.data.errors;
         })

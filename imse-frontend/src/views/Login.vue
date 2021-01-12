@@ -2,7 +2,7 @@
   <div class="login">
     <h2>Login</h2>
     <v-container v-if="loggedIn">
-      You Are already logged in!!
+      You are already logged in!!
       <v-btn type="button" v-on:click="logout">Log out</v-btn>
     </v-container>
     <v-container v-if="!loggedIn">
@@ -38,6 +38,17 @@
         <router-link to="/register">Register</router-link>
       </p>
     </v-container>
+    <v-snackbar
+      :value="snackbar"
+      absolute
+      centered
+      color="success"
+      outlined
+      elevation="24"
+    >
+      <p>Logged in as {{this.username}}!</p>
+      <p>You will be redirected to the homepage.</p>
+    </v-snackbar>
   </div>
 </template>
 
@@ -51,6 +62,7 @@ export default Vue.extend({
   data() {
     return {
       username: "",
+      snackbar: false,
       password: "",
       errorMessage: "",
       usernameRules: [(input: string) => !!input],
@@ -89,17 +101,18 @@ export default Vue.extend({
             data: { success: boolean; error: string; token: string };
           }) => {
             if (value.data.success) {
-              alert("logged in as!" + this.username);
+              console.log("logged in");
+              this.snackbar = true;
               store.commit("setToken", value.data.token);
               store.commit("setUsername", this.username);
-              setTimeout(() => this.$router.push("/"), 200);
+              setTimeout(() => this.$router.push("/"), 2000);
             }
             this.errorMessage = value.data.error;
           }
         )
         .catch((err: AxiosError) => {
           this.errorMessage = err.response?.data.error;
-          console.error("error in backend when registering user!");
+          console.error("error in backend when logging in!");
         });
     },
   },
