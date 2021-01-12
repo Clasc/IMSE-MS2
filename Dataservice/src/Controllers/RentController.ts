@@ -13,7 +13,7 @@ export async function insertRent(req: Request, res: Response) {
     console.log(req.body);
     let rentId = req.params.rentId;
 
-    if (!req.body.start_date || !req.body.expiration_date || req.body.extended == null || req.body.extended == undefined || !req.body.username || !req.body.game_id) {
+    if (!req.body.start_date || !req.body.expiration_date || req.body.extended == null || req.body.extended == undefined || (!req.body.username && !req.body.user_id) || !req.body.game_id) {
         res.status(500).send(`Request body is empty`);
         console.log("Not all data to insert rent");
         return;
@@ -25,13 +25,17 @@ export async function insertRent(req: Request, res: Response) {
     rent.expiration_date = req.body.expiration_date;
     rent.game_id = req.body.game_id;
 
-    let user = await UserRepo.getUserByUsername(req.body.username);
-    if (!user || !user[0].user_id) {
-        res.status(400).send("Request is invalid. User not existing");
-        return;
+    if (req.body.username) {
+        let user = await UserRepo.getUserByUsername(req.body.username);
+        if (!user || !user[0].user_id) {
+            res.status(400).send("Request is invalid. User not existing");
+            return;
+        }
+        
+        rent.user_id = user[0].user_id;
+    } else {
+        rent.user_id = req.body.user_id;
     }
-    
-    rent.user_id = user[0].user_id;
 
     if (rentId) {
         rent.rent_id = parseInt(rentId);
