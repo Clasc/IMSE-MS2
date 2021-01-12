@@ -27,12 +27,24 @@
                 label="end_date*"
                 :min="nowDate"
               />
-              <div class="error-message">{{ errorMessage }}</div>
-              <v-btn elevation="2" type="submit">Rent Game</v-btn>
+            <div class="error-message">{{ errorMessage }}</div>
+            <v-btn elevation="2" type="submit">Rent Game</v-btn>
           </v-form>
         </v-container>
         <v-container v-if="loggedIn && ableToExtend">
           <span class="text">Until when do you want to extend your rent?</span>
+          <v-form v-on:submit.prevent="extendRent" ref="form">
+            <v-date-picker
+                name="end_date_ex"
+                v-model="end_date_ex"
+                :rules="end_date_exRules"
+                title="Extend Until ..."
+                label="end_date_ex*"
+                :min="startDate"
+              />
+            <div class="error-message">{{ errorMessage }}</div>
+            <v-btn elevation="2" type="submit">Extend Rent</v-btn>
+          </v-form>
         </v-container>
       </v-col>
     </v-row>
@@ -55,10 +67,12 @@ export default Vue.extend({
       ableToRent: false,
       ableToExtend: false,
       nowDate: new Date().toISOString().slice(0,10),
-      price: 0,
+      startDate: new Date().toISOString().slice(0,10),
 
       end_date: "",
       end_dateRules: [(end_date: string) => !!end_date],
+      end_date_ex: "",
+      end_date_exRules: [(end_date_ex: string) => !!end_date_ex],
       error: ""
     }
   },
@@ -99,6 +113,10 @@ export default Vue.extend({
               alert("rented game for " + Math.ceil(daysToRent * this.game.price) + "€!");
               this.ableToExtend = true;
               this.ableToRent = false;
+
+              let newStartDate = new Date(rent.expiration_date);
+              newStartDate.setDate(newStartDate.getDate() + 1);
+              this.startDate = newStartDate.toISOString().slice(0,10);
             }
             this.error = value.data.error;
           }
@@ -106,6 +124,55 @@ export default Vue.extend({
         .catch((err: AxiosError) => {
           this.error = err.response?.data.error;
           console.error("error in backend when renting game!");
+        });
+    },
+
+    extendRent() {
+      let isValid = (this.$refs.form as any).validate();
+
+      if (!isValid) {
+        return;
+      }
+
+      let rent = <Rent>{
+        extended: true,
+        start_date: new Date().toISOString().slice(0,10),
+        expiration_date: this.end_date_ex,
+        username: this.$store.getters.getUsername,
+        game_id: this.game.game_id
+      };
+
+      axios
+        .post(
+          `${API_URL}/extendRent`,
+          JSON.stringify(rent),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((value: {
+          data: { success: boolean; error: string; };
+          }) => {
+            if (value.data.success) {
+              console.log("extended!");
+              let now = new Date(this.startDate);
+              let end = new Date(rent.expiration_date);
+              let daysToRent = (end.getTime() - now.getTime()) / (1000 * 3600 * 24);
+              alert("extended game for " + Math.ceil((daysToRent+1) * this.game.price) + "€!");
+
+              let newStartDate = new Date(rent.expiration_date);
+              newStartDate.setDate(newStartDate.getDate() + 1);
+              this.startDate = newStartDate.toISOString().slice(0,10);
+              this.end_date_ex = "";
+            }
+            this.error = value.data.error;
+          }
+        )
+        .catch((err: AxiosError) => {
+          this.error = err.response?.data.error;
+          console.error("error in backend when extending game!");
         });
     }
   },
@@ -118,6 +185,30 @@ export default Vue.extend({
     let date = new Date();
     date.setDate(date.getDate() + 1);
     this.nowDate = date.toISOString().slice(0,10);
+
+    axios
+      .post(
+        `${API_URL}/getExpirationDate`,
+        JSON.stringify({ username: this.$store.getters.getUsername, game_id: this.$route.params.id }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then( response => {
+        if (!response.data.date) {
+          this.startDate = this.nowDate;
+          return;
+        }
+        let newStartDate = new Date(response.data.date);
+        newStartDate.setDate(newStartDate.getDate() + 1);
+        this.startDate = newStartDate.toISOString().slice(0,10);
+      })
+      .catch((err: AxiosError) => {
+        console.error(err);
+        console.error("error in backend when getting expiration date!");
+      });
 
     axios
       .get(`${API_URL}/games/` + this.$route.params.id)

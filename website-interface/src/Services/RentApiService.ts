@@ -21,6 +21,24 @@ export class RentApiService {
         return true;
     }
 
+    public static async extendRent(rent: Rent): Promise<boolean> {
+        try {
+            await axios
+                .post(`${RestApi}/extendRent`, JSON.stringify(rent), {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+        }
+        catch {
+            console.log("unable to extend rent!");
+            return false;
+        };
+
+        console.log("extended rent!");
+        return true;
+    }
+
     public static async ableToRent(game_id: string, username: string): Promise<boolean> {
         let ableToRent = false;
         try {
@@ -57,6 +75,25 @@ export class RentApiService {
         };
 
         return ableToExtend;
+    }
+
+    public static async getExpirationDate(game_id: string, username: string): Promise<string> {
+        let date = "";
+        try {
+            date = (await axios
+                .post(`${RestApi}/getExpirationDate`, JSON.stringify({ username: username, game_id: game_id }), {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })).data.date;
+        }
+        catch (err) {
+            console.error(err);
+            console.log("unable to get expiration date!");
+            return "";
+        };
+
+        return date;
     }
 
 }

@@ -17,6 +17,18 @@ export async function ableToRent(req: Request, res: Response) {
     res.status(200).send({ ableToRent: ableToRent, ableToExtend: ableToExtend });
 }
 
+export async function getExpirationDate(req: Request, res: Response) {
+    console.log(req.body);
+    if (!req.body?.game_id || !req.body?.username) {
+        res.status(200).send({ ableToRent: false });
+        console.log("getExpirationDate: post body is empty");
+        return;
+    }
+    
+    const date = await RentApiService.getExpirationDate(req.body?.game_id, req.body?.username);
+    res.status(200).send({ date: date });
+}
+
 export async function rentGame(req: Request, res: Response) {
     console.log(req.body);
     let rent = new Rent();
@@ -40,6 +52,32 @@ export async function rentGame(req: Request, res: Response) {
     rent.username = req.body?.username;
 
     let success = await RentApiService.insertRent(rent);
+    res.status(success ? 200 : 500).send({ success: success });
+}
+
+export async function extendRent(req: Request, res: Response) {
+    console.log(req.body);
+    let rent = new Rent();
+
+    if (!req.body) {
+        res.status(400).send(`Request body is empty`);
+        return
+    }
+
+    let errors = await validateRentData(req.body as Rent);
+
+    if (errors.length > 0) {
+        res.status(200).send({ success: false, error: "Not all data has been given!" });
+        return;
+    }
+
+    rent.extended = req.body?.extended;
+    rent.start_date = req.body?.start_date;
+    rent.expiration_date = req.body?.expiration_date;
+    rent.game_id = req.body?.game_id;
+    rent.username = req.body?.username;
+
+    let success = await RentApiService.extendRent(rent);
     res.status(success ? 200 : 500).send({ success: success });
 }
 
