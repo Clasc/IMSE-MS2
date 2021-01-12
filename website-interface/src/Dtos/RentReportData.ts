@@ -5,4 +5,7 @@ export interface RentReportData {
     game_id: number;
     price: number;
     playtime: number;
+    progress: number;
+    start_date: string;
+    expiration_date: string;
 }

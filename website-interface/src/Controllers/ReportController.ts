@@ -16,6 +16,14 @@ export async function createRentReport(req: Request, res: Response) {
         return
     }
 
+    let from = new Date(data.start_date);
+    let to = new Date(data.end_date);
+
+    if (to.getTime() < from.getTime()) {
+        res.status(400).send({ error: "end date of the report is before start date" });
+        return
+    }
+
     let reportData = await ReportApiService.getRentReport(data);
     console.log("reportData:", reportData);
     res.status(200).send({ report: reportData });
