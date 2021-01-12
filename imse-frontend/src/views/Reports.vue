@@ -5,6 +5,21 @@
         <v-btn v-on:click="getRentReport">Report about Rents</v-btn>
       </v-col>
       <v-col>
+        <v-date-picker
+          name="start_date"
+          v-model="start_date"
+          :rules="start_date_Rules"
+          title="From"
+          label="start_date*"
+        />
+        <v-date-picker
+          name="end_date"
+          v-model="end_date"
+          :rules="end_date_Rules"
+          title="Until"
+          label="end_date*"
+          :min="start_date"
+        />
         <v-btn v-on:click="getSubscriptionReport">Report about Subscriptions</v-btn>
       </v-col>
     </v-row>
@@ -17,6 +32,15 @@ import axios from "axios";
 import Vue from "vue";
 export default Vue.extend({
   name: "reports",
+  data () {
+    return {
+      start_date: new Date().toISOString().slice(0,10),
+      end_date: new Date().toISOString().slice(0,10),
+
+      start_date_Rules: [(startDate: string) => !! startDate],
+      end_date_Rules: [(endDate: string) => !! endDate],
+    }
+  },
   methods: {
     async getRentReport() {
       await axios.post(`${API_URL}/report/rent`, {
@@ -29,6 +53,8 @@ export default Vue.extend({
       await axios.post(`${API_URL}/report/subscription`, {
         username: this.$store.state.username,
         token: this.$store.state.token,
+        start_date: this.start_date,
+        end_date: this.end_date
       });
     },
   },

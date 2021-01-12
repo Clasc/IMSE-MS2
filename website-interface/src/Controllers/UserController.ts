@@ -107,3 +107,19 @@ export async function createRentReport(req: Request, res: Response) {
     res.status(200).send({ success: true });
 }
 
+export async function createSubscriptionReport(req: Request, res: Response) {
+    console.log(req.body);
+    let data = req.body as LoginData;
+    if (!data.token || !data.username) {
+        res.status(400).send({ success: false });
+        return
+    }
+
+    if (! await LoginService.userIsAdmin(data)) {
+        res.status(401).send({ success: false });
+        return
+    }
+
+    res.status(200).send({ success: true });
+}
+
