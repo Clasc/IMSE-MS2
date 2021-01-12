@@ -1,10 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col>
-        <v-btn v-on:click="getRentReport">Report about Rents</v-btn>
-      </v-col>
-      <v-col>
+      <v-col cols="6">
         <v-date-picker
           name="start_date"
           v-model="start_date"
@@ -12,6 +9,8 @@
           title="From"
           label="start_date*"
         />
+      </v-col>
+      <v-col cols="6">
         <v-date-picker
           name="end_date"
           v-model="end_date"
@@ -20,7 +19,16 @@
           label="end_date*"
           :min="start_date"
         />
-        <v-btn v-on:click="getSubscriptionReport">Report about Subscriptions</v-btn>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="6">
+        <v-btn v-on:click="getRentReport">Report about Rents</v-btn>
+      </v-col>
+      <v-col cols="6">
+        <v-btn v-on:click="getSubscriptionReport">
+          Report about Subscriptions
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -32,20 +40,22 @@ import axios from "axios";
 import Vue from "vue";
 export default Vue.extend({
   name: "reports",
-  data () {
+  data() {
     return {
-      start_date: new Date().toISOString().slice(0,10),
-      end_date: new Date().toISOString().slice(0,10),
+      start_date: new Date().toISOString().slice(0, 10),
+      end_date: new Date().toISOString().slice(0, 10),
 
-      start_date_Rules: [(startDate: string) => !! startDate],
-      end_date_Rules: [(endDate: string) => !! endDate],
-    }
+      start_date_Rules: [(startDate: string) => !!startDate],
+      end_date_Rules: [(endDate: string) => !!endDate],
+    };
   },
   methods: {
     async getRentReport() {
       await axios.post(`${API_URL}/report/rent`, {
         username: this.$store.state.username,
         token: this.$store.state.token,
+        start_date: this.start_date,
+        end_date: this.end_date,
       });
     },
 
@@ -54,7 +64,7 @@ export default Vue.extend({
         username: this.$store.state.username,
         token: this.$store.state.token,
         start_date: this.start_date,
-        end_date: this.end_date
+        end_date: this.end_date,
       });
     },
   },

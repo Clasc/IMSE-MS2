@@ -1,9 +1,10 @@
 
 import { Express } from "express";
 import { fillDB } from "./DBFilling";
-import { isAdmin, loggedIn, login, registerUser, createSubscriptionReport, createRentReport } from "./Controllers/UserController";
+import { isAdmin, loggedIn, login, registerUser } from "./Controllers/UserController";
 import { getAllGames, getGameById } from "./Controllers/GameController";
 import { ableToRent, rentGame, getExpirationDate, extendRent } from "./Controllers/RentController";
+import { createRentReport, createSubscriptionReport } from "./Controllers/ReportController";
 
 export class Router {
     private readonly app: Express;

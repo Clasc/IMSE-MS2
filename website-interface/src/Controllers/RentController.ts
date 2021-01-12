@@ -12,7 +12,7 @@ export async function ableToRent(req: Request, res: Response) {
         console.log("ableToRent: post body is empty");
         return;
     }
-    
+
     const ableToRent = await RentApiService.ableToRent(req.body?.game_id, req.body?.username);
     const ableToExtend = await RentApiService.ableToExtend(req.body?.game_id, req.body?.username);
     res.status(200).send({ ableToRent: ableToRent, ableToExtend: ableToExtend });
@@ -25,7 +25,7 @@ export async function getExpirationDate(req: Request, res: Response) {
         console.log("getExpirationDate: post body is empty");
         return;
     }
-    
+
     const date = await RentApiService.getExpirationDate(req.body?.game_id, req.body?.username);
     res.status(200).send({ date: date });
 }
@@ -52,16 +52,16 @@ export async function rentGame(req: Request, res: Response) {
     rent.game_id = req.body?.game_id;
     rent.username = req.body?.username;
 
-    let success = await RentApiService.extendRent(rent);
+    let success = await RentApiService.insertRent(rent);
     if (success) {
         let user_id = await UserApiService.getUserByUsername(rent.username!);
 
         await PlayedGameApiService.insertPlayedGame({
-            "user_id": user_id[0]?.user_id,
-            "playtime": 0,
-            "progress": 0,
-            "last_played": "",
-            "game_id": rent.game_id
+            user_id: user_id[0]?.user_id,
+            playtime: 0,
+            progress: 0,
+            last_played: undefined,
+            game_id: rent.game_id
         });
     }
 

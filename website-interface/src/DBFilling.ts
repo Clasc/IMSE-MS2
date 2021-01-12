@@ -35,11 +35,11 @@ export async function fillDB(req: Request, res: Response) {
     });
 
     let firstnames: string[] = ["James", "Mary", "John", "Jennifer", "Robert", "Lisa", "Michael",
-                                "Margaret", "Richard", "Sandra", "Paul", "Emily", "Thomas", "Emma",
-                                "George", "Laura"];
+        "Margaret", "Richard", "Sandra", "Paul", "Emily", "Thomas", "Emma",
+        "George", "Laura"];
     let lastnames: string[] = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis",
-                                "Wilson", "Martin", "Lee", "Taylor", "Jackson", "Moore", "Harris",
-                                "Walker", "Young"]
+        "Wilson", "Martin", "Lee", "Taylor", "Jackson", "Moore", "Harris",
+        "Walker", "Young"]
 
     for (let i = 3; i < 23; i++) {
         hash = createHash("md5");
@@ -52,7 +52,7 @@ export async function fillDB(req: Request, res: Response) {
             "password": hash.update("asdf").digest('hex'),
             "is_admin": false,
             "birthday": randomDate("1950-1-1", "2002-1-1")
-        }); 
+        });
     }
 
     await StudioApiService.insertStudio({
@@ -284,7 +284,7 @@ export async function fillDB(req: Request, res: Response) {
         "recommended_game_id": 10
     });
     GameRecommendationApiService.insertGameRecommendation({
-        "game_id":8,
+        "game_id": 8,
         "recommended_game_id": 10
     });
     GameRecommendationApiService.insertGameRecommendation({
@@ -395,6 +395,7 @@ export async function fillDB(req: Request, res: Response) {
         "user_id": 1,
         "game_id": 5
     });
+
     PlayedGameApiService.insertPlayedGame({
         "user_id": 1,
         "playtime": randomNumber(200),
@@ -431,7 +432,7 @@ export async function fillDB(req: Request, res: Response) {
         "last_played": randomDate(start, new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')),
         "game_id": 1
     });
-    
+
     start = randomDate("2018-9-13", new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''));
     RentApiService.insertRent({
         "extended": randomBoolean(),
@@ -568,9 +569,9 @@ function randomNumber(max: number) {
 function randomString(len: number) {
     let options = "abcdefghijklmnopqrstuvwxyz0123456789";
     let result = "";
-        for (let i = 0; i < len; i++) {
-            result += options.charAt(Math.floor(Math.random() * options.length));
-        }
+    for (let i = 0; i < len; i++) {
+        result += options.charAt(Math.floor(Math.random() * options.length));
+    }
     return result;
 }
 

@@ -8,7 +8,7 @@ export async function getAllPlayedGames(req: Request, res: Response) {
 }
 
 export async function insertPlayedGame(req: Request, res: Response) {
-  let playedGameId = req.params.playedGameId;
+    let playedGameId = req.params.playedGameId;
     let playedGame = req.body as PlayedGame | undefined | null;
 
     if (!playedGame) {
@@ -19,7 +19,13 @@ export async function insertPlayedGame(req: Request, res: Response) {
     if (playedGameId) {
         playedGame.played_game_id = parseInt(playedGameId);
     }
-    
-    let success = await PlayedGameRepo.insertPlayedGame(playedGame);
+
+    let existingPlayedGame = await PlayedGameRepo.getPlayedGameBy(playedGame.user_id!, playedGame.game_id!);
+    let success = true;
+
+    if (!existingPlayedGame[0]) {
+        success = await PlayedGameRepo.insertPlayedGame(playedGame);
+    }
+
     res.status(success ? 200 : 500).send(`inserted a playedGame: ${success}`);
 }

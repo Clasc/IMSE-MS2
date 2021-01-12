@@ -1,4 +1,4 @@
-import { LoginData } from "../Interfaces";
+import { LoginData } from "../Interfaces/LoginData";
 import { UserApiService } from "./UserApiService";
 
 export class LoginService {
