@@ -53,6 +53,10 @@ export async function createRentReport(req: Request, res: Response) {
         console.error("error writing report to csv", err);
     }
 
+    res.set({
+        "Content-Disposition": "attachment;filename=report.csv"
+    });
+
     res.status(200).sendFile(rentReportPath);
 }
 

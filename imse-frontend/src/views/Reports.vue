@@ -51,12 +51,19 @@ export default Vue.extend({
   },
   methods: {
     async getRentReport() {
-      await axios.post(`${API_URL}/report/rent`, {
+      let response = await axios.post(`${API_URL}/report/rent`, {
         username: this.$store.state.username,
         token: this.$store.state.token,
         start_date: this.start_date,
         end_date: this.end_date,
       });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "report.csv");
+      document.body.appendChild(link);
+      link.click();
     },
 
     async getSubscriptionReport() {
