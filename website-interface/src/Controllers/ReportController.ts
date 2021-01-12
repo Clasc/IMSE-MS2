@@ -2,6 +2,10 @@ import { Request, Response } from "express";
 import { ReportRequest } from "../Interfaces/ReportData";
 import { LoginService } from "../Services/LoginService";
 import { ReportApiService } from "../Services/ReportApiService";
+import { createObjectCsvWriter } from "csv-writer";
+
+const rentReportPath = __dirname + '/rent-report.csv';
+const subscriptionReportPath = '../res/subscription-report.csv';
 
 export async function createRentReport(req: Request, res: Response) {
     console.log(req.body);
@@ -25,8 +29,31 @@ export async function createRentReport(req: Request, res: Response) {
     }
 
     let reportData = await ReportApiService.getRentReport(data);
+
+    const csvWriter = createObjectCsvWriter({
+        path: rentReportPath,
+        header: [
+            { id: 'user_id', title: 'User ID' },
+            { id: "username", title: "Username" },
+            { id: "title", title: "Game Title" },
+            { id: "game_id", title: "Game ID" },
+            { id: "price", title: "Price in €" },
+            { id: "playtime", title: "Play Time in h" },
+            { id: "progress", title: "Game Progess in %" },
+            { id: "start_date", title: "Rent Start Date" },
+            { id: "expiration_date", title: "Rent Expire Date" },
+        ]
+    });
+
     console.log("reportData:", reportData);
-    res.status(200).send({ report: reportData });
+
+    try {
+        await csvWriter.writeRecords(reportData);
+    } catch (err) {
+        console.error("error writing report to csv", err);
+    }
+
+    res.status(200).sendFile(rentReportPath);
 }
 
 export async function createSubscriptionReport(req: Request, res: Response) {
