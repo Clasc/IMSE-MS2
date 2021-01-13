@@ -2,7 +2,7 @@ FROM node:14.9.0-slim
 WORKDIR /app
 COPY package*.json /app/
 
-RUN npm install
+RUN npm install --loglevel=error
 # If you are building your code for production
 # RUN npm ci --only=production
 

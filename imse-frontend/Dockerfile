@@ -3,8 +3,8 @@ FROM node:14.9.0-slim as build-stage
 WORKDIR /frontend
 COPY package*.json ./
 
-RUN npm install
-RUN npm install @vue/cli -g
+RUN npm install --loglevel=error
+RUN npm install @vue/cli -g --loglevel=error
 COPY . .
 RUN npm run build
 
