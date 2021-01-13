@@ -376,7 +376,7 @@ export async function fillDB(req: Request, res: Response) {
     RentApiService.insertRent({
         extended: randomBoolean(),
         start_date: start,
-        expiration_date: randomDate(start, "2021-12-31"),
+        expiration_date: randomDate(new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''), "2021-12-31"),
         user_id: 1,
         game_id: 8
     });
@@ -391,7 +391,7 @@ export async function fillDB(req: Request, res: Response) {
     RentApiService.insertRent({
         extended: randomBoolean(),
         start_date: start,
-        expiration_date: randomDate(start, "2021-12-31"),
+        expiration_date: randomDate(new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''), "2021-12-31"),
         user_id: 1,
         game_id: 5
     });
@@ -407,7 +407,7 @@ export async function fillDB(req: Request, res: Response) {
     RentApiService.insertRent({
         extended: randomBoolean(),
         start_date: start,
-        expiration_date: randomDate(start, "2021-12-31"),
+        expiration_date: randomDate(new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''), "2021-12-31"),
         user_id: 1,
         game_id: 17
     });
@@ -437,7 +437,7 @@ export async function fillDB(req: Request, res: Response) {
     RentApiService.insertRent({
         extended: randomBoolean(),
         start_date: start,
-        expiration_date: randomDate(start, "2021-12-31"),
+        expiration_date: randomDate(new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''), "2021-12-31"),
         user_id: 2,
         game_id: 3
     });
@@ -452,7 +452,7 @@ export async function fillDB(req: Request, res: Response) {
     RentApiService.insertRent({
         extended: randomBoolean(),
         start_date: start,
-        expiration_date: randomDate(start, "2021-12-31"),
+        expiration_date: randomDate(new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''), "2021-12-31"),
         user_id: 2,
         game_id: 2
     });
@@ -467,7 +467,7 @@ export async function fillDB(req: Request, res: Response) {
     RentApiService.insertRent({
         extended: randomBoolean(),
         start_date: start,
-        expiration_date: randomDate(start, "2021-12-31"),
+        expiration_date: randomDate(new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''), "2021-12-31"),
         user_id: 2,
         game_id: 6
     });
