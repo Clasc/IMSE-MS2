@@ -30,6 +30,14 @@ export async function createRentReport(req: Request, res: Response) {
 
     let reportData = await ReportApiService.getRentReport(data);
 
+    const indays = 1000 * 60 * 60 * 24;
+    reportData.forEach((entry) => {
+        let start = new Date(entry.start_date);
+        let end = new Date(entry.expiration_date);
+        let diff = ((end.getTime() - start.getTime()) / indays) + 1;
+        entry.price = entry.price * diff;
+    });
+
     const csvWriter = createObjectCsvWriter({
         path: rentReportPath,
         header: [
@@ -51,6 +59,7 @@ export async function createRentReport(req: Request, res: Response) {
         await csvWriter.writeRecords(reportData);
     } catch (err) {
         console.error("error writing report to csv", err);
+        res.status(500).send({ error: "Error writing the csv file" });
     }
 
     res.set({
