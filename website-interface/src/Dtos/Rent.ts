@@ -5,4 +5,5 @@ export class Rent {
     expiration_date?: string = "";
     username?: string = "";
     game_id?: number = 0;
+    user_id?: number;
 }

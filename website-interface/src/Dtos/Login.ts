@@ -1,4 +1,4 @@
-export class Login {
+export interface Login {
     user_id: number;
     token: string;
 }
