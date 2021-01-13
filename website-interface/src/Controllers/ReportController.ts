@@ -5,7 +5,7 @@ import { ReportApiService } from "../Services/ReportApiService";
 import { createObjectCsvWriter } from "csv-writer";
 
 const rentReportPath = __dirname + '/rent-report.csv';
-const subscriptionReportPath = __dirname + '/subscription-report.csv';
+const studioReportPath = __dirname + '/studio-report.csv';
 
 export async function createRentReport(req: Request, res: Response) {
     console.log(req.body);
@@ -33,7 +33,7 @@ export async function createRentReport(req: Request, res: Response) {
     const csvWriter = createObjectCsvWriter({
         path: rentReportPath,
         header: [
-            { id: 'user_id', title: 'User ID' },
+            { id: "user_id", title: "User ID" },
             { id: "username", title: "Username" },
             { id: "title", title: "Game Title" },
             { id: "game_id", title: "Game ID" },
@@ -60,7 +60,7 @@ export async function createRentReport(req: Request, res: Response) {
     res.status(200).sendFile(rentReportPath);
 }
 
-export async function createSubscriptionReport(req: Request, res: Response) {
+export async function createStudioReport(req: Request, res: Response) {
     console.log(req.body);
     let data = req.body as ReportRequest;
     if (!data.token || !data.username || !data.end_date || !data.start_date) {
@@ -73,17 +73,17 @@ export async function createSubscriptionReport(req: Request, res: Response) {
         return
     }
 
-    let reportData = await ReportApiService.getSubsReport(data);
+    let reportData = await ReportApiService.getStudioReport(data);
     const csvWriter = createObjectCsvWriter({
-        path: subscriptionReportPath,
+        path: studioReportPath,
         header: [
-            { id: 'user_id', title: 'User ID' },
+            { id: "user_id", title: "User ID" },
             { id: "username", title: "Username" },
             { id: "games_prices", title: "Price of Games in €" },
             { id: "number_of_games", title: "# of Games from Studio" },
             { id: "studio_id", title: "Studio ID" },
-            { id: "studio_name", title: "Studio" },
-            { id: "studio_price", title: "Studio price in €" }
+            { id: "name", title: "Studio" },
+            { id: "price", title: "Studio price in €" }
         ]
     });
 
@@ -99,6 +99,6 @@ export async function createSubscriptionReport(req: Request, res: Response) {
         "Content-Disposition": "attachment;filename=report.csv"
     });
 
-    res.status(200).send({ success: true });
+    res.status(200).sendFile(studioReportPath);
 }
 

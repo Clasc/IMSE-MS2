@@ -1,6 +1,6 @@
 import axios from "axios";
 import { RentReportData } from "../Dtos/RentReportData";
-import { SubsReportTableData } from "../Dtos/SubsReportTableData";
+import { StudioReportTableData } from "../Dtos/StudioReportTableData";
 import { ReportRequest } from "../Interfaces/ReportData";
 import { RestApi } from "../RestApi";
 
@@ -24,23 +24,23 @@ export class ReportApiService {
         return rentReport;
     }
 
-    public static async getSubsReport(reportRequest: ReportRequest): Promise<[SubsReportTableData] | []> {
+    public static async getStudioReport(reportRequest: ReportRequest): Promise<[StudioReportTableData] | []> {
         console.log(reportRequest);
-        let subsReport: [SubsReportTableData] | [] = [];
+        let studioReport: [StudioReportTableData] | [] = [];
         try {
-            subsReport = (await axios
-                .post(`${RestApi}/reports/subscription`, JSON.stringify(reportRequest), {
+            studioReport = (await axios
+                .post(`${RestApi}/reports/studio`, JSON.stringify(reportRequest), {
                     headers: {
                         "Content-Type": "application/json",
                     },
                 })).data;
         }
         catch {
-            console.log("unable to generate Report about subscriptions!");
+            console.log("unable to generate Report about studios!");
         };
 
-        console.log("subscription Report generated!");
-        return subsReport;
+        console.log("studio Report generated!");
+        return studioReport;
     }
 
 }

@@ -26,9 +26,7 @@
         <v-btn v-on:click="getRentReport">Report about Rents</v-btn>
       </v-col>
       <v-col cols="6">
-        <v-btn v-on:click="getSubscriptionReport">
-          Report about Subscriptions
-        </v-btn>
+        <v-btn v-on:click="getStudioReport">Report about Studios</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -66,8 +64,8 @@ export default Vue.extend({
       link.click();
     },
 
-    async getSubscriptionReport() {
-      let response = await axios.post(`${API_URL}/report/subscription`, {
+    async getStudioReport() {
+      let response = await axios.post(`${API_URL}/report/studio`, {
         username: this.$store.state.username,
         token: this.$store.state.token,
         start_date: this.start_date,

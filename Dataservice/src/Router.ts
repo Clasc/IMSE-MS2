@@ -8,7 +8,7 @@ import { insertGameRecommendation, getAllGameRecommendations } from "./Controlle
 import { insertRent, getAllRents, ableToRent, ableToExtend, getExpirationDate, extendRent } from "./Controllers/RentController";
 import { insertSubscription, getAllSubscriptions } from "./Controllers/SubscriptionController";
 import { insertPlayedGame, getAllPlayedGames } from "./Controllers/PlayedGameController";
-import { getRentReport } from "./Controllers/ReportController";
+import { getRentReport, getStudioReport } from "./Controllers/ReportController";
 
 
 export class Router {
@@ -60,6 +60,6 @@ export class Router {
         this.app.post("/getExpirationDate", getExpirationDate);
 
         this.app.post("/reports/rent", getRentReport);
-        this.app.post("/reports/subscription", getRentReport);
+        this.app.post("/reports/studio", getStudioReport);
     }
 }

@@ -1,4 +1,4 @@
-export interface SubsReportTableData {
+export interface StudioReportTableData {
     user_id: number;
     username: string;
     games_prices: number;
