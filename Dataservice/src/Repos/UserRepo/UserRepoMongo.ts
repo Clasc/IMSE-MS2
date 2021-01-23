@@ -10,22 +10,45 @@ export class UserRepoMongo implements IUserRepo {
     }
 
     public async getUserById(id: string): Promise<User | null> {
-        throw new Error("Method not implemented.");
+        let users: Cursor<User> = mongoDB.collection("User").find({ user_id: id });
+        return (await users.toArray())[0];
     }
 
     public async getUserByUsername(username: string): Promise<User[] | null> {
-        throw new Error("Method not implemented.");
+        let users: Cursor<User> = mongoDB.collection("User").find({ username: username });
+        return users.toArray()
     }
 
     public async insertUser(user: User): Promise<boolean> {
-        throw new Error("Method not implemented.");
+        try {
+            await mongoDB.collection("User").insertOne(user);
+            return true;
+        }
+        catch (err) {
+            console.error(err);
+            return false
+        };
     }
 
     public async updateUserToken(user_id: string, token: string): Promise<boolean> {
-        throw new Error("Method not implemented.");
+        try {
+            await mongoDB.collection("User").updateOne({ user_id: user_id }, { token: token });
+            return true;
+        }
+        catch (err) {
+            console.error(err);
+            return false
+        }
     }
 
     public async deleteUser(userId: number): Promise<boolean> {
-        throw new Error("Method not implemented.");
+        try {
+            await mongoDB.collection("User").deleteOne({ user_id: userId });
+            return true;
+        }
+        catch (err) {
+            console.error(err);
+            return false;
+        }
     }
 }
