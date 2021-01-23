@@ -4,7 +4,7 @@ import { UserRepo } from "./UserRepo";
 import { UserRepoMongo } from "./UserRepoMongo";
 
 export interface IUserRepo {
-    getAllUsers(): Promise<[User]>;
+    getAllUsers(): Promise<User[]>;
 
     getUserById(id: string): Promise<User | null>;
 

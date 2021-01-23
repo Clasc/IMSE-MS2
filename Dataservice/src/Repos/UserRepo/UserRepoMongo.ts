@@ -1,9 +1,12 @@
+import { Cursor } from "mongodb";
 import { User } from "../../Dtos/User";
+import { mongoDB } from "../../Services/mongodb";
 import { IUserRepo } from "./IUserRepo";
 
 export class UserRepoMongo implements IUserRepo {
-    public async getAllUsers(): Promise<[User]> {
-        throw new Error("Method not implemented.");
+    public async getAllUsers(): Promise<User[]> {
+        let users: Cursor<User> = mongoDB.collection("User").find();
+        return users.toArray();
     }
 
     public async getUserById(id: string): Promise<User | null> {

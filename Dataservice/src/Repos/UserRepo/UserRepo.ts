@@ -3,9 +3,9 @@ import { queryDb } from "../../Services/db";
 import { IUserRepo } from "./IUserRepo";
 
 export class UserRepo implements IUserRepo {
-    public async getAllUsers(): Promise<[User]> {
+    public async getAllUsers(): Promise<User[]> {
         try {
-            let queryResult: [User] = await queryDb("SELECT * FROM User");
+            let queryResult: User[] = await queryDb("SELECT * FROM User");
             return queryResult;
         }
         catch (err) {
