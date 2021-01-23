@@ -19,6 +19,21 @@ services:
     networks:
       db:
 
+  mongo:
+    image: mongo
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: imse_mongo_db
+    volumes:
+      - ./db/mongodb:/data/db
+      - ./db/mongo-setup:/docker-entrypoint-initdb.d/:ro
+    expose:
+      - 27017
+    networks:
+      db:
+
   api:
     #this tells docker where to look for the Dockerfile to build the image
     build: ./Dataservice
@@ -38,6 +53,10 @@ services:
       - MYSQL_USER=user
       - MYSQL_PASSWORD=password
       - MYSQL_DB=imse_sql_db
+      - MONGO_HOST_IP=localhost
+      - MONGO_USER=user
+      - MONGO_PASSWORD=password
+      - MONGO_DB=imse_mongo_db
     links:
       - sql
     #EXPOSE defines the ports reachable from INSIDE your docker network
