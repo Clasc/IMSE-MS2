@@ -1,8 +1,9 @@
-import { Rent } from "../Dtos/Rent";
-import { db, queryDb } from "../Services/db";
+import { Rent } from "../../Dtos/Rent";
+import { queryDb } from "../../Services/db";
+import { IRentRepo } from "./IRentRepo";
 
-export class RentRepo {
-    public static async getAllRents(): Promise<[Rent]> {
+export class RentRepo implements IRentRepo {
+    public async getAllRents(): Promise<[Rent]> {
         try {
             let queryResult: [Rent] = await queryDb("SELECT * FROM Rent");
             return queryResult;
@@ -12,8 +13,8 @@ export class RentRepo {
             return [new Rent()];
         }
     }
-    
-    public static async insertRent(rent: Rent): Promise<boolean> {
+
+    public async insertRent(rent: Rent): Promise<boolean> {
         try {
             let result: any = await queryDb(`INSERT INTO Rent SET ?`, rent);
             return true;
@@ -25,7 +26,7 @@ export class RentRepo {
         }
     }
 
-    public static async extendRent(rentId: number, date: string): Promise<boolean> {
+    public async extendRent(rentId: number, date: string): Promise<boolean> {
         try {
             let result: any = await queryDb(`UPDATE Rent
             SET expiration_date = '${date}', extended = true
@@ -39,7 +40,7 @@ export class RentRepo {
         }
     }
 
-    public static async getRentsByUserId(user_id: string): Promise<[Rent] | null> {
+    public async getRentsByUserId(user_id: string): Promise<[Rent] | null> {
         try {
             let rents: [Rent] = await queryDb(`SELECT * FROM Rent WHERE user_id = ${user_id}`);
             return rents;

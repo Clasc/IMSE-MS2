@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import { Rent } from "../Dtos/Rent";
-import { RentRepo } from "../Repos/RentRepo";
+import { createRentRepo, IRentRepo } from "../Repos/RentRepo/IRentRepo";
 import { createUserRepo, IUserRepo } from "../Repos/UserRepo/IUserRepo";
-import { UserRepo } from "../Repos/UserRepo/UserRepo";
+
 const userRepo: IUserRepo = createUserRepo();
+const rentRepo: IRentRepo = createRentRepo();
 
 export async function getAllRents(req: Request, res: Response) {
-    let studios: [Rent] = await RentRepo.getAllRents();
+    let studios: [Rent] = await rentRepo.getAllRents();
     res.status(200).send(JSON.stringify(studios));
 }
 
@@ -42,7 +43,7 @@ export async function insertRent(req: Request, res: Response) {
         rent.rent_id = parseInt(rentId);
     }
 
-    let success = await RentRepo.insertRent(rent);
+    let success = await rentRepo.insertRent(rent);
     res.status(success ? 200 : 500).send(`inserted a rent: ${success}`);
 }
 
@@ -62,7 +63,7 @@ export async function extendRent(req: Request, res: Response) {
     }
     let id = user[0].user_id;
 
-    let rents = await RentRepo.getRentsByUserId(id.toString());
+    let rents = await rentRepo.getRentsByUserId(id.toString());
     if (rents == null) {
         res.status(500).send("No rent to extend!");
         return;
@@ -82,7 +83,7 @@ export async function extendRent(req: Request, res: Response) {
         }
     }
 
-    let success = await RentRepo.extendRent(rentId, req.body.expiration_date);
+    let success = await rentRepo.extendRent(rentId, req.body.expiration_date);
     res.status(success ? 200 : 500).send(`extended a rent: ${success}`);
 }
 
@@ -100,7 +101,7 @@ export async function ableToRent(req: Request, res: Response) {
     }
     let id = user[0].user_id;
 
-    let rents = await RentRepo.getRentsByUserId(id.toString());
+    let rents = await rentRepo.getRentsByUserId(id.toString());
     if (rents == null) {
         res.status(200).send({ ableToRent: true });
         return;
@@ -138,7 +139,7 @@ export async function ableToExtend(req: Request, res: Response) {
     }
     let id = user[0].user_id;
 
-    let rents = await RentRepo.getRentsByUserId(id.toString());
+    let rents = await rentRepo.getRentsByUserId(id.toString());
     if (rents == null) {
         res.status(200).send({ ableToRent: true });
         return;
@@ -176,7 +177,7 @@ export async function getExpirationDate(req: Request, res: Response) {
     }
     let id = user[0].user_id;
 
-    let rents = await RentRepo.getRentsByUserId(id.toString());
+    let rents = await rentRepo.getRentsByUserId(id.toString());
     if (rents == null) {
         res.status(200).send({ date: "" });
         return;
