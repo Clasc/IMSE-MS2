@@ -1,3 +1,5 @@
+import { PlayedGame } from "./PlayedGame";
+
 export class User {
     user_id?: number;
     username: string = "";
@@ -7,4 +9,5 @@ export class User {
     password: string = "";
     is_admin?: boolean = false;
     birthday?: string = "";
+    playedGames?: PlayedGame[];
 }
