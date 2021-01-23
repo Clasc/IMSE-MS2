@@ -2,11 +2,11 @@ import { PlayedGame } from "../../Dtos/PlayedGame";
 import { IPlayedGameRepo } from "./IPlayedGameRepo";
 
 export class PlayedGameRepoMongo implements IPlayedGameRepo {
-    public async getAllPlayedGames(): Promise<[PlayedGame]> {
+    public async getAllPlayedGames(): Promise<PlayedGame[]> {
         throw new Error("Method not implemented.");
     }
 
-    public async getPlayedGameBy(userId: number, gameId: number): Promise<[PlayedGame]> {
+    public async getPlayedGameBy(userId: number, gameId: number): Promise<PlayedGame[]> {
         throw new Error("Method not implemented.");
     }
 

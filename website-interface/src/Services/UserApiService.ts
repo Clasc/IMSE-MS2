@@ -23,8 +23,8 @@ export class UserApiService {
         return true;
     }
 
-    public static async getUserByUsername(username: string): Promise<[User] | []> {
-        let users: [User] = [new User()];
+    public static async getUserByUsername(username: string): Promise<User[] | []> {
+        let users: User[] = [new User()];
         try {
             users = (await axios.get(`${RestApi}/users/name/${username}`)).data;
         }

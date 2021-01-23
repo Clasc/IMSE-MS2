@@ -35,8 +35,8 @@ export class GameApiService {
         return game;
     }
 
-    public static async getAllGames(): Promise<[Game] | []> {
-        let games: [Game] = [new Game()]
+    public static async getAllGames(): Promise<Game[] | []> {
+        let games: Game[] = [new Game()]
         try {
             games = (await axios.get(`${RestApi}/games`)).data;
         }

@@ -4,7 +4,7 @@ import { SubscriptionRepo } from "./SubscriptionRepo";
 import { SubscriptionRepoMongo } from "./SubscriptionRepoMongo";
 
 export interface ISubscriptionRepo {
-    getAllSubscriptions(): Promise<[Subscription]>;
+    getAllSubscriptions(): Promise<Subscription[]>;
 
     insertSubscription(subscription: Subscription): Promise<boolean>;
 }

@@ -3,9 +3,9 @@ import { db, queryDb } from "../../Services/db";
 import { IPlayedGameRepo } from "./IPlayedGameRepo";
 
 export class PlayedGameRepo implements IPlayedGameRepo {
-    public async getAllPlayedGames(): Promise<[PlayedGame]> {
+    public async getAllPlayedGames(): Promise<PlayedGame[]> {
         try {
-            let queryResult: [PlayedGame] = await queryDb("SELECT * FROM PlayedGame");
+            let queryResult: PlayedGame[] = await queryDb("SELECT * FROM PlayedGame");
             return queryResult;
         }
         catch (err) {
@@ -14,9 +14,9 @@ export class PlayedGameRepo implements IPlayedGameRepo {
         }
     }
 
-    public async getPlayedGameBy(userId: number, gameId: number): Promise<[PlayedGame]> {
+    public async getPlayedGameBy(userId: number, gameId: number): Promise<PlayedGame[]> {
         try {
-            let queryResult: [PlayedGame] = await queryDb(`SELECT * FROM PlayedGame WHERE user_id=${userId} AND game_id=${gameId}`);
+            let queryResult: PlayedGame[] = await queryDb(`SELECT * FROM PlayedGame WHERE user_id=${userId} AND game_id=${gameId}`);
             return queryResult;
         }
         catch (err) {

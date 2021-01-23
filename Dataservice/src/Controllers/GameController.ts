@@ -5,7 +5,7 @@ import { createGameRepo } from "../Repos/GameRepo/IGameRepo";
 const gameRepo = createGameRepo();
 
 export async function getAllGames(req: Request, res: Response) {
-    let games: [Game] = await gameRepo.getAllGames();
+    let games: Game[] = await gameRepo.getAllGames();
     res.status(200).send(JSON.stringify(games));
 }
 

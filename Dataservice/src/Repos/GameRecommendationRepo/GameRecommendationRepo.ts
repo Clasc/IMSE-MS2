@@ -3,9 +3,9 @@ import { queryDb } from "../../Services/db";
 import { IGameRecommendationRepo } from "./IGameRecommendationRepo";
 
 export class GameRecommendationRepo implements IGameRecommendationRepo {
-    public async getAllGameRecommendations(): Promise<[GameRecommendation]> {
+    public async getAllGameRecommendations(): Promise<GameRecommendation[]> {
         try {
-            let queryResult: [GameRecommendation] = await queryDb("SELECT * FROM GameRecommendation");
+            let queryResult: GameRecommendation[] = await queryDb("SELECT * FROM GameRecommendation");
             return queryResult;
         }
         catch (err) {

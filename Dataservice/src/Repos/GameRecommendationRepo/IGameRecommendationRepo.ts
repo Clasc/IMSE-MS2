@@ -4,7 +4,7 @@ import { GameRecommendationRepo } from "./GameRecommendationRepo";
 import { GameRecommendationRepoMongo } from "./GameRecommendationRepoMongo";
 
 export interface IGameRecommendationRepo {
-    getAllGameRecommendations(): Promise<[GameRecommendation]>;
+    getAllGameRecommendations(): Promise<GameRecommendation[]>;
 
     insertGameRecommendation(gameRecommendation: GameRecommendation): Promise<boolean>;
 }

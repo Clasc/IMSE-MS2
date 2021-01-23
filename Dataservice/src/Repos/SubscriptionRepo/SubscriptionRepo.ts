@@ -3,9 +3,9 @@ import { queryDb } from "../../Services/db";
 import { ISubscriptionRepo } from "./ISubscriptionRepo";
 
 export class SubscriptionRepo implements ISubscriptionRepo {
-    public async getAllSubscriptions(): Promise<[Subscription]> {
+    public async getAllSubscriptions(): Promise<Subscription[]> {
         try {
-            let queryResult: [Subscription] = await queryDb("SELECT * FROM Subscription");
+            let queryResult: Subscription[] = await queryDb("SELECT * FROM Subscription");
             return queryResult;
         }
         catch (err) {

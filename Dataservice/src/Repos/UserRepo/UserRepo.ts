@@ -16,7 +16,7 @@ export class UserRepo implements IUserRepo {
 
     public async getUserById(id: string): Promise<User | null> {
         try {
-            let queryResult: [User] = await queryDb(`SELECT * FROM User WHERE user_id = ${id}`);
+            let queryResult: User[] = await queryDb(`SELECT * FROM User WHERE user_id = ${id}`);
             return queryResult[0];
         }
         catch (err) {
@@ -25,9 +25,9 @@ export class UserRepo implements IUserRepo {
         }
     }
 
-    public async getUserByUsername(username: string): Promise<[User] | null> {
+    public async getUserByUsername(username: string): Promise<User[] | null> {
         try {
-            let queryResult: [User] = await queryDb(`SELECT * FROM User WHERE username = "${username}"`);
+            let queryResult: User[] = await queryDb(`SELECT * FROM User WHERE username = "${username}"`);
             return queryResult;
         }
         catch (err) {

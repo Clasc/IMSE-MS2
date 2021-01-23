@@ -7,7 +7,7 @@ const userRepo: IUserRepo = createUserRepo();
 const rentRepo: IRentRepo = createRentRepo();
 
 export async function getAllRents(req: Request, res: Response) {
-    let studios: [Rent] = await rentRepo.getAllRents();
+    let studios: Rent[] = await rentRepo.getAllRents();
     res.status(200).send(JSON.stringify(studios));
 }
 

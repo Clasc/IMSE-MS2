@@ -13,7 +13,7 @@ export class UserRepoMongo implements IUserRepo {
         throw new Error("Method not implemented.");
     }
 
-    public async getUserByUsername(username: string): Promise<[User] | null> {
+    public async getUserByUsername(username: string): Promise<User[] | null> {
         throw new Error("Method not implemented.");
     }
     public async insertUser(user: User): Promise<boolean> {

@@ -5,7 +5,7 @@ import { createPlayedGameRepo } from "../Repos/PlayedGameRepo/IPlayedGameRepo";
 const playedGameRepo = createPlayedGameRepo();
 
 export async function getAllPlayedGames(req: Request, res: Response) {
-    let studios: [PlayedGame] = await playedGameRepo.getAllPlayedGames();
+    let studios: PlayedGame[] = await playedGameRepo.getAllPlayedGames();
     res.status(200).send(JSON.stringify(studios));
 }
 

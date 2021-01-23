@@ -5,7 +5,7 @@ import { createUserRepo, IUserRepo } from "../Repos/UserRepo/IUserRepo";
 const repo: IUserRepo = createUserRepo();
 
 export async function getAllUsers(req: Request, res: Response) {
-    let users: [User] = await repo.getAllUsers();
+    let users: User[] = await repo.getAllUsers();
     res.status(200).send(JSON.stringify(users));
 }
 

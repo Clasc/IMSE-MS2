@@ -3,9 +3,9 @@ import { queryDb } from "../../Services/db";
 import { IStudioRepo } from "./IStudioRepo";
 
 export class StudioRepo implements IStudioRepo {
-    public async getAllStudios(): Promise<[Studio]> {
+    public async getAllStudios(): Promise<Studio[]> {
         try {
-            let queryResult: [Studio] = await queryDb("SELECT * FROM Studio");
+            let queryResult: Studio[] = await queryDb("SELECT * FROM Studio");
             return queryResult;
         }
         catch (err) {

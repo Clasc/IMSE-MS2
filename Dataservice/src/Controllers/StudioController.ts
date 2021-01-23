@@ -5,7 +5,7 @@ import { createStudioRepo, IStudioRepo } from "../Repos/StudioRepo/IStudioRepo";
 const repo: IStudioRepo = createStudioRepo();
 
 export async function getAllStudios(req: Request, res: Response) {
-    let studios: [Studio] = await repo.getAllStudios();
+    let studios: Studio[] = await repo.getAllStudios();
     res.status(200).send(JSON.stringify(studios));
 }
 

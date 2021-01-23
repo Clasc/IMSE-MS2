@@ -4,7 +4,7 @@ import { StudioRepo } from "./StudioRepo";
 import { StudioRepoMongo } from "./StudioRepoMongo";
 
 export interface IStudioRepo {
-    getAllStudios(): Promise<[Studio]>;
+    getAllStudios(): Promise<Studio[]>;
 
     insertStudio(studio: Studio): Promise<boolean>;
 }

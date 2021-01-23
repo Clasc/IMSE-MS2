@@ -8,7 +8,7 @@ export interface IUserRepo {
 
     getUserById(id: string): Promise<User | null>;
 
-    getUserByUsername(username: string): Promise<[User] | null>;
+    getUserByUsername(username: string): Promise<User[] | null>;
 
     insertUser(user: User): Promise<boolean>;
 

@@ -2,7 +2,7 @@ import { Rent } from "../../Dtos/Rent";
 import { IRentRepo } from "./IRentRepo";
 
 export class RentRepoMongo implements IRentRepo {
-    public async getAllRents(): Promise<[Rent]> {
+    public async getAllRents(): Promise<Rent[]> {
         throw new Error("Method not implemented.");
     }
 
@@ -14,7 +14,7 @@ export class RentRepoMongo implements IRentRepo {
         throw new Error("Method not implemented.");
     }
 
-    public async getRentsByUserId(user_id: string): Promise<[Rent] | null> {
+    public async getRentsByUserId(user_id: string): Promise<Rent[] | null> {
         throw new Error("Method not implemented.");
     }
 }

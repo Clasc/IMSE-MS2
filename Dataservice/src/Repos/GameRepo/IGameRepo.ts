@@ -5,7 +5,7 @@ import { GameRepoMongo } from "./GameRepoMongo";
 
 
 export interface IGameRepo {
-    getAllGames(): Promise<[Game]>;
+    getAllGames(): Promise<Game[]>;
 
     getGameById(id: string): Promise<Game | null>;
 

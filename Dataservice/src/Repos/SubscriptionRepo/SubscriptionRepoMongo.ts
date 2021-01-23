@@ -2,7 +2,7 @@ import { Subscription } from "../../Dtos/Subscription";
 import { ISubscriptionRepo } from "./ISubscriptionRepo";
 
 export class SubscriptionRepoMongo implements ISubscriptionRepo {
-    public async getAllSubscriptions(): Promise<[Subscription]> {
+    public async getAllSubscriptions(): Promise<Subscription[]> {
         throw new Error("Method not implemented.");
     }
 

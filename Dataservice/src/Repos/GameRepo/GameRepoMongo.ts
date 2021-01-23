@@ -5,7 +5,7 @@ import { IGameRepo } from "./IGameRepo";
 
 export class GameRepoMongo implements IGameRepo {
 
-    public async getAllGames(): Promise<[Game]> {
+    public async getAllGames(): Promise<Game[]> {
         mongoDB.createCollection("GameRepotest");
         return [new Game()];
     }

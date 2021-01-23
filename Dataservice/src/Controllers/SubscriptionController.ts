@@ -5,7 +5,7 @@ import { createSubscriptionRepo, ISubscriptionRepo } from "../Repos/Subscription
 const repo: ISubscriptionRepo = createSubscriptionRepo();
 
 export async function getAllSubscriptions(req: Request, res: Response) {
-  let studios: [Subscription] = await repo.getAllSubscriptions();
+  let studios: Subscription[] = await repo.getAllSubscriptions();
   res.status(200).send(JSON.stringify(studios));
 }
 

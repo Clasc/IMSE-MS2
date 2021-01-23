@@ -5,7 +5,7 @@ import { createGameRecommendationRepo } from "../Repos/GameRecommendationRepo/IG
 const repo = createGameRecommendationRepo();
 
 export async function getAllGameRecommendations(req: Request, res: Response) {
-    let studios: [GameRecommendation] = await repo.getAllGameRecommendations();
+    let studios: GameRecommendation[] = await repo.getAllGameRecommendations();
     res.status(200).send(JSON.stringify(studios));
 }
 

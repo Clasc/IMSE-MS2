@@ -3,9 +3,9 @@ import { queryDb } from "../../Services/db";
 import { IRentRepo } from "./IRentRepo";
 
 export class RentRepo implements IRentRepo {
-    public async getAllRents(): Promise<[Rent]> {
+    public async getAllRents(): Promise<Rent[]> {
         try {
-            let queryResult: [Rent] = await queryDb("SELECT * FROM Rent");
+            let queryResult: Rent[] = await queryDb("SELECT * FROM Rent");
             return queryResult;
         }
         catch (err) {
@@ -40,9 +40,9 @@ export class RentRepo implements IRentRepo {
         }
     }
 
-    public async getRentsByUserId(user_id: string): Promise<[Rent] | null> {
+    public async getRentsByUserId(user_id: string): Promise<Rent[] | null> {
         try {
-            let rents: [Rent] = await queryDb(`SELECT * FROM Rent WHERE user_id = ${user_id}`);
+            let rents: Rent[] = await queryDb(`SELECT * FROM Rent WHERE user_id = ${user_id}`);
             return rents;
         }
         catch (err) {
