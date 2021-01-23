@@ -1,8 +1,9 @@
-import { User } from "../Dtos/User";
-import { db, queryDb } from "../Services/db";
+import { User } from "../../Dtos/User";
+import { queryDb } from "../../Services/db";
+import { IUserRepo } from "./IUserRepo";
 
-export class UserRepo {
-    public static async getAllUsers(): Promise<[User]> {
+export class UserRepo implements IUserRepo {
+    public async getAllUsers(): Promise<[User]> {
         try {
             let queryResult: [User] = await queryDb("SELECT * FROM User");
             return queryResult;
@@ -13,7 +14,7 @@ export class UserRepo {
         }
     }
 
-    public static async getUserById(id: string): Promise<User | null> {
+    public async getUserById(id: string): Promise<User | null> {
         try {
             let queryResult: [User] = await queryDb(`SELECT * FROM User WHERE user_id = ${id}`);
             return queryResult[0];
@@ -24,7 +25,7 @@ export class UserRepo {
         }
     }
 
-    public static async getUserByUsername(username: string): Promise<[User] | null> {
+    public async getUserByUsername(username: string): Promise<[User] | null> {
         try {
             let queryResult: [User] = await queryDb(`SELECT * FROM User WHERE username = "${username}"`);
             return queryResult;
@@ -35,7 +36,7 @@ export class UserRepo {
         }
     }
 
-    public static async insertUser(user: User): Promise<boolean> {
+    public async insertUser(user: User): Promise<boolean> {
         try {
             let result: any = await queryDb(`INSERT INTO User SET ?`, user);
             return true;
@@ -47,7 +48,7 @@ export class UserRepo {
         }
     }
 
-    public static async updateUserToken(user_id: string, token: string): Promise<boolean> {
+    public async updateUserToken(user_id: string, token: string): Promise<boolean> {
         try {
             let result: any = await queryDb(`UPDATE User
             SET login_token = '${token}'
@@ -61,7 +62,7 @@ export class UserRepo {
         }
     }
 
-    public static async deleteUser(userId: number): Promise<boolean> {
+    public async deleteUser(userId: number): Promise<boolean> {
         try {
             let result: any = await queryDb(`DELETE FROM User WHERE user_id = ${userId}`);
             return true;

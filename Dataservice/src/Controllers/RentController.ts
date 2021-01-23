@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { Rent } from "../Dtos/Rent";
-import { User } from "../Dtos/User";
 import { RentRepo } from "../Repos/RentRepo";
-import { UserRepo } from "../Repos/UserRepo";
+import { createUserRepo, IUserRepo } from "../Repos/UserRepo/IUserRepo";
+import { UserRepo } from "../Repos/UserRepo/UserRepo";
+const userRepo: IUserRepo = createUserRepo();
 
 export async function getAllRents(req: Request, res: Response) {
     let studios: [Rent] = await RentRepo.getAllRents();
@@ -26,12 +27,12 @@ export async function insertRent(req: Request, res: Response) {
     rent.game_id = req.body.game_id;
 
     if (req.body.username) {
-        let user = await UserRepo.getUserByUsername(req.body.username);
+        let user = await userRepo.getUserByUsername(req.body.username);
         if (!user || !user[0].user_id) {
             res.status(400).send("Request is invalid. User not existing");
             return;
         }
-        
+
         rent.user_id = user[0].user_id;
     } else {
         rent.user_id = req.body.user_id;
@@ -40,7 +41,7 @@ export async function insertRent(req: Request, res: Response) {
     if (rentId) {
         rent.rent_id = parseInt(rentId);
     }
-    
+
     let success = await RentRepo.insertRent(rent);
     res.status(success ? 200 : 500).send(`inserted a rent: ${success}`);
 }
@@ -54,13 +55,13 @@ export async function extendRent(req: Request, res: Response) {
         return;
     }
 
-    let user = await UserRepo.getUserByUsername(req.body.username);
+    let user = await userRepo.getUserByUsername(req.body.username);
     if (!user || !user[0].user_id) {
         res.status(400).send("Request is invalid. User not existing");
         return;
     }
     let id = user[0].user_id;
-    
+
     let rents = await RentRepo.getRentsByUserId(id.toString());
     if (rents == null) {
         res.status(500).send("No rent to extend!");
@@ -75,12 +76,12 @@ export async function extendRent(req: Request, res: Response) {
                 res.status(400).send("No expiration date for Rent!");
                 return;
             }
-            if (new Date(rents[i].expiration_date!) >= new Date(new Date().toISOString().slice(0,10))) {
+            if (new Date(rents[i].expiration_date!) >= new Date(new Date().toISOString().slice(0, 10))) {
                 rentId = rents[i].rent_id!;
             }
         }
     }
-    
+
     let success = await RentRepo.extendRent(rentId, req.body.expiration_date);
     res.status(success ? 200 : 500).send(`extended a rent: ${success}`);
 }
@@ -92,7 +93,7 @@ export async function ableToRent(req: Request, res: Response) {
         return;
     }
 
-    let user = await UserRepo.getUserByUsername(req.body.username);
+    let user = await userRepo.getUserByUsername(req.body.username);
     if (!user || !user[0].user_id) {
         res.status(400).send("Request is invalid. User not existing");
         return;
@@ -113,7 +114,7 @@ export async function ableToRent(req: Request, res: Response) {
                 res.status(400).send("No expiration date for Rent!");
                 return;
             }
-            if (new Date(rents[i].expiration_date!) >= new Date(new Date().toISOString().slice(0,10))) {
+            if (new Date(rents[i].expiration_date!) >= new Date(new Date().toISOString().slice(0, 10))) {
                 ableToRent = false;
             }
         }
@@ -130,7 +131,7 @@ export async function ableToExtend(req: Request, res: Response) {
         return;
     }
 
-    let user = await UserRepo.getUserByUsername(req.body.username);
+    let user = await userRepo.getUserByUsername(req.body.username);
     if (!user || !user[0].user_id) {
         res.status(400).send("Request is invalid. User not existing");
         return;
@@ -151,7 +152,7 @@ export async function ableToExtend(req: Request, res: Response) {
                 res.status(400).send("No expiration date for Rent!");
                 return;
             }
-            if (new Date(rents[i].expiration_date!) >= new Date(new Date().toISOString().slice(0,10))) {
+            if (new Date(rents[i].expiration_date!) >= new Date(new Date().toISOString().slice(0, 10))) {
                 ableToExtend = true;
             }
         }
@@ -168,7 +169,7 @@ export async function getExpirationDate(req: Request, res: Response) {
         return;
     }
 
-    let user = await UserRepo.getUserByUsername(req.body.username);
+    let user = await userRepo.getUserByUsername(req.body.username);
     if (!user || !user[0].user_id) {
         res.status(400).send("Request is invalid. User not existing");
         return;
@@ -189,8 +190,8 @@ export async function getExpirationDate(req: Request, res: Response) {
                 res.status(400).send("No expiration date for Rent!");
                 return;
             }
-            if (new Date(rents[i].expiration_date!) >= new Date(new Date().toISOString().slice(0,10))) {
-                date = new Date(rents[i].expiration_date!).toISOString().slice(0,10);
+            if (new Date(rents[i].expiration_date!) >= new Date(new Date().toISOString().slice(0, 10))) {
+                date = new Date(rents[i].expiration_date!).toISOString().slice(0, 10);
             }
         }
     }

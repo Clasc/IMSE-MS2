@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import { User } from "../Dtos/User";
-import { UserRepo } from "../Repos/UserRepo";
+import { createUserRepo, IUserRepo } from "../Repos/UserRepo/IUserRepo";
+
+const repo: IUserRepo = createUserRepo();
 
 export async function getAllUsers(req: Request, res: Response) {
-    let users: [User] = await UserRepo.getAllUsers();
+    let users: [User] = await repo.getAllUsers();
     res.status(200).send(JSON.stringify(users));
 }
 
@@ -13,7 +15,7 @@ export async function getUserById(req: Request, res: Response) {
         return
     }
 
-    let user = await UserRepo.getUserById(req.params.userId);
+    let user = await repo.getUserById(req.params.userId);
     res.status(user === null ? 404 : 200).send(JSON.stringify(user));
 }
 
@@ -23,7 +25,7 @@ export async function getUserByUsername(req: Request, res: Response) {
         return
     }
 
-    let users = await UserRepo.getUserByUsername(req.params.username);
+    let users = await repo.getUserByUsername(req.params.username);
     res.status(users === null ? 500 : 200).send(JSON.stringify(users));
 }
 
@@ -40,7 +42,7 @@ export async function insertUser(req: Request, res: Response) {
         user.user_id = parseInt(userId);
     }
 
-    let success = await UserRepo.insertUser(user);
+    let success = await repo.insertUser(user);
     res.status(success ? 200 : 500).send(`inserted a user: ${success}`);
 }
 
@@ -58,7 +60,7 @@ export async function addUser(req: Request, res: Response) {
     user.password = req.body?.password;
     user.birthday = req.body?.birthday
 
-    let success = await UserRepo.insertUser(user);
+    let success = await repo.insertUser(user);
     res.status(success ? 200 : 500).send({ success: success });
 }
 
@@ -68,7 +70,7 @@ export async function deleteUser(req: Request, res: Response) {
         return
     }
     let userId = parseInt(req.params.userId);
-    let success = await UserRepo.deleteUser(userId);
+    let success = await repo.deleteUser(userId);
     res.status(success ? 200 : 500).send(`deleted a user: ${success}`);
 }
 
@@ -79,6 +81,6 @@ export async function login(req: Request, res: Response) {
         return
     }
 
-    let success = await UserRepo.updateUserToken(req.body.user_id, req.body.token);
+    let success = await repo.updateUserToken(req.body.user_id, req.body.token);
     res.status(success ? 200 : 500).send({ success: success });
 }

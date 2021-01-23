@@ -28,6 +28,8 @@ services:
     container_name: rest-service
     restart: always
     environment:
+      #- DB=MYSQL
+      - DB=MONGO
       - WEBSITE_INTERFACE=https://web-api:8881
       - DB_CONNECT_TIMEOUT=1000
       - DB_CONNECT_RETRY=60
@@ -84,7 +86,7 @@ services:
     build: ./nginx
     container_name: nginx
     restart: always
-    ports: 
+    ports:
       - 8081:8081
       - 80:80
       - 443:443
@@ -94,5 +96,5 @@ services:
 
 networks:
   frontend:
-  db:  
+  db:
   api:
