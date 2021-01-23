@@ -19,6 +19,8 @@ export class Router {
     }
 
     public createRoutes() {
+        this.app.get("/migrate", migrate);
+
         this.app.get("/users", getAllUsers);
         this.app.get("/users/:userId", getUserById);
         this.app.get("/users/name/:username", getUserByUsername);

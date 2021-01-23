@@ -5,6 +5,7 @@ import { isAdmin, loggedIn, login, registerUser } from "./Controllers/UserContro
 import { getAllGames, getGameById } from "./Controllers/GameController";
 import { ableToRent, rentGame, getExpirationDate, extendRent } from "./Controllers/RentController";
 import { createRentReport, createStudioReport } from "./Controllers/ReportController";
+import { migrate } from "./Migrate";
 
 export class Router {
     private readonly app: Express;
@@ -17,6 +18,7 @@ export class Router {
 
     public createRoutes() {
         this.app.get("/fillDB", fillDB);
+        this.app.get("/migrate", migrate);
 
         this.app.post("/register", registerUser);
         this.app.post("/login", login);

@@ -16,6 +16,7 @@ export class UserRepoMongo implements IUserRepo {
     public async getUserByUsername(username: string): Promise<User[] | null> {
         throw new Error("Method not implemented.");
     }
+
     public async insertUser(user: User): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
