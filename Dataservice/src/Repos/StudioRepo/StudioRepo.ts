@@ -1,8 +1,9 @@
-import { Studio } from "../Dtos/Studio";
-import { db, queryDb } from "../Services/db";
+import { Studio } from "../../Dtos/Studio";
+import { queryDb } from "../../Services/db";
+import { IStudioRepo } from "./IStudioRepo";
 
-export class StudioRepo {
-    public static async getAllStudios(): Promise<[Studio]> {
+export class StudioRepo implements IStudioRepo {
+    public async getAllStudios(): Promise<[Studio]> {
         try {
             let queryResult: [Studio] = await queryDb("SELECT * FROM Studio");
             return queryResult;
@@ -12,8 +13,8 @@ export class StudioRepo {
             return [new Studio()];
         }
     }
-    
-    public static async insertStudio(studio: Studio): Promise<boolean> {
+
+    public async insertStudio(studio: Studio): Promise<boolean> {
         try {
             let result: any = await queryDb(`INSERT INTO Studio SET ?`, studio);
             return true;

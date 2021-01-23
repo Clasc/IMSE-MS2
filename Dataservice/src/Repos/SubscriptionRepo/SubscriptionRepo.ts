@@ -1,8 +1,9 @@
-import { Subscription } from "../Dtos/Subscription";
-import { db, queryDb } from "../Services/db";
+import { Subscription } from "../../Dtos/Subscription";
+import { queryDb } from "../../Services/db";
+import { ISubscriptionRepo } from "./ISubscriptionRepo";
 
-export class SubscriptionRepo {
-    public static async getAllSubscriptions(): Promise<[Subscription]> {
+export class SubscriptionRepo implements ISubscriptionRepo {
+    public async getAllSubscriptions(): Promise<[Subscription]> {
         try {
             let queryResult: [Subscription] = await queryDb("SELECT * FROM Subscription");
             return queryResult;
@@ -12,8 +13,8 @@ export class SubscriptionRepo {
             return [new Subscription()];
         }
     }
-    
-    public static async insertSubscription(subscription: Subscription): Promise<boolean> {
+
+    public async insertSubscription(subscription: Subscription): Promise<boolean> {
         try {
             let result: any = await queryDb(`INSERT INTO Subscription SET ?`, subscription);
             return true;
