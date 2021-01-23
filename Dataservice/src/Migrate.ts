@@ -40,12 +40,15 @@ export async function migrate(req: Request, res: Response) {
     //migrate users
     let users = await userRepo.getAllUsers();
     users.forEach(async (user) => {
+        user.playedGames = [];
         await userRepoMongo.insertUser(user);
     });
 
     //migrate studios
     let studios = await studioRepo.getAllStudios();
     studios.forEach(async (studio) => {
+        studio.games = [];
+
         await studioRepoMongo.insertStudio(studio);
     });
 
@@ -58,6 +61,8 @@ export async function migrate(req: Request, res: Response) {
             name: studio?.name,
             price: studio?.price
         };
+
+        game.recommended_games = [];
 
         await StudioRepoMongo.addGame(game.studio_id, game.game_id, game.title);
 

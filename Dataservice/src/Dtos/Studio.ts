@@ -4,4 +4,8 @@ export class Studio {
     name?: string = "";
     location?: string = "";
     description?: string = "";
+    games?: Array<{
+        game_id?: number,
+        title?: string
+    }>;
 }

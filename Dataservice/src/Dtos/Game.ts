@@ -10,7 +10,7 @@ export class Game {
         price?: number,
     };
     recommended_games?: Array<{
-        game_id?: number,
+        recommended_game_id?: number,
         title?: string
     }>;
 }

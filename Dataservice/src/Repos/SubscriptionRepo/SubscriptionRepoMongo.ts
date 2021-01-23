@@ -10,6 +10,13 @@ export class SubscriptionRepoMongo implements ISubscriptionRepo {
     }
 
     public async insertSubscription(subscription: Subscription): Promise<boolean> {
-        throw new Error("Method not implemented.");
+        try {
+            await mongoDB.collection("Subscription").insertOne(subscription);
+            return true;
+        }
+        catch (err) {
+            console.error(err);
+            return false
+        };
     }
 }

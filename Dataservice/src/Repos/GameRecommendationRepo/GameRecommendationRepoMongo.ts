@@ -1,4 +1,5 @@
 import { GameRecommendation } from "../../Dtos/GameRecommendation";
+import { mongoDB } from "../../Services/mongodb";
 import { IGameRecommendationRepo } from "./IGameRecommendationRepo";
 
 export class GameRecommendationRepoMongo implements IGameRecommendationRepo {
@@ -6,6 +7,18 @@ export class GameRecommendationRepoMongo implements IGameRecommendationRepo {
         throw new Error("Method not implemented.");
     }
     public async insertGameRecommendation(gameRecommendation: GameRecommendation): Promise<boolean> {
-        throw new Error("Method not implemented.");
+        let game_id = gameRecommendation.game_id;
+
+        gameRecommendation.game_id = undefined;
+        gameRecommendation.game_recommendation_id = undefined;
+
+        try {
+            await mongoDB.collection("Game").updateOne({ game_id: game_id }, { $push: { "recommended_games": gameRecommendation } })
+            return true;
+        }
+        catch (err) {
+            console.error(err);
+            return false
+        };
     }
 }

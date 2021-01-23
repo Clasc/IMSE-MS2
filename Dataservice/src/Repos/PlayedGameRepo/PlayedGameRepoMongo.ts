@@ -23,6 +23,16 @@ export class PlayedGameRepoMongo implements IPlayedGameRepo {
     }
 
     public async insertPlayedGame(playedGame: PlayedGame): Promise<boolean> {
-        throw new Error("Method not implemented.");
+        let user_id = playedGame.user_id;
+        playedGame.user_id = undefined;
+
+        try {
+            await mongoDB.collection("User").updateOne({ user_id: user_id }, { $push: { "played_games": playedGame } })
+            return true;
+        }
+        catch (err) {
+            console.error(err);
+            return false
+        };
     }
 }

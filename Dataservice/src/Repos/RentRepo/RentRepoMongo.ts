@@ -10,7 +10,14 @@ export class RentRepoMongo implements IRentRepo {
     }
 
     public async insertRent(rent: Rent): Promise<boolean> {
-        throw new Error("Method not implemented.");
+        try {
+            await mongoDB.collection("Rent").insertOne(rent);
+            return true;
+        }
+        catch (err) {
+            console.error(err);
+            return false
+        };
     }
 
     public async extendRent(rentId: number, date: string): Promise<boolean> {
