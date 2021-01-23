@@ -1,29 +1,19 @@
 let res = [
-    db.createCollection("User", function(err, res) {
-        if (err) throw err;
-        console.log("Collection created!");
-      }),
 
-    db.createCollection("Game", function(err, res) {
-        if (err) throw err;
-        console.log("Collection Game created!");
-      }),
+  db.User.createIndex({ user_id: 1 }, { unique: true }),
+  db.User.createIndex({ username: 1 }),
 
-    db.createCollection("Rent", function(err, res) {
-        if (err) throw err;
-        console.log("Collection created!");
-      }),
+  db.Game.createIndex({ game_id: 1 }, { unique: true }),
 
-    db.createCollection("Subscription", function(err, res) {
-        if (err) throw err;
-        console.log("Collection Subscription created!");
-      }),
+  db.Rent.createIndex({ rent_id: 1 }, { unique: true }),
+  // db.Rent.createIndex("ExtendIndex",{user_id:1, game_id:1, expiration_date:1}),
+  // db.Rent.createIndex("ReportIndex",{user_id:1, start_date:1}),
 
-    db.createCollection("Studio", function(err, res) {
-        if (err) throw err;
-        console.log("Collection Studio created!");
-      }),
+  db.Subscription.createIndex({ subscription_id: 1 }, { unique: true }),
+
+  db.Studio.createIndex({ studio_id: 1 }, { unique: true }),
 ];
+
 
 printjson(res);
 
