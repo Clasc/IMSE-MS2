@@ -1,8 +1,9 @@
-import { PlayedGame } from "../Dtos/PlayedGame";
-import { db, queryDb } from "../Services/db";
+import { PlayedGame } from "../../Dtos/PlayedGame";
+import { db, queryDb } from "../../Services/db";
+import { IPlayedGameRepo } from "./IPlayedGameRepo";
 
-export class PlayedGameRepo {
-    public static async getAllPlayedGames(): Promise<[PlayedGame]> {
+export class PlayedGameRepo implements IPlayedGameRepo {
+    public async getAllPlayedGames(): Promise<[PlayedGame]> {
         try {
             let queryResult: [PlayedGame] = await queryDb("SELECT * FROM PlayedGame");
             return queryResult;
@@ -13,7 +14,7 @@ export class PlayedGameRepo {
         }
     }
 
-    public static async getPlayedGameBy(userId: number, gameId: number): Promise<[PlayedGame]> {
+    public async getPlayedGameBy(userId: number, gameId: number): Promise<[PlayedGame]> {
         try {
             let queryResult: [PlayedGame] = await queryDb(`SELECT * FROM PlayedGame WHERE user_id=${userId} AND game_id=${gameId}`);
             return queryResult;
@@ -25,7 +26,7 @@ export class PlayedGameRepo {
     }
 
 
-    public static async insertPlayedGame(playedGame: PlayedGame): Promise<boolean> {
+    public async insertPlayedGame(playedGame: PlayedGame): Promise<boolean> {
         try {
             let result: any = await queryDb(`INSERT INTO PlayedGame SET ?`, playedGame);
             return true;
