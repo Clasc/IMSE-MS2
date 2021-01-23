@@ -13,7 +13,14 @@ export class StudioRepoMongo implements IStudioRepo {
     }
 
     public async insertStudio(studio: Studio): Promise<boolean> {
-        throw new Error("Method not implemented.");
+        try {
+            await mongoDB.collection("Studio").insertOne(studio);
+            return true;
+        }
+        catch (err) {
+            console.error(err);
+            return false
+        };
     }
 
 }
