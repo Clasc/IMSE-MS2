@@ -1,4 +1,6 @@
+import { Cursor } from "mongodb";
 import { Studio } from "../../Dtos/Studio";
+import { mongoDB } from "../../Services/mongodb";
 import { IStudioRepo } from "./IStudioRepo";
 
 export class StudioRepoMongo implements IStudioRepo {
@@ -6,7 +8,8 @@ export class StudioRepoMongo implements IStudioRepo {
         throw new Error("Method not implemented.");
     }
     public async getAllStudios(): Promise<Studio[]> {
-        throw new Error("Method not implemented.");
+        let studios: Cursor<Studio> = mongoDB.collection("Studio").find();
+        return studios.toArray();
     }
 
     public async insertStudio(studio: Studio): Promise<boolean> {

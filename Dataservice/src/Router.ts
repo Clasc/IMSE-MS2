@@ -8,6 +8,7 @@ import { insertRent, getAllRents, ableToRent, ableToExtend, getExpirationDate, e
 import { insertSubscription, getAllSubscriptions } from "./Controllers/SubscriptionController";
 import { insertPlayedGame, getAllPlayedGames } from "./Controllers/PlayedGameController";
 import { getRentReport, getStudioReport } from "./Controllers/ReportController";
+import { migrate } from "./Migrate";
 
 
 export class Router {
