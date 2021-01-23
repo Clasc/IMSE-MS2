@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import { PlayedGame } from "../Dtos/PlayedGame";
-import { PlayedGameRepo } from "../Repos/PlayedGameRepo";
+import { createPlayedGameRepo } from "../Repos/PlayedGameRepo/IPlayedGameRepo";
+
+const playedGameRepo = createPlayedGameRepo();
 
 export async function getAllPlayedGames(req: Request, res: Response) {
-    let studios: [PlayedGame] = await PlayedGameRepo.getAllPlayedGames();
+    let studios: [PlayedGame] = await playedGameRepo.getAllPlayedGames();
     res.status(200).send(JSON.stringify(studios));
 }
 
@@ -20,11 +22,11 @@ export async function insertPlayedGame(req: Request, res: Response) {
         playedGame.played_game_id = parseInt(playedGameId);
     }
 
-    let existingPlayedGame = await PlayedGameRepo.getPlayedGameBy(playedGame.user_id!, playedGame.game_id!);
+    let existingPlayedGame = await playedGameRepo.getPlayedGameBy(playedGame.user_id!, playedGame.game_id!);
     let success = true;
 
     if (!existingPlayedGame[0]) {
-        success = await PlayedGameRepo.insertPlayedGame(playedGame);
+        success = await playedGameRepo.insertPlayedGame(playedGame);
     }
 
     res.status(success ? 200 : 500).send(`inserted a playedGame: ${success}`);

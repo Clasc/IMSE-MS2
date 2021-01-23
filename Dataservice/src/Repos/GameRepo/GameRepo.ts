@@ -1,8 +1,9 @@
-import { Game } from "../Dtos/Game";
-import { db, queryDb } from "../Services/db";
+import { Game } from "../../Dtos/Game";
+import { queryDb } from "../../Services/db";
+import { IGameRepo } from "./IGameRepo";
 
-export class GameRepo {
-    public static async getAllGames(): Promise<[Game]> {
+export class GameRepo implements IGameRepo {
+    public async getAllGames(): Promise<[Game]> {
         try {
             let queryResult: [Game] = await queryDb("SELECT * FROM Game");
             return queryResult;
@@ -13,7 +14,7 @@ export class GameRepo {
         }
     }
 
-    public static async getGameById(id: string): Promise<Game | null> {
+    public async getGameById(id: string): Promise<Game | null> {
         try {
             let queryResult: [Game] = await queryDb(`SELECT * FROM Game WHERE game_id = ${id}`);
             return queryResult[0];
@@ -23,8 +24,8 @@ export class GameRepo {
             return null;
         }
     }
-    
-    public static async insertGame(game: Game): Promise<boolean> {
+
+    public async insertGame(game: Game): Promise<boolean> {
         try {
             let result: any = await queryDb(`INSERT INTO Game SET ?`, game);
             return true;
