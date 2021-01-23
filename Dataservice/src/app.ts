@@ -1,6 +1,8 @@
 import express from "express";
 import { Router } from "./Router"
 import * as bodyParser from "body-parser";
+import { connectToMongoDB } from "./Services/mongodb";
+
 
 const app = express();
 const port = 8000;
@@ -25,6 +27,7 @@ app.use(function (req, res, next) {
 
 const router = new Router(app);
 router.createRoutes();
+connectToMongoDB();
 
 app.listen(port, () => {
     console.log(`REST API running on Port ${port}`);

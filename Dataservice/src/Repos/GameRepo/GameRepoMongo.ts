@@ -1,9 +1,13 @@
 import { Game } from "../../Dtos/Game";
+import { mongoDB } from "../../Services/mongodb";
 import { IGameRepo } from "./IGameRepo";
 
+
 export class GameRepoMongo implements IGameRepo {
+
     public async getAllGames(): Promise<[Game]> {
-        throw new Error("Method not implemented.");
+        mongoDB.createCollection("GameRepotest");
+        return [new Game()];
     }
 
     public async getGameById(id: string): Promise<Game | null> {
