@@ -1,2 +1,2 @@
-// export const USE_MONGO_DB = process.env.DB === "MONGO";
-export const USE_MONGO_DB = false;
+export const USE_MONGO_DB = process.env.DB === "MONGO";
+// export const USE_MONGO_DB = true;
