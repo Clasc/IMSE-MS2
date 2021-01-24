@@ -43,9 +43,6 @@ export class PlayedGameRepoMongo extends MongoBaseRepo implements IPlayedGameRep
             }
         }
 
-        console.log("!!!!______________________!!!!!!!!\n");
-        console.log("game:", game);
-
         try {
             await mongoDB.collection("User").updateOne({ user_id: user_id }, { $push: { "played_games": newPlayedGame } })
             return true;
