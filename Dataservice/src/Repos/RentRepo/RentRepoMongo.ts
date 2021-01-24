@@ -16,15 +16,30 @@ export class RentRepoMongo implements IRentRepo {
         }
         catch (err) {
             console.error(err);
-            return false
+            return false;
         };
     }
 
     public async extendRent(rentId: number, date: string): Promise<boolean> {
-        throw new Error("Method not implemented.");
+        try {
+            await mongoDB.collection("Rent").updateOne({ rent_id: rentId }, { expiration_date: date, extended: true });
+            return true;
+        }
+        catch (err) {
+            console.error(err);
+            return false
+        }
     }
 
     public async getRentsByUserIdAndGameIdByExpirationDate(user_id: string, game_id: string, expiration_date: string): Promise<Rent[] | null> {
-        throw new Error("Method not implemented.");
+        try {
+            //TODO: in general, but we have date strings for now => so comparison will not work
+            let rents: Cursor<Rent> = mongoDB.collection("Rent").find({ user_id: user_id, game_id: game_id, expiration_date: { $gte: expiration_date } });
+            return rents.toArray();
+        }
+        catch (err) {
+            console.error(err);
+            return null;
+        };
     }
 }
