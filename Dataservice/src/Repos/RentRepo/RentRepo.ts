@@ -1,11 +1,12 @@
 import { Rent } from "../../Dtos/Rent/Rent";
+import { RentSql } from "../../Dtos/Rent/RentSql";
 import { queryDb } from "../../Services/db";
 import { IRentRepo } from "./IRentRepo";
 
 export class RentRepo implements IRentRepo {
-    public async getAllRents(): Promise<Rent[]> {
+    public async getAllRents(): Promise<RentSql[]> {
         try {
-            let queryResult: Rent[] = await queryDb("SELECT * FROM Rent");
+            let queryResult: RentSql[] = await queryDb("SELECT * FROM Rent");
             return queryResult;
         }
         catch (err) {
@@ -40,9 +41,9 @@ export class RentRepo implements IRentRepo {
         }
     }
 
-    public async getRentsByUserIdAndGameIdByExpirationDate(user_id: string, game_id: string, expiration_date: string): Promise<Rent[] | null> {
+    public async getRentsByUserIdAndGameIdByExpirationDate(user_id: string, game_id: string, expiration_date: string): Promise<RentSql[] | null> {
         try {
-            let rents: Rent[] = await queryDb(`SELECT * FROM Rent WHERE user_id = '${user_id}' AND game_id = '${game_id}' AND expiration_date >= '${expiration_date}';`);
+            let rents: RentSql[] = await queryDb(`SELECT * FROM Rent WHERE user_id = '${user_id}' AND game_id = '${game_id}' AND expiration_date >= '${expiration_date}';`);
             return rents;
         }
         catch (err) {

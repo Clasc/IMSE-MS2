@@ -1,6 +1,7 @@
 import { Response, Request } from "express";
 import { GameMongo } from "./Dtos/Game/GameMongo";
 import { PlayedGameMongo } from "./Dtos/PlayedGame/PlayedGameMongo";
+import { RentMongo } from "./Dtos/Rent/RentMongo";
 import { StudioMongo } from "./Dtos/Studio/StudioMongo";
 import { SubscriptionMongo } from "./Dtos/Subscription/SubscriptionMongo";
 import { UserMongo } from "./Dtos/User/UserMongo";
@@ -119,16 +120,24 @@ export async function migrate(req: Request, res: Response) {
     let rents = await rentRepo.getAllRents();
     rents.forEach(async (rent) => {
         let game = await gameRepoMongo.getGameById(rent.game_id as number);
-        rent.game_id = undefined;
+        if (game && game.studio) {
 
-        rent.game = {
-            game_id: game?.game_id,
-            title: game?.title,
-            price: game?.price,
-            studio: game?.studio
-        };
+            let newRent: RentMongo = {
+                expiration_date: rent.expiration_date,
+                extended: rent.extended,
+                rent_id: rent.rent_id,
+                start_date: rent.start_date,
+                user_id: rent.user_id,
+                game: {
+                    game_id: game.game_id,
+                    title: game.title,
+                    price: game.price,
+                    studio: game.studio
+                }
+            };
+            await rentRepoMongo.insertRent(newRent);
+        }
 
-        await rentRepoMongo.insertRent(rent);
     });
 
     //migrate played games
