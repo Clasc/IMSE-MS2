@@ -2,7 +2,6 @@ import { Cursor } from "mongodb";
 import { Rent } from "../../Dtos/Rent/Rent";
 import { RentMongo } from "../../Dtos/Rent/RentMongo";
 import { RentRequest } from "../../Dtos/Rent/RentRequest";
-import { RentSql } from "../../Dtos/Rent/RentSql";
 import { mongoDB } from "../../Services/mongodb";
 import { GameRepoMongo } from "../GameRepo/GameRepoMongo";
 import { MongoBaseRepo } from "../MongoBaseRepo";
@@ -63,10 +62,10 @@ export class RentRepoMongo extends MongoBaseRepo implements IRentRepo {
         }
     }
 
-    public async getRentsByUserIdAndGameIdByExpirationDate(user_id: number, game_id: number, expiration_date: string): Promise<Rent[] | null> {
+    public async getRentsByUserIdAndGameIdByExpirationDate(user_id: number, game_id: number, expiration_date: string): Promise<RentMongo[] | null> {
         try {
             //TODO: in general, but we have date strings for now => so comparison will not work
-            let rents: Cursor<Rent> = await mongoDB.collection("Rent").find({ user_id: user_id, 'game.game_id': game_id, expiration_date: { $gte: `ISODate('${expiration_date}')` } });
+            let rents: Cursor<RentMongo> = await mongoDB.collection("Rent").find({ user_id: user_id, 'game.game_id': game_id, expiration_date: { $gte: expiration_date } });
             let res = await rents.toArray();
             console.log("rents by exp date", res);
             return res;

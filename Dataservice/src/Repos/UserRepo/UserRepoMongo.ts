@@ -7,18 +7,17 @@ import { IUserRepo } from "./IUserRepo";
 
 export class UserRepoMongo extends MongoBaseRepo implements IUserRepo {
     public async getAllUsers(): Promise<User[]> {
-        let users: Cursor<User> = mongoDB.collection("User").find();
-        return users.toArray();
+        let users: User[] = await mongoDB.collection("User").find().toArray();
+        return users;
     }
 
     public async getUserById(id: string): Promise<UserMongo | null> {
-        let users: Cursor<UserMongo> = mongoDB.collection("User").find({ user_id: id });
-        return (await users.toArray())[0];
+        return await mongoDB.collection("User").findOne({ user_id: id });
     }
 
     public async getUserByUsername(username: string): Promise<UserMongo[] | null> {
-        let users: Cursor<UserMongo> = mongoDB.collection("User").find({ username: username });
-        return users.toArray()
+        let users: Cursor<UserMongo> = await mongoDB.collection("User").find({ username: username });
+        return await users.toArray()
     }
 
     public async insertUser(user: User): Promise<boolean> {

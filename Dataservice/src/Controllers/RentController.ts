@@ -65,13 +65,13 @@ export async function extendRent(req: Request, res: Response) {
     }
     let id = user[0].user_id;
 
-    let rents = await rentRepo.getRentsByUserIdAndGameIdByExpirationDate(id, req.body.game_id, new Date().toISOString().slice(0, 10));
+    let rents = await rentRepo.getRentsByUserIdAndGameIdByExpirationDate(id, parseInt(req.body.game_id), new Date().toISOString().slice(0, 10));
     console.log("rents by expiration date", rents);
     if (rents == null) {
         res.status(500).send("No rent to extend!");
         return;
     }
-    console.log(rents)
+
 
     let rentId = -1;
     for (let i = 0; i < rents?.length; i++) {
@@ -83,7 +83,7 @@ export async function extendRent(req: Request, res: Response) {
 }
 
 export async function ableToRent(req: Request, res: Response) {
-    console.log(req.body);
+
     if (!req.body.game_id || !req.body.username) {
         res.status(400).send("Request is invalid. Ids are missing");
         return;
@@ -94,26 +94,27 @@ export async function ableToRent(req: Request, res: Response) {
         res.status(400).send("Request is invalid. User not existing");
         return;
     }
+
     let id = user[0].user_id;
 
-    let rents = await rentRepo.getRentsByUserIdAndGameIdByExpirationDate(id, req.body.game_id, new Date().toISOString().slice(0, 10));
+    let rents = await rentRepo.getRentsByUserIdAndGameIdByExpirationDate(id, parseInt(req.body.game_id), new Date().toISOString().slice(0, 10));
     if (rents == null) {
         res.status(200).send({ ableToRent: true });
         return;
     }
-    console.log(rents)
+
 
     let ableToRent = true;
     for (let i = 0; i < rents?.length; i++) {
         ableToRent = false;
     }
 
-    console.log(ableToRent);
+
     res.status(200).send({ ableToRent: ableToRent });
 }
 
 export async function ableToExtend(req: Request, res: Response) {
-    console.log(req.body);
+
     if (!req.body.game_id || !req.body.username) {
         res.status(400).send("Request is invalid. Ids are missing");
         return;
@@ -126,24 +127,24 @@ export async function ableToExtend(req: Request, res: Response) {
     }
     let id = user[0].user_id;
 
-    let rents = await rentRepo.getRentsByUserIdAndGameIdByExpirationDate(id, req.body.game_id, new Date().toISOString().slice(0, 10));
+    let rents = await rentRepo.getRentsByUserIdAndGameIdByExpirationDate(id, parseInt(req.body.game_id), new Date().toISOString().slice(0, 10));
     if (rents == null) {
         res.status(200).send({ ableToExtend: false });
         return;
     }
-    console.log(rents)
+
 
     let ableToExtend = false;
     for (let i = 0; i < rents?.length; i++) {
         ableToExtend = true;
     }
 
-    console.log(ableToExtend);
+
     res.status(200).send({ ableToExtend: ableToExtend });
 }
 
 export async function getExpirationDate(req: Request, res: Response) {
-    console.log(req.body);
+
     if (!req.body.game_id || !req.body.username) {
         res.status(400).send("Request is invalid. Ids are missing");
         return;
@@ -156,18 +157,17 @@ export async function getExpirationDate(req: Request, res: Response) {
     }
     let id = user[0].user_id;
 
-    let rents = await rentRepo.getRentsByUserIdAndGameIdByExpirationDate(id, req.body.game_id, new Date().toISOString().slice(0, 10));
+    let rents = await rentRepo.getRentsByUserIdAndGameIdByExpirationDate(id, parseInt(req.body.game_id), new Date().toISOString().slice(0, 10));
     if (rents == null) {
         res.status(200).send({ date: "" });
         return;
     }
-    console.log(rents)
+
 
     let date = "";
     for (let i = 0; i < rents?.length; i++) {
         date = new Date(rents[i].expiration_date!).toISOString().slice(0, 10);
     }
 
-    console.log(date);
     res.status(200).send({ date: date });
 }
