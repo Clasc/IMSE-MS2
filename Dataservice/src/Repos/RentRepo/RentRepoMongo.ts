@@ -12,6 +12,10 @@ export class RentRepoMongo extends MongoBaseRepo implements IRentRepo {
 
     public async insertRent(rent: Rent): Promise<boolean> {
         try {
+            if (!rent.rent_id) {
+                rent.rent_id = (await this.increment({ collecition: "Rent", idField: "rent_id" }));
+            }
+
             await mongoDB.collection("Rent").insertOne(rent);
             return true;
         }
