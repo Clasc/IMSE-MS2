@@ -9,5 +9,5 @@ export class User {
     password: string = "";
     is_admin?: boolean = false;
     birthday?: string = "";
-    playedGames?: PlayedGame[];
+    played_games?: PlayedGame[];
 }

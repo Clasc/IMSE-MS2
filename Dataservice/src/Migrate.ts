@@ -40,7 +40,7 @@ export async function migrate(req: Request, res: Response) {
     //migrate users
     let users = await userRepo.getAllUsers();
     users.forEach(async (user) => {
-        user.playedGames = [];
+        user.played_games = [];
         await userRepoMongo.insertUser(user);
     });
 
