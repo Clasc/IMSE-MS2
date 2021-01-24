@@ -1,9 +1,10 @@
 import { Cursor } from "mongodb";
 import { Studio } from "../../Dtos/Studio";
 import { mongoDB } from "../../Services/mongodb";
+import { MongoBaseRepo } from "../MongoBaseRepo";
 import { IStudioRepo } from "./IStudioRepo";
 
-export class StudioRepoMongo implements IStudioRepo {
+export class StudioRepoMongo extends MongoBaseRepo implements IStudioRepo {
     public static async addGame(studio_id: number | undefined, game_id: number | undefined, title: string | undefined) {
         let game = {
             game_id: game_id,
@@ -28,6 +29,9 @@ export class StudioRepoMongo implements IStudioRepo {
 
     public async insertStudio(studio: Studio): Promise<boolean> {
         try {
+            if (!studio.studio_id) {
+                studio.studio_id = await this.increment({ collecition: "Studio", idField: "studio_id" });
+            }
             await mongoDB.collection("Studio").insertOne(studio);
             return true;
         }

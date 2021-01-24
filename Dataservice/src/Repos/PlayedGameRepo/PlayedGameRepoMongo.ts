@@ -2,9 +2,10 @@ import { Cursor } from "mongodb";
 import { PlayedGame } from "../../Dtos/PlayedGame";
 import { User } from "../../Dtos/User";
 import { mongoDB } from "../../Services/mongodb";
+import { MongoBaseRepo } from "../MongoBaseRepo";
 import { IPlayedGameRepo } from "./IPlayedGameRepo";
 
-export class PlayedGameRepoMongo implements IPlayedGameRepo {
+export class PlayedGameRepoMongo extends MongoBaseRepo implements IPlayedGameRepo {
     public async getAllPlayedGames(): Promise<PlayedGame[]> {
         // let users: Cursor<User> = await mongoDB.collection("User").mapReduce();
         // let pgames: PlayedGame[] = users.map((user) => user)

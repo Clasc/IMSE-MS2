@@ -1,9 +1,10 @@
 import { Cursor } from "mongodb";
 import { User } from "../../Dtos/User";
 import { mongoDB } from "../../Services/mongodb";
+import { MongoBaseRepo } from "../MongoBaseRepo";
 import { IUserRepo } from "./IUserRepo";
 
-export class UserRepoMongo implements IUserRepo {
+export class UserRepoMongo extends MongoBaseRepo implements IUserRepo {
     public async getAllUsers(): Promise<User[]> {
         let users: Cursor<User> = mongoDB.collection("User").find();
         return users.toArray();
@@ -21,6 +22,10 @@ export class UserRepoMongo implements IUserRepo {
 
     public async insertUser(user: User): Promise<boolean> {
         try {
+            if (!user.user_id) {
+                user.user_id = (await this.increment({ collecition: "User", idField: "user_id" }));
+            }
+
             await mongoDB.collection("User").insertOne(user);
             return true;
         }
@@ -32,7 +37,7 @@ export class UserRepoMongo implements IUserRepo {
 
     public async updateUserToken(user_id: string, token: string): Promise<boolean> {
         try {
-            await mongoDB.collection("User").updateOne({ user_id: user_id }, { token: token });
+            await mongoDB.collection("User").updateOne({ user_id: user_id }, { $set: { token: token } });
             return true;
         }
         catch (err) {

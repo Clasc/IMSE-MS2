@@ -120,4 +120,6 @@ export async function migrate(req: Request, res: Response) {
 
         await playedGameRepoMongo.insertPlayedGame(playedGame);
     });
+
+    res.status(200).send("Finished");
 }

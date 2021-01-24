@@ -1,8 +1,9 @@
 import { GameRecommendation } from "../../Dtos/GameRecommendation";
 import { mongoDB } from "../../Services/mongodb";
+import { MongoBaseRepo } from "../MongoBaseRepo";
 import { IGameRecommendationRepo } from "./IGameRecommendationRepo";
 
-export class GameRecommendationRepoMongo implements IGameRecommendationRepo {
+export class GameRecommendationRepoMongo extends MongoBaseRepo implements IGameRecommendationRepo {
     public async getAllGameRecommendations(): Promise<GameRecommendation[]> {
         throw new Error("Method not implemented.");
     }
