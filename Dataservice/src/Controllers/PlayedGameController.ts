@@ -24,10 +24,15 @@ export async function insertPlayedGame(req: Request, res: Response) {
     }
 
     let existingPlayedGame = await playedGameRepo.getPlayedGameBy(playedGame.user_id!, playedGame.game_id!);
+    console.log("palyedgameexisting:", existingPlayedGame);
     let success = true;
 
     if (!existingPlayedGame[0]) {
+        console.log("create new played game:", playedGame);
         success = await playedGameRepo.insertPlayedGame(playedGame);
+    }
+    else {
+        console.log("no new played Game!!");
     }
 
     res.status(success ? 200 : 500).send(`inserted a playedGame: ${success}`);

@@ -64,7 +64,6 @@ export class RentRepoMongo extends MongoBaseRepo implements IRentRepo {
 
     public async getRentsByUserIdAndGameIdByExpirationDate(user_id: number, game_id: number, expiration_date: string): Promise<RentMongo[] | null> {
         try {
-            //TODO: in general, but we have date strings for now => so comparison will not work
             let rents: Cursor<RentMongo> = await mongoDB.collection("Rent").find({ user_id: user_id, 'game.game_id': game_id, expiration_date: { $gte: new Date(expiration_date) } });
             let res = await rents.toArray();
             console.log("rents by exp date", res);

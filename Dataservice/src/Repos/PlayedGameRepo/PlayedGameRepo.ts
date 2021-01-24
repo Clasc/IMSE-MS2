@@ -1,6 +1,5 @@
-import { PlayedGame } from "../../Dtos/PlayedGame/PlayedGame";
 import { PlayedGameSql } from "../../Dtos/PlayedGame/PlayedGameSql";
-import { db, queryDb } from "../../Services/db";
+import { queryDb } from "../../Services/db";
 import { IPlayedGameRepo } from "./IPlayedGameRepo";
 
 export class PlayedGameRepo implements IPlayedGameRepo {

@@ -1,6 +1,7 @@
 import { PlayedGame } from "../../Dtos/PlayedGame/PlayedGame";
 import { USE_MONGO_DB } from "../../USE_MONGO_DB";
 import { PlayedGameRepo } from "./PlayedGameRepo";
+import { PlayedGameRepoMongo } from "./PlayedGameRepoMongo";
 
 export interface IPlayedGameRepo {
     getAllPlayedGames(): Promise<PlayedGame[]>;
@@ -11,5 +12,5 @@ export interface IPlayedGameRepo {
 }
 
 export function createPlayedGameRepo(): IPlayedGameRepo {
-    return USE_MONGO_DB ? new PlayedGameRepo() : new PlayedGameRepo();
+    return USE_MONGO_DB ? new PlayedGameRepoMongo() : new PlayedGameRepo();
 }

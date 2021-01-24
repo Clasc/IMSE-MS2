@@ -2,7 +2,6 @@ import { Cursor } from "mongodb";
 import { PlayedGame } from "../../Dtos/PlayedGame/PlayedGame";
 import { PlayedGameMongo } from "../../Dtos/PlayedGame/PlayedGameMongo";
 import { PlayedGameRequest } from "../../Dtos/PlayedGame/PlayedGameRequest";
-import { User } from "../../Dtos/User/User";
 import { UserMongo } from "../../Dtos/User/UserMongo";
 import { mongoDB } from "../../Services/mongodb";
 import { GameRepoMongo } from "../GameRepo/GameRepoMongo";
@@ -13,15 +12,17 @@ export class PlayedGameRepoMongo extends MongoBaseRepo implements IPlayedGameRep
     private readonly gameRepo = new GameRepoMongo();
 
     public async getAllPlayedGames(): Promise<PlayedGame[]> {
-        // let users: Cursor<User> = await mongoDB.collection("User").mapReduce();
-        // let pgames: PlayedGame[] = users.map((user) => user)
         throw new Error("Method not implemented.");
     }
 
     public async getPlayedGameBy(userId: number, gameId: number): Promise<PlayedGame[]> {
         try {
-            let games: Cursor<PlayedGame> = await mongoDB.collection("User").find({ user_id: userId }).map((user) => user.played_games);
-            return games.toArray();
+            let users: Cursor<UserMongo> = await mongoDB.collection("User").find({ 'user_id': userId, 'played_games.game.game_id': gameId}).project({_id:0, played_games: {$elemMatch: {'game.game_id': gameId}}});
+            let game = (await users.toArray())[0];
+            if (!game) {
+                return [];
+            }
+            return game.played_games;
         }
         catch (err) {
             console.error(err);
