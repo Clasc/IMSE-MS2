@@ -33,7 +33,6 @@ export class ReportRepoMongo extends MongoBaseRepo implements IReportRepo {
                 },
             ]);
             result = await rents.map((rent) => {
-                console.log("report data:", rent);
                 let played_game = rent.user[0].played_games.find(pgame => pgame.game.game_id === rent.game.game_id);
                 return <RentReportTableData>{
                     expiration_date: rent.expiration_date,
