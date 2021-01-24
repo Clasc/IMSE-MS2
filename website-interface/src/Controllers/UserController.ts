@@ -69,7 +69,7 @@ export async function login(req: Request, res: Response) {
 }
 
 export async function loggedIn(req: Request, res: Response) {
-    console.log(req.body);
+
     if (!req.body?.token || !req.body?.username) {
         res.status(200).send({ loggedIn: false });
         return
@@ -81,13 +81,17 @@ export async function loggedIn(req: Request, res: Response) {
 }
 
 export async function isAdmin(req: Request, res: Response) {
-    console.log(req.body);
-    if (!req.body?.token || !req.body?.username) {
-        res.status(200).send({ loggedIn: false });
+    if (!req.body) {
+        res.status(400).send({ loggedIn: false, error: "invalid body" });
         return
     }
 
     let data = req.body as LoginData;
+    if (!data.token || !data.username) {
+        res.status(200).send({ loggedIn: false });
+        return
+    }
+
     let isAdmin = await LoginService.userIsAdmin(data);
     res.status(200).send({ isAdmin: isAdmin });
 }

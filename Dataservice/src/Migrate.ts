@@ -1,10 +1,7 @@
 import { Response, Request } from "express";
 import { GameMongo } from "./Dtos/Game/GameMongo";
-import { PlayedGameMongo } from "./Dtos/PlayedGame/PlayedGameMongo";
-import { RentMongo } from "./Dtos/Rent/RentMongo";
 import { StudioMongo } from "./Dtos/Studio/StudioMongo";
 import { SubscriptionMongo } from "./Dtos/Subscription/SubscriptionMongo";
-import { UserMongo } from "./Dtos/User/UserMongo";
 import { GameRecommendationRepo } from "./Repos/GameRecommendationRepo/GameRecommendationRepo";
 import { GameRecommendationRepoMongo } from "./Repos/GameRecommendationRepo/GameRecommendationRepoMongo";
 import { GameRepo } from "./Repos/GameRepo/GameRepo";
@@ -46,6 +43,8 @@ export async function migrate(req: Request, res: Response) {
     // migrate users
     let users = await userRepo.getAllUsers();
     for (let user of users) {
+        // booleans are stored in sql as 0 and 1, while in mongo it is true or false. !! is for converting
+        user.is_admin = !!user.is_admin;
         await userRepoMongo.insertUser(user);
     }
 
