@@ -1,4 +1,4 @@
-import { Subscription } from "../../Dtos/Subscription";
+import { Subscription } from "../../Dtos/Subscription/Subscription";
 import { USE_MONGO_DB } from "../../USE_MONGO_DB";
 import { SubscriptionRepo } from "./SubscriptionRepo";
 import { SubscriptionRepoMongo } from "./SubscriptionRepoMongo";

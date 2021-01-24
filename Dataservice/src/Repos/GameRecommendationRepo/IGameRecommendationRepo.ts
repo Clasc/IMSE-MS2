@@ -1,4 +1,4 @@
-import { GameRecommendation } from "../../Dtos/GameRecommendation";
+import { GameRecommendation } from "../../Dtos/GameRecommendation/GameRecommendation";
 import { USE_MONGO_DB } from "../../USE_MONGO_DB";
 import { GameRecommendationRepo } from "./GameRecommendationRepo";
 import { GameRecommendationRepoMongo } from "./GameRecommendationRepoMongo";

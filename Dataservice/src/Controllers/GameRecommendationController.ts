@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { GameRecommendation } from "../Dtos/GameRecommendation";
+import { GameRecommendation } from "../Dtos/GameRecommendation/GameRecommendation";
+import { GameRecommendationRequest } from "../Dtos/GameRecommendation/GameRecommendationRequest";
 import { createGameRecommendationRepo } from "../Repos/GameRecommendationRepo/IGameRecommendationRepo";
 
 const repo = createGameRecommendationRepo();
@@ -11,7 +12,7 @@ export async function getAllGameRecommendations(req: Request, res: Response) {
 
 export async function insertGameRecommendation(req: Request, res: Response) {
     let gameRecommendationId = req.params.gameRecommendationId;
-    let gameRecommendation = req.body as GameRecommendation | undefined | null;
+    let gameRecommendation = req.body as GameRecommendationRequest | undefined | null;
 
     if (!gameRecommendation) {
         res.status(500).send(`Request body is empty`);

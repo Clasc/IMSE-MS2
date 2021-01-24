@@ -1,20 +1,21 @@
-import { Subscription } from "../../Dtos/Subscription";
+import { Subscription } from "../../Dtos/Subscription/Subscription";
+import { SubscriptionSql } from "../../Dtos/Subscription/SubscriptionSql";
 import { queryDb } from "../../Services/db";
 import { ISubscriptionRepo } from "./ISubscriptionRepo";
 
 export class SubscriptionRepo implements ISubscriptionRepo {
-    public async getAllSubscriptions(): Promise<Subscription[]> {
+    public async getAllSubscriptions(): Promise<SubscriptionSql[]> {
         try {
-            let queryResult: Subscription[] = await queryDb("SELECT * FROM Subscription");
+            let queryResult: SubscriptionSql[] = await queryDb("SELECT * FROM Subscription");
             return queryResult;
         }
         catch (err) {
             console.error(err);
-            return [new Subscription()];
+            return [];
         }
     }
 
-    public async insertSubscription(subscription: Subscription): Promise<boolean> {
+    public async insertSubscription(subscription: SubscriptionSql): Promise<boolean> {
         try {
             let result: any = await queryDb(`INSERT INTO Subscription SET ?`, subscription);
             return true;

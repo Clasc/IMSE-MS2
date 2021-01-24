@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { PlayedGame } from "../Dtos/PlayedGame";
+import { PlayedGame } from "../Dtos/PlayedGame/PlayedGame";
+import { PlayedGameRequest } from "../Dtos/PlayedGame/PlayedGameRequest";
 import { createPlayedGameRepo } from "../Repos/PlayedGameRepo/IPlayedGameRepo";
 
 const playedGameRepo = createPlayedGameRepo();
@@ -11,7 +12,7 @@ export async function getAllPlayedGames(req: Request, res: Response) {
 
 export async function insertPlayedGame(req: Request, res: Response) {
     let playedGameId = req.params.playedGameId;
-    let playedGame = req.body as PlayedGame | undefined | null;
+    let playedGame = req.body as PlayedGameRequest | undefined | null;
 
     if (!playedGame) {
         res.status(500).send(`Request body is empty`);

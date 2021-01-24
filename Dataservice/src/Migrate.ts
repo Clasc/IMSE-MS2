@@ -1,4 +1,9 @@
 import { Response, Request } from "express";
+import { GameMongo } from "./Dtos/Game/GameMongo";
+import { PlayedGameMongo } from "./Dtos/PlayedGame/PlayedGameMongo";
+import { StudioMongo } from "./Dtos/Studio/StudioMongo";
+import { SubscriptionMongo } from "./Dtos/Subscription/SubscriptionMongo";
+import { UserMongo } from "./Dtos/User/UserMongo";
 import { GameRecommendationRepo } from "./Repos/GameRecommendationRepo/GameRecommendationRepo";
 import { GameRecommendationRepoMongo } from "./Repos/GameRecommendationRepo/GameRecommendationRepoMongo";
 import { GameRepo } from "./Repos/GameRepo/GameRepo";
@@ -40,34 +45,49 @@ export async function migrate(req: Request, res: Response) {
     //migrate users
     let users = await userRepo.getAllUsers();
     users.forEach(async (user) => {
-        user.played_games = [];
-        await userRepoMongo.insertUser(user);
+        let newUser: UserMongo = {
+            birthday: user.birthday,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            password: user.password,
+            username: user.username,
+            is_admin: user.is_admin,
+            user_id: user.user_id,
+            played_games: [],
+        };
+
+        await userRepoMongo.insertUser(newUser);
     });
 
     //migrate studios
     let studios = await studioRepo.getAllStudios();
     studios.forEach(async (studio) => {
-        studio.games = [];
+        let newStudio: StudioMongo = { ...studio, games: [] };
 
-        await studioRepoMongo.insertStudio(studio);
+        await studioRepoMongo.insertStudio(newStudio);
     });
 
     //migrate games
     let games = await gameRepo.getAllGames();
     games.forEach(async (game) => {
         let studio = studios.filter((studio) => studio.studio_id == game.studio_id)[0];
-        game.studio = {
-            studio_id: game.studio_id,
-            name: studio?.name,
-            price: studio?.price
-        };
 
-        game.recommended_games = [];
+        let newGame: GameMongo = {
+            game_id: game.game_id,
+            genre: game.genre,
+            price: game.price,
+            title: game.title,
+            recommended_games: [],
+            studio: {
+                studio_id: game.studio_id,
+                name: studio?.name,
+                price: studio?.price
+            }
+        }
 
         await StudioRepoMongo.addGame(game.studio_id, game.game_id, game.title);
 
-        game.studio_id = undefined;
-        await gameRepoMongo.insertGame(game);
+        await gameRepoMongo.insertGame(newGame);
     });
 
     //migrate game recs
@@ -80,20 +100,25 @@ export async function migrate(req: Request, res: Response) {
     let subs = await subscriptionRepo.getAllSubscriptions();
     subs.forEach(async (sub) => {
         let studio = studios.filter((studio) => studio.studio_id == sub.studio_id)[0];
-        sub.studio = {
-            studio_id: sub.studio_id,
-            name: studio?.name,
-            price: studio?.price
+        let newSub: SubscriptionMongo = {
+            end_date: sub.end_date,
+            start_date: sub.start_date,
+            studio: {
+                studio_id: sub.studio_id,
+                name: studio?.name,
+                price: studio?.price
+            },
+            subscription_id: sub.subscription_id,
+            user_id: sub.user_id,
         }
 
-        sub.studio_id = undefined;
-        await subscriptionRepoMongo.insertSubscription(sub);
+        await subscriptionRepoMongo.insertSubscription(newSub);
     });
 
     //migrate rent
     let rents = await rentRepo.getAllRents();
     rents.forEach(async (rent) => {
-        let game = await gameRepoMongo.getGameById(rent.game_id?.toString() as string);
+        let game = await gameRepoMongo.getGameById(rent.game_id as number);
         rent.game_id = undefined;
 
         rent.game = {
@@ -109,16 +134,18 @@ export async function migrate(req: Request, res: Response) {
     //migrate played games
     let playedGames = await playedGameRepo.getAllPlayedGames();
     playedGames.forEach(async (playedGame) => {
-        playedGame.played_game_id = undefined;
-        let game = await gameRepoMongo.getGameById(playedGame.game_id?.toString() as string);
-        playedGame.game_id = undefined;
+        let game = await gameRepoMongo.getGameById(playedGame.game_id as number);
+        if (game) {
+            let newPlayedGame: PlayedGameMongo = {
+                game: {
+                    game_id: game.game_id as number,
+                    title: game.title
+                }
+            }
 
-        playedGame.game = {
-            game_id: game?.game_id,
-            title: game?.title
+            await playedGameRepoMongo.insertPlayedGame(playedGame);
         }
 
-        await playedGameRepoMongo.insertPlayedGame(playedGame);
     });
 
     res.status(200).send("Finished");

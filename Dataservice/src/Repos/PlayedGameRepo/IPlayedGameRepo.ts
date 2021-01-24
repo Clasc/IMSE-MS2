@@ -1,4 +1,4 @@
-import { PlayedGame } from "../../Dtos/PlayedGame";
+import { PlayedGame } from "../../Dtos/PlayedGame/PlayedGame";
 import { USE_MONGO_DB } from "../../USE_MONGO_DB";
 import { PlayedGameRepo } from "./PlayedGameRepo";
 

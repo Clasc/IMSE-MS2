@@ -1,4 +1,4 @@
-import { Studio } from "../../Dtos/Studio";
+import { Studio } from "../../Dtos/Studio/Studio";
 import { queryDb } from "../../Services/db";
 import { IStudioRepo } from "./IStudioRepo";
 
@@ -10,7 +10,7 @@ export class StudioRepo implements IStudioRepo {
         }
         catch (err) {
             console.error(err);
-            return [new Studio()];
+            return [];
         }
     }
 

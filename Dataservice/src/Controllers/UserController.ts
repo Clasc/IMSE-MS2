@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { User } from "../Dtos/User";
+import { User } from "../Dtos/User/User";
 import { createUserRepo, IUserRepo } from "../Repos/UserRepo/IUserRepo";
 
 const repo: IUserRepo = createUserRepo();
@@ -47,18 +47,19 @@ export async function insertUser(req: Request, res: Response) {
 }
 
 export async function addUser(req: Request, res: Response) {
-    let user = new User();
     if (!req.body) {
         res.status(500).send(`Request body is empty`);
         return
     }
 
     console.log(req.body);
-    user.username = req.body?.username;
-    user.first_name = req.body?.first_name;
-    user.last_name = req.body?.last_name;
-    user.password = req.body?.password;
-    user.birthday = req.body?.birthday
+    let user: User = {
+        username: req.body?.username,
+        first_name: req.body?.first_name,
+        last_name: req.body?.last_name,
+        password: req.body?.password,
+        birthday: req.body?.birthda,
+    }
 
     let success = await repo.insertUser(user);
     res.status(success ? 200 : 500).send({ success: success });

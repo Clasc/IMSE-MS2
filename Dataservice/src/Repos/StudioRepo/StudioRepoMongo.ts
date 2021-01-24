@@ -1,5 +1,6 @@
 import { Cursor } from "mongodb";
-import { Studio } from "../../Dtos/Studio";
+import { Studio } from "../../Dtos/Studio/Studio";
+import { StudioMongo } from "../../Dtos/Studio/StudioMongo";
 import { mongoDB } from "../../Services/mongodb";
 import { MongoBaseRepo } from "../MongoBaseRepo";
 import { IStudioRepo } from "./IStudioRepo";
@@ -22,12 +23,12 @@ export class StudioRepoMongo extends MongoBaseRepo implements IStudioRepo {
 
     }
 
-    public async getAllStudios(): Promise<Studio[]> {
-        let studios: Cursor<Studio> = mongoDB.collection("Studio").find();
+    public async getAllStudios(): Promise<StudioMongo[]> {
+        let studios: Cursor<StudioMongo> = mongoDB.collection("Studio").find();
         return studios.toArray();
     }
 
-    public async insertStudio(studio: Studio): Promise<boolean> {
+    public async insertStudio(studio: StudioMongo): Promise<boolean> {
         try {
             if (!studio.studio_id) {
                 studio.studio_id = await this.increment({ collecition: "Studio", idField: "studio_id" });

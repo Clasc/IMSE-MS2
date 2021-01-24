@@ -1,5 +1,5 @@
 import { Cursor } from "mongodb";
-import { Subscription } from "../../Dtos/Subscription";
+import { Subscription } from "../../Dtos/Subscription/Subscription";
 import { mongoDB } from "../../Services/mongodb";
 import { MongoBaseRepo } from "../MongoBaseRepo";
 import { ISubscriptionRepo } from "./ISubscriptionRepo";

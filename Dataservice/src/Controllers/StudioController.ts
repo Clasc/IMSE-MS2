@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Studio } from "../Dtos/Studio";
+import { Studio } from "../Dtos/Studio/Studio";
 import { createStudioRepo, IStudioRepo } from "../Repos/StudioRepo/IStudioRepo";
 
 const repo: IStudioRepo = createStudioRepo();

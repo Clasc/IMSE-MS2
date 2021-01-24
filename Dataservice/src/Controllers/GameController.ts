@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Game } from "../Dtos/Game";
+import { Game } from "../Dtos/Game/Game";
 import { GameRepo } from "../Repos/GameRepo/GameRepo";
 import { createGameRepo } from "../Repos/GameRepo/IGameRepo";
 const gameRepo = createGameRepo();

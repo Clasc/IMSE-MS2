@@ -1,5 +1,5 @@
 import { Cursor } from "mongodb";
-import { Rent } from "../../Dtos/Rent";
+import { Rent } from "../../Dtos/Rent/Rent";
 import { mongoDB } from "../../Services/mongodb";
 import { MongoBaseRepo } from "../MongoBaseRepo";
 import { IRentRepo } from "./IRentRepo";

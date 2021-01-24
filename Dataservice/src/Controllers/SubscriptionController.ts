@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Subscription } from "../Dtos/Subscription";
+import { Subscription } from "../Dtos/Subscription/Subscription";
 import { createSubscriptionRepo, ISubscriptionRepo } from "../Repos/SubscriptionRepo/ISubscriptionRepo";
 
 const repo: ISubscriptionRepo = createSubscriptionRepo();

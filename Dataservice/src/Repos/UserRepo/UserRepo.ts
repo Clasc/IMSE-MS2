@@ -1,4 +1,4 @@
-import { User } from "../../Dtos/User";
+import { User } from "../../Dtos/User/User";
 import { queryDb } from "../../Services/db";
 import { IUserRepo } from "./IUserRepo";
 
@@ -10,7 +10,7 @@ export class UserRepo implements IUserRepo {
         }
         catch (err) {
             console.error(err);
-            return [new User()];
+            return [];
         }
     }
 

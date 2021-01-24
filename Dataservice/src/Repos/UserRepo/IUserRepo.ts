@@ -1,4 +1,4 @@
-import { User } from "../../Dtos/User";
+import { User } from "../../Dtos/User/User";
 import { USE_MONGO_DB } from "../../USE_MONGO_DB";
 import { UserRepo } from "./UserRepo";
 import { UserRepoMongo } from "./UserRepoMongo";

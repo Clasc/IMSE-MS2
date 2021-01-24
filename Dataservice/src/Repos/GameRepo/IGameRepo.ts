@@ -1,4 +1,4 @@
-import { Game } from "../../Dtos/Game";
+import { Game } from "../../Dtos/Game/Game";
 import { USE_MONGO_DB } from "../../USE_MONGO_DB";
 import { GameRepo } from "./GameRepo";
 import { GameRepoMongo } from "./GameRepoMongo";
@@ -7,7 +7,7 @@ import { GameRepoMongo } from "./GameRepoMongo";
 export interface IGameRepo {
     getAllGames(): Promise<Game[]>;
 
-    getGameById(id: string): Promise<Game | null>;
+    getGameById(id: number): Promise<Game | null>;
 
     insertGame(game: Game): Promise<boolean>;
 }

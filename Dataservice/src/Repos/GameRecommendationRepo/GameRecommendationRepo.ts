@@ -1,20 +1,22 @@
-import { GameRecommendation } from "../../Dtos/GameRecommendation";
+import { GameRecommendation } from "../../Dtos/GameRecommendation/GameRecommendation";
+import { GameRecommendationRequest } from "../../Dtos/GameRecommendation/GameRecommendationRequest";
+import { GameRecommendationSql } from "../../Dtos/GameRecommendation/GameRecommendationSql";
 import { queryDb } from "../../Services/db";
 import { IGameRecommendationRepo } from "./IGameRecommendationRepo";
 
 export class GameRecommendationRepo implements IGameRecommendationRepo {
-    public async getAllGameRecommendations(): Promise<GameRecommendation[]> {
+    public async getAllGameRecommendations(): Promise<GameRecommendationSql[]> {
         try {
-            let queryResult: GameRecommendation[] = await queryDb("SELECT * FROM GameRecommendation");
+            let queryResult: GameRecommendationSql[] = await queryDb("SELECT * FROM GameRecommendation");
             return queryResult;
         }
         catch (err) {
             console.error(err);
-            return [new GameRecommendation()];
+            return [];
         }
     }
 
-    public async insertGameRecommendation(gameRecommendation: GameRecommendation): Promise<boolean> {
+    public async insertGameRecommendation(gameRecommendation: GameRecommendationSql): Promise<boolean> {
         try {
             let result: any = await queryDb(`INSERT INTO GameRecommendation SET ?`, gameRecommendation);
             return true;

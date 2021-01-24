@@ -1,4 +1,4 @@
-import { Rent } from "../../Dtos/Rent";
+import { Rent } from "../../Dtos/Rent/Rent";
 import { USE_MONGO_DB } from "../../USE_MONGO_DB";
 import { RentRepo } from "./RentRepo";
 import { RentRepoMongo } from "./RentRepoMongo";

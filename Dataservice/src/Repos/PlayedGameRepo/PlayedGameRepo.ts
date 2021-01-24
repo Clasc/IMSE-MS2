@@ -1,32 +1,33 @@
-import { PlayedGame } from "../../Dtos/PlayedGame";
+import { PlayedGame } from "../../Dtos/PlayedGame/PlayedGame";
+import { PlayedGameSql } from "../../Dtos/PlayedGame/PlayedGameSql";
 import { db, queryDb } from "../../Services/db";
 import { IPlayedGameRepo } from "./IPlayedGameRepo";
 
 export class PlayedGameRepo implements IPlayedGameRepo {
-    public async getAllPlayedGames(): Promise<PlayedGame[]> {
+    public async getAllPlayedGames(): Promise<PlayedGameSql[]> {
         try {
-            let queryResult: PlayedGame[] = await queryDb("SELECT * FROM PlayedGame");
+            let queryResult: PlayedGameSql[] = await queryDb("SELECT * FROM PlayedGame");
             return queryResult;
         }
         catch (err) {
             console.error(err);
-            return [new PlayedGame()];
+            return [];
         }
     }
 
-    public async getPlayedGameBy(userId: number, gameId: number): Promise<PlayedGame[]> {
+    public async getPlayedGameBy(userId: number, gameId: number): Promise<PlayedGameSql[]> {
         try {
-            let queryResult: PlayedGame[] = await queryDb(`SELECT * FROM PlayedGame WHERE user_id=${userId} AND game_id=${gameId}`);
+            let queryResult: PlayedGameSql[] = await queryDb(`SELECT * FROM PlayedGame WHERE user_id=${userId} AND game_id=${gameId}`);
             return queryResult;
         }
         catch (err) {
             console.error(err);
-            return [new PlayedGame()];
+            return [];
         }
     }
 
 
-    public async insertPlayedGame(playedGame: PlayedGame): Promise<boolean> {
+    public async insertPlayedGame(playedGame: PlayedGameSql): Promise<boolean> {
         try {
             let result: any = await queryDb(`INSERT INTO PlayedGame SET ?`, playedGame);
             return true;

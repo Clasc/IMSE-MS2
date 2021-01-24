@@ -1,10 +1,10 @@
-export class Rent {
+export interface Rent {
     rent_id?: number;
-    extended?: boolean = false;
-    start_date?: string = "";
-    expiration_date?: string = "";
-    user_id?: number = 0;
-    game_id?: number = 0;
+    extended?: boolean;
+    start_date?: string;
+    expiration_date?: string;
+    user_id?: number;
+    game_id?: number;
     game?: {
         game_id?: number,
         title?: string,

@@ -1,4 +1,4 @@
-import { Rent } from "../../Dtos/Rent";
+import { Rent } from "../../Dtos/Rent/Rent";
 import { queryDb } from "../../Services/db";
 import { IRentRepo } from "./IRentRepo";
 
@@ -10,7 +10,7 @@ export class RentRepo implements IRentRepo {
         }
         catch (err) {
             console.error(err);
-            return [new Rent()];
+            return [];
         }
     }
 

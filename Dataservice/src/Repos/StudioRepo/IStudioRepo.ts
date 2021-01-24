@@ -1,4 +1,4 @@
-import { Studio } from "../../Dtos/Studio";
+import { Studio } from "../../Dtos/Studio/Studio";
 import { USE_MONGO_DB } from "../../USE_MONGO_DB";
 import { StudioRepo } from "./StudioRepo";
 import { StudioRepoMongo } from "./StudioRepoMongo";

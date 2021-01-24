@@ -1,5 +1,5 @@
 import { Cursor } from "mongodb";
-import { User } from "../../Dtos/User";
+import { User } from "../../Dtos/User/User";
 import { mongoDB } from "../../Services/mongodb";
 import { MongoBaseRepo } from "../MongoBaseRepo";
 import { IUserRepo } from "./IUserRepo";

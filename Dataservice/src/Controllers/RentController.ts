@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Rent } from "../Dtos/Rent";
+import { Rent } from "../Dtos/Rent/Rent";
 import { createRentRepo, IRentRepo } from "../Repos/RentRepo/IRentRepo";
 import { createUserRepo, IUserRepo } from "../Repos/UserRepo/IUserRepo";
 
@@ -21,11 +21,12 @@ export async function insertRent(req: Request, res: Response) {
         return;
     }
 
-    let rent = new Rent();
-    rent.extended = req.body.extended;
-    rent.start_date = req.body.start_date;
-    rent.expiration_date = req.body.expiration_date;
-    rent.game_id = req.body.game_id;
+    let rent: Rent = {
+        extended: req.body.extended,
+        start_date: req.body.start_date,
+        expiration_date: req.body.expiration_date,
+        game_id: req.body.game_id,
+    };
 
     if (req.body.username) {
         let user = await userRepo.getUserByUsername(req.body.username);
