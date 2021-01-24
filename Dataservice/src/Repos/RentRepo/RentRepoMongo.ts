@@ -27,10 +27,10 @@ export class RentRepoMongo extends MongoBaseRepo implements IRentRepo {
             }
 
             let newRent: RentMongo = {
-                expiration_date: rent.expiration_date,
+                expiration_date: new Date(rent.expiration_date as string),
                 extended: rent.extended,
                 rent_id: rent.rent_id,
-                start_date: rent.start_date,
+                start_date: new Date(rent.start_date as string),
                 user_id: rent.user_id,
                 game: {
                     game_id: game.game_id,
@@ -53,7 +53,7 @@ export class RentRepoMongo extends MongoBaseRepo implements IRentRepo {
 
     public async extendRent(rentId: number, date: string): Promise<boolean> {
         try {
-            await mongoDB.collection("Rent").updateOne({ rent_id: rentId }, { $set: { expiration_date: date, extended: true } });
+            await mongoDB.collection("Rent").updateOne({ rent_id: rentId }, { $set: { expiration_date: new Date(date), extended: true } });
             return true;
         }
         catch (err) {
@@ -65,7 +65,7 @@ export class RentRepoMongo extends MongoBaseRepo implements IRentRepo {
     public async getRentsByUserIdAndGameIdByExpirationDate(user_id: number, game_id: number, expiration_date: string): Promise<RentMongo[] | null> {
         try {
             //TODO: in general, but we have date strings for now => so comparison will not work
-            let rents: Cursor<RentMongo> = await mongoDB.collection("Rent").find({ user_id: user_id, 'game.game_id': game_id, expiration_date: { $gte: expiration_date } });
+            let rents: Cursor<RentMongo> = await mongoDB.collection("Rent").find({ user_id: user_id, 'game.game_id': game_id, expiration_date: { $gte: new Date(expiration_date) } });
             let res = await rents.toArray();
             console.log("rents by exp date", res);
             return res;
