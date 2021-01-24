@@ -15,15 +15,17 @@ export class GameRecommendationRepoMongo extends MongoBaseRepo implements IGameR
     }
     public async insertGameRecommendation(gameRecommendation: GameRecommendationRequest): Promise<boolean> {
         let game_id = gameRecommendation.game_id;
-        let recommendedGame = await this.gameRepo.getGameById(game_id);
+
+        let recommendedGame = await this.gameRepo.getGameById(gameRecommendation.recommended_game_id);
         if (!recommendedGame) {
             return false;
         }
 
         let gameRec: GameRecommendationMongo = {
-            recommended_game_id: game_id,
+            recommended_game_id: gameRecommendation.recommended_game_id,
             title: recommendedGame.title,
         }
+
         try {
             await mongoDB.collection("Game").updateOne({ game_id: game_id }, { $push: { "recommended_games": gameRec } })
             return true;
