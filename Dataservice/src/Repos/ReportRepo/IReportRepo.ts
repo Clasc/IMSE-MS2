@@ -6,8 +6,8 @@ import { ReportRepo } from "./ReportRepo";
 import { ReportRepoMongo } from "./ReportRepoMongo";
 
 export interface IReportRepo {
-    createRentReport(reportData: ReportRequest): Promise<[RentReportTableData] | []>;
-    createStudioReport(reportData: ReportRequest): Promise<[StudioReportTableData] | []>;
+    createRentReport(reportData: ReportRequest): Promise<RentReportTableData[] | []>;
+    createStudioReport(reportData: ReportRequest): Promise<StudioReportTableData[] | []>;
 }
 
 export function createReportRepo(): IReportRepo {

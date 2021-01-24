@@ -35,6 +35,7 @@ export class UserRepoMongo extends MongoBaseRepo implements IUserRepo {
                 is_admin: user.is_admin,
                 user_id: user.user_id,
                 played_games: [],
+                login_token: user.login_token
             };
 
             await mongoDB.collection("User").insertOne(newUser);
@@ -48,7 +49,7 @@ export class UserRepoMongo extends MongoBaseRepo implements IUserRepo {
 
     public async updateUserToken(user_id: string, token: string): Promise<boolean> {
         try {
-            await mongoDB.collection("User").updateOne({ user_id: user_id }, { $set: { token: token } });
+            await mongoDB.collection("User").updateOne({ user_id: user_id }, { $set: { login_token: token } });
             return true;
         }
         catch (err) {
