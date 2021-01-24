@@ -43,9 +43,9 @@ export async function migrate(req: Request, res: Response) {
     let playedGameRepo = new PlayedGameRepo();
     let playedGameRepoMongo = new PlayedGameRepoMongo();
 
-    //migrate users
+    // migrate users
     let users = await userRepo.getAllUsers();
-    users.forEach(async (user) => {
+    for (let user of users) {
         let newUser: UserMongo = {
             birthday: user.birthday,
             first_name: user.first_name,
@@ -58,19 +58,19 @@ export async function migrate(req: Request, res: Response) {
         };
 
         await userRepoMongo.insertUser(newUser);
-    });
+    }
 
-    //migrate studios
+    // migrate studios
     let studios = await studioRepo.getAllStudios();
-    studios.forEach(async (studio) => {
+    for (let studio of studios) {
         let newStudio: StudioMongo = { ...studio, games: [] };
 
         await studioRepoMongo.insertStudio(newStudio);
-    });
+    }
 
-    //migrate games
+    // migrate games
     let games = await gameRepo.getAllGames();
-    games.forEach(async (game) => {
+    for (let game of games) {
         let studio = studios.filter((studio) => studio.studio_id == game.studio_id)[0];
 
         let newGame: GameMongo = {
@@ -89,17 +89,11 @@ export async function migrate(req: Request, res: Response) {
         await StudioRepoMongo.addGame(game.studio_id, game.game_id, game.title);
 
         await gameRepoMongo.insertGame(newGame);
-    });
-
-    //migrate game recs
-    let gameRecs = await gameRecommendationRepo.getAllGameRecommendations();
-    gameRecs.forEach(async (gameRec) => {
-        await gameRecommendationRepoMongo.insertGameRecommendation(gameRec);
-    });
+    }
 
     //migarte subscriptions
     let subs = await subscriptionRepo.getAllSubscriptions();
-    subs.forEach(async (sub) => {
+    for (let sub of subs) {
         let studio = studios.filter((studio) => studio.studio_id == sub.studio_id)[0];
         let newSub: SubscriptionMongo = {
             end_date: sub.end_date,
@@ -114,11 +108,11 @@ export async function migrate(req: Request, res: Response) {
         }
 
         await subscriptionRepoMongo.insertSubscription(newSub);
-    });
+    }
 
     //migrate rent
     let rents = await rentRepo.getAllRents();
-    rents.forEach(async (rent) => {
+    for (let rent of rents) {
         let game = await gameRepoMongo.getGameById(rent.game_id as number);
         if (game && game.studio) {
 
@@ -138,13 +132,19 @@ export async function migrate(req: Request, res: Response) {
             await rentRepoMongo.insertRent(newRent);
         }
 
-    });
+    }
+
+    //migrate game recs
+    let gameRecs = await gameRecommendationRepo.getAllGameRecommendations();
+    for (let gameRec of gameRecs) {
+        await gameRecommendationRepoMongo.insertGameRecommendation(gameRec);
+    }
 
     //migrate played games
     let playedGames = await playedGameRepo.getAllPlayedGames();
-    playedGames.forEach(async (playedGame) => {
+    for (let playedGame of playedGames) {
         await playedGameRepoMongo.insertPlayedGame(playedGame);
-    });
+    }
 
     res.status(200).send("Finished");
 }
