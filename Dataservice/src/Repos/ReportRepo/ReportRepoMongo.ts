@@ -1,4 +1,6 @@
 import { Cursor } from "mongodb";
+import { JoinedRent } from "../../Dtos/Rent/JoinedRent";
+import { Rent } from "../../Dtos/Rent/Rent";
 import { RentMongo } from "../../Dtos/Rent/RentMongo";
 import { RentReportTableData } from "../../Dtos/RentReportTableData";
 import { ReportRequest } from "../../Dtos/ReportRequest";
@@ -14,21 +16,34 @@ export class ReportRepoMongo extends MongoBaseRepo implements IReportRepo {
         try {
             let from = new Date(reportData.start_date);
             let to = new Date(reportData.end_date);
-            let rents: Cursor<RentMongo> = await mongoDB.collection("Rent")
-                .find({ start_date: { $gte: from, $lte: to } });
-            let userData: UserMongo[] = await mongoDB.collection("User").find({}).toArray();
+            let rents: Cursor<JoinedRent> = await mongoDB.collection("Rent").aggregate([
+                {
+                    $match: {
+                        start_date: { $gte: from, $lte: to }
+                    }
+                },
+                {
+                    $lookup:
+                    {
+                        from: 'User',
+                        localField: 'user_id',
+                        foreignField: 'user_id',
+                        as: 'user'
+                    }
+                },
+            ]);
             result = await rents.map((rent) => {
-                let user = userData.find(u => u.user_id === rent.user_id);
-                let game = user?.played_games.find(game => game.game.game_id === rent.game.game_id);
+                console.log("report data:", rent);
+                let played_game = rent.user[0].played_games.find(pgame => pgame.game.game_id === rent.game.game_id);
                 return <RentReportTableData>{
                     expiration_date: rent.expiration_date,
                     game_id: rent.game.game_id,
-                    playtime: game?.playtime,
+                    playtime: played_game?.playtime,
                     price: rent.game.price,
-                    progress: game?.progress,
+                    progress: played_game?.progress,
                     user_id: rent.user_id,
                     start_date: rent.start_date,
-                    username: user?.username,
+                    username: rent.user[0].username,
                     title: rent.game.title,
                 };
             }).toArray();
