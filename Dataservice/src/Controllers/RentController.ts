@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Rent } from "../Dtos/Rent/Rent";
+import { RentRequest } from "../Dtos/Rent/RentRequest";
 import { createRentRepo, IRentRepo } from "../Repos/RentRepo/IRentRepo";
 import { createUserRepo, IUserRepo } from "../Repos/UserRepo/IUserRepo";
 
@@ -21,7 +22,7 @@ export async function insertRent(req: Request, res: Response) {
         return;
     }
 
-    let rent: Rent = {
+    let rent: RentRequest = {
         extended: req.body.extended,
         start_date: req.body.start_date,
         expiration_date: req.body.expiration_date,
@@ -64,7 +65,8 @@ export async function extendRent(req: Request, res: Response) {
     }
     let id = user[0].user_id;
 
-    let rents = await rentRepo.getRentsByUserIdAndGameIdByExpirationDate(id.toString(), req.body.game_id, new Date().toISOString().slice(0, 10));
+    let rents = await rentRepo.getRentsByUserIdAndGameIdByExpirationDate(id, req.body.game_id, new Date().toISOString().slice(0, 10));
+    console.log("rents by expiration date", rents);
     if (rents == null) {
         res.status(500).send("No rent to extend!");
         return;
@@ -94,7 +96,7 @@ export async function ableToRent(req: Request, res: Response) {
     }
     let id = user[0].user_id;
 
-    let rents = await rentRepo.getRentsByUserIdAndGameIdByExpirationDate(id.toString(), req.body.game_id, new Date().toISOString().slice(0, 10));
+    let rents = await rentRepo.getRentsByUserIdAndGameIdByExpirationDate(id, req.body.game_id, new Date().toISOString().slice(0, 10));
     if (rents == null) {
         res.status(200).send({ ableToRent: true });
         return;
@@ -124,7 +126,7 @@ export async function ableToExtend(req: Request, res: Response) {
     }
     let id = user[0].user_id;
 
-    let rents = await rentRepo.getRentsByUserIdAndGameIdByExpirationDate(id.toString(), req.body.game_id, new Date().toISOString().slice(0, 10));
+    let rents = await rentRepo.getRentsByUserIdAndGameIdByExpirationDate(id, req.body.game_id, new Date().toISOString().slice(0, 10));
     if (rents == null) {
         res.status(200).send({ ableToExtend: false });
         return;
@@ -154,7 +156,7 @@ export async function getExpirationDate(req: Request, res: Response) {
     }
     let id = user[0].user_id;
 
-    let rents = await rentRepo.getRentsByUserIdAndGameIdByExpirationDate(id.toString(), req.body.game_id, new Date().toISOString().slice(0, 10));
+    let rents = await rentRepo.getRentsByUserIdAndGameIdByExpirationDate(id, req.body.game_id, new Date().toISOString().slice(0, 10));
     if (rents == null) {
         res.status(200).send({ date: "" });
         return;

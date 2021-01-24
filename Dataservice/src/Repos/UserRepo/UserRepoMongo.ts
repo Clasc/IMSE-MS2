@@ -21,13 +21,24 @@ export class UserRepoMongo extends MongoBaseRepo implements IUserRepo {
         return users.toArray()
     }
 
-    public async insertUser(user: UserMongo): Promise<boolean> {
+    public async insertUser(user: User): Promise<boolean> {
         try {
             if (!user.user_id) {
                 user.user_id = (await this.increment({ collecition: "User", idField: "user_id" }));
             }
 
-            await mongoDB.collection("User").insertOne(user);
+            let newUser: UserMongo = {
+                birthday: user.birthday,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                password: user.password,
+                username: user.username,
+                is_admin: user.is_admin,
+                user_id: user.user_id,
+                played_games: [],
+            };
+
+            await mongoDB.collection("User").insertOne(newUser);
             return true;
         }
         catch (err) {

@@ -8,7 +8,7 @@ import { UserApiService } from "../Services/UserApiService";
 export async function ableToRent(req: Request, res: Response) {
     console.log(req.body);
     if (!req.body?.game_id || !req.body?.username) {
-        res.status(200).send({ ableToRent: false });
+        res.status(400).send({ ableToRent: false });
         console.log("ableToRent: post body is empty");
         return;
     }
@@ -21,7 +21,7 @@ export async function ableToRent(req: Request, res: Response) {
 export async function getExpirationDate(req: Request, res: Response) {
     console.log(req.body);
     if (!req.body?.game_id || !req.body?.username) {
-        res.status(200).send({ ableToRent: false });
+        res.status(400).send({ ableToRent: false });
         console.log("getExpirationDate: post body is empty");
         return;
     }

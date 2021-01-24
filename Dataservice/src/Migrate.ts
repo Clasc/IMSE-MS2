@@ -46,18 +46,7 @@ export async function migrate(req: Request, res: Response) {
     // migrate users
     let users = await userRepo.getAllUsers();
     for (let user of users) {
-        let newUser: UserMongo = {
-            birthday: user.birthday,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            password: user.password,
-            username: user.username,
-            is_admin: user.is_admin,
-            user_id: user.user_id,
-            played_games: [],
-        };
-
-        await userRepoMongo.insertUser(newUser);
+        await userRepoMongo.insertUser(user);
     }
 
     // migrate studios
@@ -113,25 +102,7 @@ export async function migrate(req: Request, res: Response) {
     //migrate rent
     let rents = await rentRepo.getAllRents();
     for (let rent of rents) {
-        let game = await gameRepoMongo.getGameById(rent.game_id as number);
-        if (game && game.studio) {
-
-            let newRent: RentMongo = {
-                expiration_date: rent.expiration_date,
-                extended: rent.extended,
-                rent_id: rent.rent_id,
-                start_date: rent.start_date,
-                user_id: rent.user_id,
-                game: {
-                    game_id: game.game_id,
-                    title: game.title,
-                    price: game.price,
-                    studio: game.studio
-                }
-            };
-            await rentRepoMongo.insertRent(newRent);
-        }
-
+        await rentRepoMongo.insertRent(rent);
     }
 
     //migrate game recs

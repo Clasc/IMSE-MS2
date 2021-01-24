@@ -1,22 +1,49 @@
 import { Cursor } from "mongodb";
 import { Rent } from "../../Dtos/Rent/Rent";
+import { RentMongo } from "../../Dtos/Rent/RentMongo";
+import { RentRequest } from "../../Dtos/Rent/RentRequest";
+import { RentSql } from "../../Dtos/Rent/RentSql";
 import { mongoDB } from "../../Services/mongodb";
+import { GameRepoMongo } from "../GameRepo/GameRepoMongo";
 import { MongoBaseRepo } from "../MongoBaseRepo";
 import { IRentRepo } from "./IRentRepo";
 
 export class RentRepoMongo extends MongoBaseRepo implements IRentRepo {
+    private readonly gameRepo = new GameRepoMongo();
     public async getAllRents(): Promise<Rent[]> {
         let rents: Cursor<Rent> = mongoDB.collection("Rent").find();
         return rents.toArray();
     }
 
-    public async insertRent(rent: Rent): Promise<boolean> {
+    public async insertRent(rent: RentRequest): Promise<boolean> {
         try {
+            let game = await this.gameRepo.getGameById(rent.game_id as number);
+            console.log("gamebyId in  rent", game);
             if (!rent.rent_id) {
                 rent.rent_id = (await this.increment({ collecition: "Rent", idField: "rent_id" }));
             }
 
-            await mongoDB.collection("Rent").insertOne(rent);
+            if (!game?.studio) {
+                return false;
+            }
+
+            let newRent: RentMongo = {
+                expiration_date: rent.expiration_date,
+                extended: rent.extended,
+                rent_id: rent.rent_id,
+                start_date: rent.start_date,
+                user_id: rent.user_id,
+                game: {
+                    game_id: game.game_id,
+                    title: game.title,
+                    price: game.price,
+                    studio: game.studio
+                }
+            };
+            console.log(newRent);
+
+            await mongoDB.collection("Rent").insertOne(newRent);
+
             return true;
         }
         catch (err) {
@@ -36,11 +63,13 @@ export class RentRepoMongo extends MongoBaseRepo implements IRentRepo {
         }
     }
 
-    public async getRentsByUserIdAndGameIdByExpirationDate(user_id: string, game_id: string, expiration_date: string): Promise<Rent[] | null> {
+    public async getRentsByUserIdAndGameIdByExpirationDate(user_id: number, game_id: number, expiration_date: string): Promise<Rent[] | null> {
         try {
             //TODO: in general, but we have date strings for now => so comparison will not work
-            let rents: Cursor<Rent> = mongoDB.collection("Rent").find({ user_id: user_id, game_id: game_id, expiration_date: { $gte: expiration_date } });
-            return rents.toArray();
+            let rents: Cursor<Rent> = await mongoDB.collection("Rent").find({ user_id: user_id, 'game.game_id': game_id, expiration_date: { $gte: `ISODate('${expiration_date}')` } });
+            let res = await rents.toArray();
+            console.log("rents by exp date", res);
+            return res;
         }
         catch (err) {
             console.error(err);

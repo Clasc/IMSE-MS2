@@ -15,7 +15,7 @@ export async function getGameById(req: Request, res: Response) {
         return
     }
 
-    let game = await gameRepo.getGameById(req.params.gameId);
+    let game = await gameRepo.getGameById(parseInt(req.params.gameId));
     res.status(game === null ? 404 : 200).send(JSON.stringify(game));
 }
 
