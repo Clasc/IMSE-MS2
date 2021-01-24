@@ -1,7 +1,6 @@
 import { GameRecommendation } from "../../Dtos/GameRecommendation/GameRecommendation";
 import { GameRecommendationMongo } from "../../Dtos/GameRecommendation/GameRecommendationMongo";
 import { GameRecommendationRequest } from "../../Dtos/GameRecommendation/GameRecommendationRequest";
-import { GameRecommendationSql } from "../../Dtos/GameRecommendation/GameRecommendationSql";
 import { mongoDB } from "../../Services/mongodb";
 import { GameRepoMongo } from "../GameRepo/GameRepoMongo";
 import { MongoBaseRepo } from "../MongoBaseRepo";
@@ -15,8 +14,9 @@ export class GameRecommendationRepoMongo extends MongoBaseRepo implements IGameR
     }
     public async insertGameRecommendation(gameRecommendation: GameRecommendationRequest): Promise<boolean> {
         let game_id = gameRecommendation.game_id;
-
         let recommendedGame = await this.gameRepo.getGameById(gameRecommendation.recommended_game_id);
+
+
         if (!recommendedGame) {
             return false;
         }
@@ -27,7 +27,7 @@ export class GameRecommendationRepoMongo extends MongoBaseRepo implements IGameR
         }
 
         try {
-            await mongoDB.collection("Game").updateOne({ game_id: game_id }, { $push: { "recommended_games": gameRec } })
+            await mongoDB.collection("Game").updateOne({ game_id: game_id }, { $push: { "recommended_games": gameRec } });
             return true;
         }
         catch (err) {
