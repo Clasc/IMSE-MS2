@@ -1,6 +1,5 @@
 import { Rent } from "../../Dtos/Rent";
 import { USE_MONGO_DB } from "../../USE_MONGO_DB";
-
 import { RentRepo } from "./RentRepo";
 import { RentRepoMongo } from "./RentRepoMongo";
 
@@ -11,7 +10,7 @@ export interface IRentRepo {
 
     extendRent(rentId: number, date: string): Promise<boolean>;
 
-    getRentsByUserId(user_id: string): Promise<Rent[] | null>;
+    getRentsByUserIdAndGameIdByExpirationDate(user_id: string, game_id: string, expiration_date: string): Promise<Rent[] | null>;
 }
 
 export function createRentRepo(): IRentRepo {

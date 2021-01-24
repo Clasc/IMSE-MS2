@@ -40,9 +40,9 @@ export class RentRepo implements IRentRepo {
         }
     }
 
-    public async getRentsByUserId(user_id: string): Promise<Rent[] | null> {
+    public async getRentsByUserIdAndGameIdByExpirationDate(user_id: string, game_id: string, expiration_date: string): Promise<Rent[] | null> {
         try {
-            let rents: Rent[] = await queryDb(`SELECT * FROM Rent WHERE user_id = ${user_id}`);
+            let rents: Rent[] = await queryDb(`SELECT * FROM Rent WHERE user_id = '${user_id}' AND game_id = '${game_id}' AND expiration_date >= '${expiration_date}';`);
             return rents;
         }
         catch (err) {

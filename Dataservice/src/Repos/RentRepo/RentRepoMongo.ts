@@ -24,7 +24,7 @@ export class RentRepoMongo implements IRentRepo {
         throw new Error("Method not implemented.");
     }
 
-    public async getRentsByUserId(user_id: string): Promise<Rent[] | null> {
+    public async getRentsByUserIdAndGameIdByExpirationDate(user_id: string, game_id: string, expiration_date: string): Promise<Rent[] | null> {
         throw new Error("Method not implemented.");
     }
 }
