@@ -1,5 +1,6 @@
 import { Cursor } from "mongodb";
 import { User } from "../../Dtos/User/User";
+import { UserMongo } from "../../Dtos/User/UserMongo";
 import { mongoDB } from "../../Services/mongodb";
 import { MongoBaseRepo } from "../MongoBaseRepo";
 import { IUserRepo } from "./IUserRepo";
@@ -10,17 +11,17 @@ export class UserRepoMongo extends MongoBaseRepo implements IUserRepo {
         return users.toArray();
     }
 
-    public async getUserById(id: string): Promise<User | null> {
-        let users: Cursor<User> = mongoDB.collection("User").find({ user_id: id });
+    public async getUserById(id: string): Promise<UserMongo | null> {
+        let users: Cursor<UserMongo> = mongoDB.collection("User").find({ user_id: id });
         return (await users.toArray())[0];
     }
 
-    public async getUserByUsername(username: string): Promise<User[] | null> {
-        let users: Cursor<User> = mongoDB.collection("User").find({ username: username });
+    public async getUserByUsername(username: string): Promise<UserMongo[] | null> {
+        let users: Cursor<UserMongo> = mongoDB.collection("User").find({ username: username });
         return users.toArray()
     }
 
-    public async insertUser(user: User): Promise<boolean> {
+    public async insertUser(user: UserMongo): Promise<boolean> {
         try {
             if (!user.user_id) {
                 user.user_id = (await this.increment({ collecition: "User", idField: "user_id" }));

@@ -12,7 +12,7 @@ export class GameRepoMongo extends MongoBaseRepo implements IGameRepo {
     }
 
     public async getGameById(id: number): Promise<GameMongo | null> {
-        return (await mongoDB.collection("Game").find({ game_id: id }).toArray())[0];
+        return await mongoDB.collection("Game").findOne({ game_id: id });
     }
 
     public async insertGame(game: GameMongo): Promise<boolean> {

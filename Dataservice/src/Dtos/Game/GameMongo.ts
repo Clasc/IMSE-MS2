@@ -1,7 +1,7 @@
 import { Game } from "./Game";
 
 export interface GameMongo extends Game {
-    studio?: {
+    studio: {
         studio_id: number,
         name: string,
         price: number,

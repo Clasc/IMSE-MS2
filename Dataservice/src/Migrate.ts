@@ -143,18 +143,7 @@ export async function migrate(req: Request, res: Response) {
     //migrate played games
     let playedGames = await playedGameRepo.getAllPlayedGames();
     playedGames.forEach(async (playedGame) => {
-        let game = await gameRepoMongo.getGameById(playedGame.game_id as number);
-        if (game) {
-            let newPlayedGame: PlayedGameMongo = {
-                game: {
-                    game_id: game.game_id as number,
-                    title: game.title
-                }
-            }
-
-            await playedGameRepoMongo.insertPlayedGame(playedGame);
-        }
-
+        await playedGameRepoMongo.insertPlayedGame(playedGame);
     });
 
     res.status(200).send("Finished");
